@@ -1,26 +1,55 @@
 var express = require('express');
+
+var http = require('http');
+var socketio = require('socket.io');
+var io = require('socket.io')(server);
+
+
 var path = require('path');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+var methodOverride = require('method-override');
+var session = require('express-session');
+var MongoStore = require('connect-mongo')(session);
 
 var routes = require('./routes/index');
 var users = require('./routes/users');
 
 var app = express();
 
+var server = http.createServer(express);
+var io = socketio.listen(server);
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'hbs');
 
 app.use(logger('dev'));
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(methodOverride());
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+var mongoStore = new MongoStore({
+  db: db.connection.db
+});
+
+app.use(session({
+  saveUninitialized: true,
+  resave:true,
+  secret: config.sessionSecret,
+  store: mongoStore
+}))
+
+var config = require('./config');
+
 app.use('/', routes);
 app.use('/users', users);
+
+var mongoose   = require('mongoose');
+mongoose.connect(config.mongoUri); // connect to our database
+
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
