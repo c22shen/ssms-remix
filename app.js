@@ -13,8 +13,16 @@ var methodOverride = require('method-override');
 var session = require('express-session');
 var MongoStore = require('connect-mongo')(session);
 
+
 var routes = require('./routes/index');
 var users = require('./routes/users');
+var api = require('./routes/api');
+
+var Device = require('./models/device');
+
+var mongoose = require('mongoose');
+mongoose.connect(config.mongoUri);
+
 
 var app = express();
 
@@ -27,7 +35,7 @@ app.set('view engine', 'hbs');
 app.use(logger('dev'));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
-app.use(methodOverride());
+
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
@@ -46,6 +54,7 @@ var config = require('./config');
 
 app.use('/', routes);
 app.use('/users', users);
+app.use('/api', api);
 
 var mongoose   = require('mongoose');
 mongoose.connect(config.mongoUri); // connect to our database
