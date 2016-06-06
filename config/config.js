@@ -3,6 +3,6 @@
 
 // Set the 'production' environment configuration object
 module.exports = {
-	db: process.env.MONGOLAB_URI || 'mongodb://localhost/mean-production',
+	db: process.env.MONGOLAB_URI || 'mongodb://localhost/27017/mean-production',
 	sessionSecret: 'productionSessionSecret'
 };

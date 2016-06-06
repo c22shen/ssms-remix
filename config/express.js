@@ -13,8 +13,7 @@ var config = require('./config'),
 	methodOverride = require('method-override'),
 	session = require('express-session'),
 	MongoStore = require('connect-mongo')(session),
-	flash = require('connect-flash'),
-	passport = require('passport');
+	flash = require('connect-flash');
 
 // Define the Express configuration method
 module.exports = function(db) {
@@ -42,41 +41,37 @@ module.exports = function(db) {
 	app.use(methodOverride());
 
 	// Configure the MongoDB session storage
-	var mongoStore = new MongoStore({
-        db: db.connection.db
-    });
+	// var mongoStore = new MongoStore({
+ //        db: db.connection.db
+ //    });
 
 	// Configure the 'session' middleware
-	app.use(session({
-		saveUninitialized: true,
-		resave: true,
-		secret: config.sessionSecret,
-		store: mongoStore
-	}));
+	// app.use(session({
+	// 	saveUninitialized: true,
+	// 	resave: true,
+	// 	secret: config.sessionSecret,
+	// 	store: mongoStore
+	// }));
 
 	// Set the application view engine and 'views' folder
-	app.set('views', path.join(__dirname, 'views'));
+	// app.set('views', appRoot + '/views');
+	app.set('views', './app/views');
+
 	app.set('view engine', 'hbs');
-
-
 
 	// Configure the flash messages middleware
 	app.use(flash());
 
-	// Configure the Passport middleware
-	app.use(passport.initialize());
-	app.use(passport.session());
-
 	// Load the routing files
-	require('./routes/index')(app);
-	require('./routes/users')(app);
+	require(appRoot + '/routes/index')(app);
+	require(appRoot + '/routes/api')(app);
 
 	// Configure static file serving
 	app.use(express.static(path.join(__dirname, 'public')));
 
 
-	// Load the Socket.io configuration
-	require('./socketio')(server, io, mongoStore);
+	// Loadin the Socket.io configuration
+	// require(appRoot + '/socketio')(server, io, mongoStore);
 	
 	// Return the Server instance
 	return server;

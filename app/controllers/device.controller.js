@@ -1,10 +1,11 @@
-var express = require('express');
-var Device = require('../models/device');
+// Invoke 'strict' JavaScript mode
+'use strict';
 
-var router = express.Router();
+// How to hook this up without calling the model file?
+var Device = require('mongoose').model('Device');
 
-router.route('/devices')
-	.post(function(req, res){
+
+exports.create = function(req, res){
 		var device = new Device();
 		device.name = req.body.name;
 
@@ -15,28 +16,28 @@ router.route('/devices')
 
 			res.json({message: 'Device created'});
 		})
-	})
+	};
 
-	.get(function(resq, res){
+exports.readAll = function(resq, res){
 		Device.find(function(err, devices){
 			if (err) {
 				res.send(err);
 			}
 			res.json(devices);
 		});
-	});
+	};
 
-router.route('/devices/:device_id')
-	.get(function(req, res){
+exports.read = function(req, res){
 		Device.findById(req.params.device_id, function(err, device){
 			if (err){
 				res.send(err);
 			}
 			res.json(device);
 		})
-	})
-	.put(function(req, res){
-		Device.findById(req.params.bear_id, function(err, device) {
+	};
+
+exports.update = function(req, res){
+		Device.findById(req.params.device_id, function(err, device) {
 			if (err){
 				res.send(err);
 			}
@@ -50,11 +51,11 @@ router.route('/devices/:device_id')
 				res.json({message: "Device updated"});
 			})
 		})
-	})
+	};
 
-	.delete(function(req, res) {
+exports.delete = function(req, res) {
 		Device.remove({
-			_id: req.params.bear_id
+			_id: req.params.device_id
 		}, function(err, device) {
 			if(err) {
 				res.send(err);
@@ -62,10 +63,7 @@ router.route('/devices/:device_id')
 
 			res.json({message: 'Successfully deleted'});
 		});
-	});
-
-
-module.exports = router;
+	};
 
 
 
