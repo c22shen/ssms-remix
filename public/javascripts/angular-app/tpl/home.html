@@ -1,1 +1,9 @@
-<h1>Xiao</h1>
+
+<section data-ng-controller="ChatController">
+	{{messages}}
+
+	<form ng-submit="sendMessage()">
+		<input type="text" data-ng-model="messageText">
+		<input type="submit">
+	</form>
+</section>

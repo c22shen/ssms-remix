@@ -67,11 +67,9 @@ module.exports = function(db) {
 	require(appRoot + '/app/routes/api')(app);
 
 	// Configure static file serving
-	// app.use('/', express.static(path.join(__dirname, 'public')));
-	// app.use('/bower_components', express.static(path.join(__dirname, 'bower_components')));
 	app.use(express.static('./public'));
 	// Loadin the Socket.io configuration
-	// require(appRoot + '/socketio')(server, io, mongoStore);
+	require(appRoot + '/config/socketio')(server, io);
 	
 	// Return the Server instance
 	return server;
