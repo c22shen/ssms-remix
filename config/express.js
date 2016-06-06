@@ -54,7 +54,7 @@ module.exports = function(db) {
 	// }));
 
 	// Set the application view engine and 'views' folder
-	// app.set('views', appRoot + '/views');
+	app.set('views', appRoot + '/views');
 	app.set('views', './app/views');
 
 	app.set('view engine', 'hbs');
@@ -63,13 +63,13 @@ module.exports = function(db) {
 	app.use(flash());
 
 	// Load the routing files
-	require(appRoot + '/routes/index')(app);
-	require(appRoot + '/routes/api')(app);
+	require(appRoot + '/app/routes/index')(app);
+	require(appRoot + '/app/routes/api')(app);
 
 	// Configure static file serving
-	app.use(express.static(path.join(__dirname, 'public')));
-
-
+	// app.use('/', express.static(path.join(__dirname, 'public')));
+	// app.use('/bower_components', express.static(path.join(__dirname, 'bower_components')));
+	app.use(express.static('./public'));
 	// Loadin the Socket.io configuration
 	// require(appRoot + '/socketio')(server, io, mongoStore);
 	

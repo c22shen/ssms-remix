@@ -5,8 +5,7 @@
 
 // Define the routes module' method
 module.exports = function(app) {
-var appDir = require('path').dirname(require.main.filename);
-var device = require(appRoot + '/controllers/device.controller');
+var device = require(appRoot + '/app/controllers/device.controller');
 
 
 	// Set up the 'articles' base routes 

@@ -11,7 +11,7 @@ module.exports = function() {
 	var db = mongoose.connect(config.db);
 
 	// Load the application models 
-	require( require('path').join(__dirname, '../models/device'));
+	require( appRoot + '/app/models/device');
 	// require( './models/device');
 
 	// Return the Mongoose connection instance
