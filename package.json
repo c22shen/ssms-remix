@@ -18,6 +18,7 @@
     "mongoose": "latest",
     "socket.io": "latest",
     "connect-mongo": "latest",
-    "express-session": "latest"
+    "express-session": "latest",
+    "mqtt": "latest"
   }
 }
