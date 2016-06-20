@@ -12,7 +12,6 @@ module.exports = function() {
 
 	// Load the application models 
 	require( appRoot + '/app/models/device');
-	// require( './models/device');
 
 	// Return the Mongoose connection instance
 	return db;

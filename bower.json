@@ -20,6 +20,7 @@
     "angular-ui-router": "^0.3.0",
     "angular-bootstrap": "latest",
     "angular-touch": "latest",
-    "angular-animate": "latest"
+    "angular-animate": "latest",
+    "d3": "latest"
   }
 }

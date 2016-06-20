@@ -2,7 +2,7 @@
 'use strict';
 
 // How to hook this up without calling the model file?
-var Device = require('mongoose').model('Device');
+var Device = require(appRoot + '/app/controllers/device.controller');
 
 
 exports.create = function(req, res){
