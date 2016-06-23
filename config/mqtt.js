@@ -4,47 +4,62 @@
 var mqtt = require('mqtt');
 var url = require('url');
 var Device = require(appRoot + '/app/models/device');
+
+var getMachineType = function(machineId){
+  return 0;
+}
+
+var getMachineStatus = function(currentValue){
+  var currentVal = parseInt(currentValue) || 0;
+  return currentVal;
+}
+
 module.exports = function(io) {
   // Parse 
   // m12.cloudmqtt.com:10818
 
   var mqtt_url = "mqtt://afkibthd:sAgz1qpRVNd4@m12.cloudmqtt.com:10818";
   var topic_url = "/ssms";
-  var client = mqtt.connect(mqtt_url);
-  client.on('connect', function() { // When connected
-    client.subscribe(topic_url);
+  var mqttClient = mqtt.connect(mqtt_url);
+  mqttClient.on('connect', function() { // When connected
+    mqttClient.subscribe(topic_url);
   })
 
-client.on('message', function (topic, message) {
+mqttClient.on('message', function (topic, message) {
 
   // message convention?
   // machineId:machineStatus
 
   // if topic is /ssms, then save to mongoDb
-  if (topic === '/ssms'){
-    ///////////////////////////////
-    // Need to derive from message
+  var messageData = message.toString().split(':');
+  if (topic === topic_url && messageData.length === 2){
+    
+    // message format 
+    // machineId:currentReading
+
+
     var device = new Device();
-    device.name = "xiao";
-    device.type=0;
-    device.status=true;
+    
+
+    device.name = messageData[0];
+    device.type= getMachineType(messageData[0]);
+    device.status=getMachineStatus(messageData[1]);
     device.save(function(err){
       if(err) {
-        res.send(err);
-      }
-
-      console.log("Device created");
+        console.log(err);
+      } 
+      io.emit(topic, {
+        status: device.status,
+        deviceId: device.name
+      });
     })
 
   }
 
-  io.emit(topic, {
-    type: 'status',
-    text: message.toString()
-  });
+
 });
 
-  return client;
+  return mqttClient;
 }
 
 

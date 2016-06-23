@@ -13,35 +13,39 @@
       <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
   </head>
-  <style>
-  .full button span {
-    background-color: limegreen;
-    border-radius: 32px;
-    color: black;
-  }
-  .partially button span {
-    background-color: orange;
-    border-radius: 32px;
-    color: black;
-  }
-</style>
   <body>
+    <div class="container">
+<div class="container">
+      <div class="header clearfix">
+        <nav>
+          <ul class="nav nav-pills pull-right">
+            <li role="presentation" class="active"><a href="#">Home</a></li>
+            <li role="presentation"><a href="#">About</a></li>
+            <li role="presentation"><a href="#">Contact</a></li>
+          </ul>
+        </nav>
+        <h3 class="text-muted">Engineering Student Machine Shop</h3>
+      </div>
 
+      <div class="jumbotron">
+        <h1>Shop Occupancy</h1>
+        <hr>
+        <div ng-repeat="(key, value) in messages"> 
+          <div class="row">
+            <div class="col-xs-6">
+              <h2 ng-bind="key"></h2>
+            </div>
 
-    <!-- web socket Test -->
-	  <section>
-		{{messages}}
+            <div class="col-xs-6">
+              <h2 ng-bind="value"></h2>
+            </div>
+          </div>
+          <hr style="border-top: dotted 1px; color: #757575">
+        </div>
 
-		<form ng-submit="sendMessage()">
-			<input type="text" data-ng-model="messageText">
-			<input type="submit">
-		</form>
-	</section>
-	<!-- <scatter-chart></scatter-chart style="margin-top:50px"> -->
-
+      </div>
+    </div>
   </body>
-
-
 </html>
 
 

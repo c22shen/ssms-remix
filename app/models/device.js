@@ -12,7 +12,6 @@ var deviceSchema = new Schema({
 	},
 	name: {
 		type: String,
-		unique: true,
 		trim: true,
 		required: 'Name cannot be blank'
 	},
@@ -23,8 +22,8 @@ var deviceSchema = new Schema({
 	},
 
 	status: {
-		type: Boolean,
-		default: false
+		type: Number,
+		default: 0
 	}
 });
 
