@@ -32,7 +32,7 @@ mqttClient.on('message', function (topic, message) {
 
   // if topic is /ssms, then save to mongoDb
   var messageData = message.toString().split(':');
-  if (topic === topic_url && messageData.length === 2){
+  if (topic === topic_url && messageData.length === 4){
     
     // message format 
     // machineId:currentReading
@@ -41,9 +41,10 @@ mqttClient.on('message', function (topic, message) {
     var device = new Device();
     
 
-    device.name = messageData[0];
-    device.type= getMachineType(messageData[0]);
-    device.status=getMachineStatus(messageData[1]);
+    device.name = messageData[0] + messageData[1];
+    var currentReading = parseInt(messageData[3] + messageData[2], 16);
+
+    device.status=getMachineStatus(currentReading);
     device.save(function(err){
       if(err) {
         console.log(err);
