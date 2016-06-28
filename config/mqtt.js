@@ -42,7 +42,7 @@ mqttClient.on('message', function (topic, message) {
     
 
     device.name = messageData[0] + messageData[1];
-    var currentReading = parseInt(messageData[3] + messageData[2], 16);
+    var currentReading = parseInt(messageData[3], 16) + parseInt(messageData[2], 16)*256;
 
     device.status=getMachineStatus(currentReading);
     device.save(function(err){
