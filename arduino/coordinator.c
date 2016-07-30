@@ -1,70 +1,139 @@
+#include <Adafruit_MQTT.h>
+#include <Adafruit_MQTT_Client.h>
 
-#include <SPI.h>
-#include <PubSubClient.h>
 #include <Ethernet.h>
+#include <XBee.h>
+#include <Printers.h>
+#include <AltSoftSerial.h>
 
-#define DEBUG
-#ifdef DEBUG
-  #define DEBUG_PRINT(x)  Serial.println (x)
-#else
-  #define DEBUG_PRINT(x)
-#endif
+XBeeWithCallbacks xbee;
+
+AltSoftSerial SoftSerial;
+#define DebugSerial Serial
+#define XBeeSerial SoftSerial
+
+
 
 byte mac[]= {0x90, 0xA2, 0xDA, 0x0D, 0x88, 0x5E} ; // change by your arduino mac address
-char userId[] = "afkibthd"; // use your DIoTY user id (=email address)
-char passwd[] = "sAgz1qpRVNd4";  // use your DIoTY password
-char server[] = "m12.cloudmqtt.com";
-unsigned int port = 10818;
+EthernetClient internetClient; 
+
+const char MQTT_CLIENTID[] PROGMEM  = "";
+const char MQTT_USERNAME[] PROGMEM = "afkibthd"; // use your DIoTY user id (=email address)
+const char MQTT_PASSWORD[] PROGMEM = "sAgz1qpRVNd4";  // use your DIoTY password
+const char MQTT_SERVER[] PROGMEM = "m12.cloudmqtt.com";
+const int MQTT_PORT = 10818;
+const char topic[] PROGMEM = "/ssms"; 
+
+Adafruit_MQTT_Client mqttClient(&internetClient, MQTT_SERVER, MQTT_PORT, MQTT_CLIENTID,
+                          MQTT_USERNAME, MQTT_PASSWORD);
 
 
-char topic[] = "/ssms"; // topic where to publish; must be under your root topic
-EthernetClient client; 
-PubSubClient arduinoClient(server, port, 0, client) ; //no callback function is specified as we only publish
+void publish(const __FlashStringHelper *resource, float value) {
+  // Use JSON to wrap the data, so Beebotte will remember the data
+  // (instead of just publishing it to whoever is currently listening).
+  String data;
+  data += "{\"data\": ";
+  data += value;
+  data += ", \"write\": true}";
+
+  DebugSerial.print(F("Publishing "));
+  DebugSerial.print(data);
+  DebugSerial.print(F( " to "));
+  DebugSerial.println(resource);
 
 
-void setup() {                
-  Serial.begin(9600); 
-   while (!Serial) {
-    // wait serial port initialization
+  // Publish data and try to reconnect when publishing data fails
+  if (!mqttClient.publish(resource, data.c_str())) {
+
+    DebugSerial.println(F("Failed to publish, trying reconnect..."));
+    connect();
+
+    if (!mqtt.publish(resource, data.c_str()))
+      DebugSerial.println(F("Still failed to publish data"));
   }
-
-
-  DEBUG_PRINT(F("Initialisation"));
-  beginConnection();
 }
 
-void beginConnection(){
-  DEBUG_PRINT(F("Entering beginConnection"));
+
+void processRxPacket(ZBRxResponse& rx, uintptr_t) {
+  Buffer b(rx.getData(), rx.getDataLength());
+  XBeeAddress64 addr = rx.getRemoteAddress64();
+  publish(F("/ssms"), b.remove<float>());
+  return
+  DebugSerial.println(F("Unknown or invalid packet"));
+  printResponse(rx, DebugSerial);
+}
+
+void halt(Print& p, const __FlashStringHelper *s) {
+  p.println(s);
+  while(true);
+}
+
+
+void internetConnect(){
   if (Ethernet.begin(mac) == 0) {
-    Serial.println(F("Failed to configure Ethernet using DHCP"));
-    exit(-1);
-  };
-  DEBUG_PRINT(F("Obtained IP Address:"));
-  DEBUG_PRINT(Ethernet.localIP());
+   halt(DebugSerial, F("Ethernet failed to init"));
+  };  
+  DebugSerial.println(F("Obtained IP Address:"));
+  DebugSerial.println(Ethernet.localIP());
+}
+
+void mqttConnect() {
+  internetClient.stop(); // Ensure any old connection is closed
+  uint8_t ret = mqtt.connect();
+  if (ret == 0)
+    DebugSerial.println(F("MQTT connected"));
+  else
+    DebugSerial.println(mqttClient.connectErrorString(ret));
+}
+
+
+void setup() {  
+
+  DebugSerial.begin(115200);
+  DebugSerial.println(F(" System Starting..."));
+
+  XBeeSerial.begin(9600); 
+  xbee.begin(XbeeSerial);
+  delay(1);
+
+  // Setup callbacks
+  xbee.onZBRxResponse(processRxPacket);
+
+  internetConnect();
+  mqttConnect();
+  xbee.onZBRxResponse(processRxPacket);
+  xbee.onPacketError(printErrorCb, (uintptr_t)(Print*)&Serial);
+
+}
+
+
+void beingMQTTConnection(){
   if (arduinoClient.connect(NULL,userId,passwd)) {
-    DEBUG_PRINT(F("Connected to MQTT Server..."));
+    DebugSerial.println(F("Connected to MQTT Server..."));
   } else {
-    Serial.println(F("Failed to connect to the MQTT Server"));
+    DebugSerial.println(F("Failed to connect to the MQTT Server"));
     exit(-1);
   }
 }
 
-// reconnect after network hiccup      
-void reConnect(){
-  DEBUG_PRINT(F("Entering reConnect"));
+
+// reconnect after network hiccup   
+// Unused right now 
+void reconnectMQTT(){
+  DebugSerial.println(F("Entering reConnect"));
   
   if (arduinoClient.connected()){
-    DEBUG_PRINT(F("arduinoClient is connected"));
+    DebugSerial.println(F("arduinoClient is connected"));
   } else {
-    DEBUG_PRINT(F("arduinoClient is not connected"));
+    DebugSerial.println(F("arduinoClient is not connected"));
       if (Ethernet.begin(mac) == 0) {
         Serial.println(F("Failed to configure Ethernet using DHCP"));
       };
-      DEBUG_PRINT(Ethernet.localIP());
+      DebugSerial.println(Ethernet.localIP());
       if (arduinoClient.connect(NULL,userId,passwd)) {
-        DEBUG_PRINT(F("Reconnected to MQTT Server..."));
+        DebugSerial.println(F("Reconnected to MQTT Server..."));
       } else {
-        Serial.println(F("Failed to connect to the MQTT Server"));
+        DebugSerial.println(F("Failed to connect to the MQTT Server"));
       }
   };
 }
@@ -76,30 +145,6 @@ String sendData;
 
 
 void loop(void) {
-  if (Serial.available() >= 21 && Serial.read() == 0x7E) {
-    Serial.readBytes(xbeeData, 20);
-    sendData = String(xbeeData[11], HEX) + ":" + String(xbeeData[12], HEX) + ":" + String(xbeeData[18], HEX) + ":" + String(xbeeData[19], HEX);
-    Serial.println(sendData);
-    
-    char sendDataCharBuf[sendData.length()+1];
-    sendData.toCharArray(sendDataCharBuf, sendData.length()+1);   
-    
-//    rootJson["add"] = String(xbeeData[11], HEX) + String(xbeeData[12], HEX);
-//    rootJson["val"] = String(xbeeData[18], HEX) + String(xbeeData[19], HEX);
-//    analogValue = xbeeData[19]  + (xbeeData[18] *256); 
-
-
-
-    if (!arduinoClient.loop()) {
-        DEBUG_PRINT(F("Arduino Client loop nok"));
-      if (arduinoClient.connect(NULL,userId,passwd)) {
-        DEBUG_PRINT(F("mqtt reconnected."));
-      } else {
-        DEBUG_PRINT(F("mqtt reconnection FAILED :(."));
-      }
-    } else {
-        DEBUG_PRINT(F("Arduino Client loop ok"));
-      arduinoClient.publish(topic, (uint8_t*) sendDataCharBuf, strlen(sendDataCharBuf), 1);  
-    }
-  } 
+  xbee.loop();
+  Ethernet.maintain(); 
 }
