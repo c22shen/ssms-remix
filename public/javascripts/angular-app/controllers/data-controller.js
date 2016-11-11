@@ -3,6 +3,6 @@ angular.module('app').controller('DataController', ['$rootScope', '$scope', 'Soc
 	$scope.messages = {};
 	Socket.on('/ssms', function(message){
 		var status = {};
-		$scope.messages[message.deviceId] = message.status; 
+		$scope.messages[message.name] = message.status; 
 	});
 }]);

@@ -93,9 +93,6 @@ void setup() {
   xbee.begin(XBeeSerial);
   delay(1);
 
-  // Setup callbacks
-  xbee.onZBRxResponse(processRxPacket);
-
   internetConnect();
   mqttConnect();
   xbee.onZBRxResponse(processRxPacket);
