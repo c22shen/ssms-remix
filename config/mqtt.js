@@ -46,7 +46,7 @@ module.exports = function(io) {
         // var parsed;
         var device;
         try {
-
+            
             var parsed = JSON.parse(json);
             console.log("parsed", parsed);
             console.log("parsed id ", parsed.id);

@@ -21,6 +21,6 @@
     "angular-bootstrap": "latest",
     "angular-touch": "latest",
     "angular-animate": "latest",
-    "d3": "latest"
+    "d3": "^4.3.0"
   }
 }
