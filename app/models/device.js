@@ -10,13 +10,13 @@ var deviceSchema = new Schema({
 		type: Date,
 		default: Date.now
 	},
-	name: {
+	panId: {
 		type: String,
 		trim: true,
 		required: 'Name cannot be blank'
 	},
 
-	status: {
+	current: {
 		type: Number,
 		default: 0
 	}

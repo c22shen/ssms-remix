@@ -31,8 +31,7 @@ exports.read = function(req, res){
 		Device.findById(req.params.device_id, function(err, device){
 			if (err){
 				res.send(err);
-			}
-			res.json(device);
+			}			res.json(device);
 		})
 	};
 

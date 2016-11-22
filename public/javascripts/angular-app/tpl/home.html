@@ -16,6 +16,73 @@
     <![endif]-->
 </head>
 
+<!-- <script type="text/javascript">
+  var machineInfo = [
+  { panId: "61a1", current: 100 },
+  { panId: "62a2", current: 0 }
+];
+
+  var machinsInfo = {
+    "61a1": {type: "M", xcoord:0, ycoord:0},
+    "62a2": {type: "L", xcoord:10, ycoord:10}
+  }
+
+  var createMachineSumarryData = 
+    function(machineType){
+      var freeCount=0;
+      var totalCount = $scope.messages.filter(function(data){
+           if (machinesInfo[data.panId].type === machineType){
+              if (data.current>0) {
+                freeCount++;
+              }
+              return true;
+           } else {
+            return false;
+           }
+      }).length;
+      var percentage = freeCount/totalCount*100.0;
+
+      var final =[{
+        free: freeCount,
+        total: totalCount,
+        percentage: percentage
+      }];
+
+      return final;
+  }
+
+
+
+var update = d3.select('.chart1').append('svg')
+  .attr("width", "100%")
+  .attr("height", "20")
+  .selectAll('rect')
+  .data($scope.messages)
+  // .style('color', 'blue');
+
+var enter = update.enter()
+  .append('rect')
+  .filter(function(d){
+
+  })
+  // .text(function (d) {
+  //   return d.name;
+  // })
+  // .style('color', 'green');
+
+update.exit().remove();
+
+update.merge(enter)
+  .attr('width', d => (d.free/d.total*100.0 + '%'))
+  .attr('height', '20')
+  .style('fill', '#199cfc')
+  .attr('x', '0')
+  .attr('y', '0')
+
+  // .style('border', '1px solid black')
+
+</script> -->
+
 <body style="">
     <nav class="navbar navbar-fixed-top" style="background: #2980b9; box-shadow: 0px 4.33px 0px 0px rgba(41, 128, 185, 0.5); ">
         <div class="container">
@@ -39,9 +106,9 @@
     font-weight: 100; color:white; font-size:60px">Details</h1>
         <hr>
         <div class="row">
-            <div class="col-md-1" style="font-family: 'Roboto', sans-serif;
-    font-weight: 300; color:#199cfc; font-size:80px">5</div>
-            <div class="col-md-10">
+            <div class="col-md-1 col-xs-2" style="font-family: 'Roboto', sans-serif;
+    font-weight: 300; color:#199cfc; font-size:80px">{{$root.busy.M}}</div>
+            <div class="col-md-10 col-xs-10">
                 <div class="row">
                     <div class="col-xs-12">
                         <h2 style="font-family: 'Roboto', sans-serif;
@@ -52,7 +119,7 @@
                     <div class="col-xs-12">
                         <p style="font-family: 'Roboto', sans-serif;
     font-weight: 500; color:#2980B9; ">
-                            Free out of 5 machines in total
+                            Free out of {{myConfig.PANID.M.length}} units in total
                         </p>
                     </div>
                 </div>
@@ -60,15 +127,18 @@
         </div>
         <div class="row">
             <div class="col-xs-12">
-                <svg style="width: 100%; height:50">
+              <bar-chart class="chart1"></bar-chart>
+
+
+<!--                 <svg style="width: 100%; height:50">
                     <rect width="100" height="20" x="0" y="0" style="fill:#199cfc"></rect>
                     <rect width="100%" height="20" x="100" y="0" style="fill:#8ccdfd"></rect>
-                </svg>
+                </svg> -->
             </div>
         </div>
-        <div class="row" style="color:#ed203d">
+<!--         <div class="row" style="color:#ed203d">
             <div class="col-md-1" style="font-family: 'Roboto', sans-serif;
-    font-weight: 300;  font-size:80px">5</div>
+    font-weight: 300;  font-size:80px">{{$root.busy.L}}</div>
             <div class="col-md-10">
                 <div class="row">
                     <div class="col-xs-12">
@@ -80,47 +150,21 @@
                     <div class="col-xs-12">
                         <p style="font-family: 'Roboto', sans-serif;
     font-weight: 500;  ">
-                            Free out of 10 machines in total
+                            Free out of {{myConfig.panId.L.length}} machines in total
                         </p>
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="row">
+        </div> -->
+<!--         <div class="row">
             <div class="col-xs-12">
                 <svg style="width: 100%; height:50">
                     <rect width="100" height="20" x="0" y="0" style="fill:red"></rect>
                     <rect width="100%" height="20" x="100" y="0" style="fill:#f68f9e"></rect>
                 </svg>
             </div>
-        </div>
-        <!--       <div class="header clearfix">
-        <nav>
-          <ul class="nav nav-pills pull-right">
-            <li role="presentation" class="active"><a href="#">Home</a></li>
-            <li role="presentation"><a href="#">About</a></li>
-            <li role="presentation"><a href="#">Contact</a></li>
-          </ul>
-        </nav>
-        <h3 class="text-muted">Engineering Student Machine Shop</h3>
-      </div> -->
-        <!--       <div class="jumbotron">
-        <h1>Shop Occupancy</h1>
-        <hr>
-        <div ng-repeat="(key, value) in messages"> 
-          <div class="row">
-            <div class="col-xs-6">
-              <h2 ng-bind="key"></h2>
-            </div>
+        </div> -->
 
-            <div class="col-xs-6">
-              <h2 ng-bind="value"></h2>
-            </div>
-          </div>
-          <hr style="border-top: dotted 1px; color: #757575">
-        </div>
-
-      </div> -->
     </div>
     <div class="new-section" style="background:#00a8e1; padding-top:50px; padding-bottom:50px">
         <div class="container">

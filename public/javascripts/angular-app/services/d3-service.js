@@ -1,3 +1,3 @@
-angular.module('app').service('d3', [function(){
+angular.module('app').factory('d3', [function(){
 	return d3;
 }]);
