@@ -1,5 +1,19 @@
-h1 { font-family: 'Roboto', sans-serif; font-weight: 300; }
+h1 { font-family: 'Roboto', sans-serif; font-weight: 300; font-size: 3.5em;}
 h2 { font-family: 'Roboto', sans-serif; font-weight: 100; }
 .jumbotron{
 	background:white;
+}
+
+.map {
+	background: url(/images/labinverted.png);
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+}
+
+.red-label { 
+color: red;
+}
+
+.green-label { 
+color: green;
 }

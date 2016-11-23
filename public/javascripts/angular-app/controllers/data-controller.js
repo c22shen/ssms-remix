@@ -10,14 +10,19 @@ angular.module('app').controller('DataController', ['$rootScope', '$scope', 'Soc
     	M: 0
     };
 
+    $scope.rowClass = function(person){
+        return person.current > myConfig.THRESHOLD ? "red-label" : "green-label";
+    };
+
     $rootScope.myConfig = myConfig;
 
     $rootScope.messages = [
-    	{panId:"1", current: 0 },
-    	{panId:"2", current: 0 },
-    	{panId:"3", current: 0 },
-    	{panId:"4", current: 0 }  	
+    	{panId:"1", current: 0, x: 1350, y:1200 },
+    	{panId:"2", current: 0, x: 1350, y: 1400 },
+    	{panId:"3", current: 0, x: 1350, y: 1600 },
+    	{panId:"4", current: 0, x: 1350, y: 1800 }
     ];
+
 
     Socket.on('yun', function(updateMsg) {
         // var currentInfoAvailable = $rootScope.messages.filter(function(data) {

@@ -1,4 +1,4 @@
-angular.module('app').directive('scatterChart', ['d3', '$rootScope', function(d3, $rootScope){
+angular.module('app').directive('someChart', ['d3', '$rootScope', function(d3, $rootScope){
 	function draw(svg, width, height, data) {
 		var margin = 30;
 
