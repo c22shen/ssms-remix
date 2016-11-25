@@ -11,9 +11,18 @@ h2 { font-family: 'Roboto', sans-serif; font-weight: 100; }
 }
 
 .red-label { 
-color: red;
+color: #FF8080;
 }
 
 .green-label { 
-color: green;
+color: 80C080;
+}
+
+.navbar-header {
+	color: white;
+	font-size:1.5em;
+}
+
+.table-hover tbody tr:hover td, .table-hover tbody tr:hover th {
+  background-color: #8CCDFD;
 }

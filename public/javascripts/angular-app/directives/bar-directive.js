@@ -5,7 +5,7 @@ angular.module('app').directive('barChart', ['d3', '$rootScope', 'myConfig',
         return {
             restrict: 'E',
             compile: function(elements, attrs, transclude) {
-                var svg = d3.select(elements[0]).append('svg').attr('width', "100%");
+                var svg = d3.select(elements[0]).append('svg').attr('width', "100%").attr('height', "100");
                 // var entry = d3.select(elements[0]).append("div")
                 // 	.attr("class", "text-center")
                 // 	.style("color", "#2980B9")

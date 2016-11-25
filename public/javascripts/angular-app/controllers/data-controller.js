@@ -7,7 +7,8 @@ angular.module('app').controller('DataController', ['$rootScope', '$scope', 'Soc
 
     // message is an object: {panId: , current}
     $rootScope.busy = {
-    	M: 0
+    	M: 0,
+    	L: 0 
     };
 
     $scope.rowClass = function(person){

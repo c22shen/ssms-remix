@@ -2,7 +2,7 @@
     <nav class="navbar navbar-fixed-top" style="background: #2980b9; box-shadow: 0px 4.33px 0px 0px rgba(41, 128, 185, 0.5);">
       <div class="container">
         <div class="navbar-header" style="margin-top:5px">
-          <a href="" class="navbar-brand ssms-shadow"></a>
+          Engineering Student Machine Shop
         </div>
         <div id="navbar" class="collapse navbar-collapse  pull-right">
           <ul class="nav navbar-nav custom">
