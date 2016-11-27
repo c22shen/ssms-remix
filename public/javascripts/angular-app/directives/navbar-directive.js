@@ -78,7 +78,7 @@ angular.module('app').directive('navBar', ['d3', '$rootScope', 'myConfig',
                 scope.closeTime = closeTime.format("h:mm A");
                 
                 scope.storeAvailable  = moment().isBetween(startTime, closeTime);
-
+                scope.statusString = scope.storeAvailable ? "Now Open": "Closed";
             }
         }
     }

@@ -1,6 +1,6 @@
 'use strict';
 
-var app = angular.module('app', ['ui.router', 'ngAnimate', 'ngTouch', 'ui.bootstrap'])
+var app = angular.module('app', ['ui.router','ngMaterial'])
  	.config(function($stateProvider, $urlRouterProvider) {
  		$urlRouterProvider.otherwise("/home");
  	});
