@@ -29,7 +29,7 @@ module.exports = function(db) {
     var mqtt = mqtt_client(io);
 
     // random publish 
-    setInterval(function(){mqtt.randomPublish()}, 3000);
+    // setInterval(function(){mqtt.randomPublish()}, 3000);
     
 	// Use the 'NDOE_ENV' variable to activate the 'morgan' logger or 'compress' middleware
 	if (process.env.NODE_ENV === 'development') {
