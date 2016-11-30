@@ -16,7 +16,7 @@ var deviceSchema = new Schema({
 		required: 'Name cannot be blank'
 	},
 
-	current: {
+	iRms: {
 		type: Number,
 		default: 0
 	}

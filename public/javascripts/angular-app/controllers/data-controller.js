@@ -25,7 +25,8 @@ angular.module('app').controller('DataController', ['$rootScope', '$scope', 'Soc
     ];
 
 
-    Socket.on('yun', function(updateMsg) {
+    Socket.on('0013A20040B09A44', function(updateMsg) {
+        console.log("messaged received on socket", updateMsg);
         // var currentInfoAvailable = $rootScope.messages.filter(function(data) {
         //         // console.log("$scope.messages is ", $rootScope.messages);
         //         // console.log("data is", data);
