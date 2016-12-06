@@ -4,7 +4,8 @@ angular.module('app').controller('DataController', ['$rootScope', '$scope', 'Soc
     //     { panId: "62a2", type: "L", xcoord: 50, ycoord: 50 }
     // ];
 
-
+    var self = this;
+    self.users=["1", "2", "3", "4"];
     // message is an object: {panId: , current}
     $rootScope.busy = {
     	M: 0,
@@ -26,15 +27,6 @@ angular.module('app').controller('DataController', ['$rootScope', '$scope', 'Soc
 
 
     Socket.on('0013A20040B09A44', function(updateMsg) {
-        console.log("messaged received on socket", updateMsg);
-        // var currentInfoAvailable = $rootScope.messages.filter(function(data) {
-        //         // console.log("$scope.messages is ", $rootScope.messages);
-        //         // console.log("data is", data);
-        //         return data.panId === updateMsg.panId;
-        //     }).length > 0;
-
-
-        // if (currentInfoAvailable){ 
             $rootScope.messages = $rootScope.messages.map(function(d) {
                 if (d.panId === updateMsg.panId) {
                 	//detect if there is change of state
@@ -55,71 +47,8 @@ angular.module('app').controller('DataController', ['$rootScope', '$scope', 'Soc
                 }
                 return d;
             });
-        // } else {
-        	// if(updateMsg.current >myConfig.THRESHOLD) {
-        	// 	var type = "M";
-        	// 	$rootScope.busy[type]++;
-        	// }
-         //    $rootScope.messages.push(updateMsg);
-        // }
-
 
     });
-
-    // console.log(d3.select('.chart1'));
-    // var chart1 = d3.select('.chart1');
-
-    // var dataArray=[{name: "Milling", width:50}];
-    // console.log(dataArray);
-    // var update = d3.select('.chart1').selectAll('rect')
-    //     .data(dataArray, function(d) {
-    //     	return d? d.name: "test";
-    //     });
-
-    // var enter = update.enter()
-    // 	.append('rect');
-
-
-    // console.log(temp1);
-    // .append('rect')
-    // .width(function(d){
-    // 	return d.width;
-    // })
-    // .height(function(d){
-    // 	return 20;
-    // }).fill("#8ccdfd");
-
-    // var scores = [
-    //   { name: 'Alice', score: 96 },
-    //   { name: 'Billy', score: 83 },
-    //   { name: 'Cindy', score: 91 },
-    //   { name: 'David', score: 96 },
-    //   { name: 'Emily', score: 88 }
-    // ];
-
-    // var update = d3.select('.chart1')
-    //   .selectAll('div')
-    //   .data(scores, function (d) {
-    //     return d ? d.name : this.innerText;
-    //   })
-    //   .style('color', 'blue');
-
-    // var enter = update.enter()
-    //   .append('div')
-    //   .text(function (d) {
-    //     return d.name;
-    //   })
-    //   .style('color', 'green');
-
-    // update.exit().remove();
-
-    // update.merge(enter)
-    //   .style('width', d => d.score + 'px')
-    //   .style('height', '50px')
-    //   .style('background', 'lightgreen')
-    //   .style('border', '1px solid black')
-
-
 
 
 

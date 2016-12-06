@@ -50,8 +50,8 @@ module.exports = function(db) {
 	// Set the application view engine and 'views' folder
 	app.set('views', appRoot + '/views');
 	app.set('views', './app/views');
-
-	app.set('view engine', 'hbs');
+	app.engine('html', require('ejs').renderFile);
+	app.set('view engine', 'html');
 
 	// Configure the flash messages middleware
 	app.use(flash());
