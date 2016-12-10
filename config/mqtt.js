@@ -52,7 +52,7 @@ module.exports = function(io) {
 
         var currentValue = parseFloat(iRms).toFixed(2);
         panId = panId.toString();
-        if (Math.abs(currentValue-mostCurrentData[panId])>0.1) {
+        if (Math.abs(currentValue-mostCurrentData[panId])>0.1 || true) {
             var device = new Device();
             device.iRms = currentValue;
             device.panId = panId;
