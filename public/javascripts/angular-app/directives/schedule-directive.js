@@ -13,7 +13,7 @@ angular.module('app').directive('schedule', ['myConfig',
                     },
                     1: {
                         open: { hour: 8, minute: 30 },
-                        close: { hour: 16, minute: 30 }
+                        close: { hour: 17, minute: 0 }
                     },
                     2: {
                         open: { hour: 8, minute: 30 },
@@ -78,9 +78,10 @@ angular.module('app').directive('schedule', ['myConfig',
                 var startTime = moment({
                     h: startHour,
                     m: startMinute
+
                 });
 
-
+// console.log("is between the dates", moment('2010-10-20').isBetween('2010-10-19', '2010-10-25'));
 
 
                 var closeTime = moment({
@@ -89,10 +90,25 @@ angular.module('app').directive('schedule', ['myConfig',
                 });
 
                 var startTime = startTime.format("h:mm A");
+                console.log("startTime", startTime);
                 var closeTime = closeTime.format("h:mm A");
+                console.log("closeTime", closeTime);
 
+                // console.log("moment", moment());
+                var currentHour =  moment().hour();
+                var currentMinute = moment().minutes();
 
-                scope.storeAvailable = moment().isBetween(startTime, closeTime);
+if (currentHour > startHour && currentHour < endHour) {
+    scope.storeAvailable = true;
+} else if (currentHour === startHour && currentMinute > startMinute) {
+    scope.storeAvailable = true;
+} else if (currentHour === startHour && currentMinute < endMinute) {
+    scope.storeAvailable = true; 
+} else {
+    scope.storeAvailable = false;
+}
+
+                // scope.storeAvailable = moment().isBetween(startTime, closeTime);
                 scope.statusString = scope.storeAvailable ? "NOW OPEN" : "NOW CLOSED";
                 if (startTime === closeTime) {
                     scope.timeRange = "Closed for Sunday";

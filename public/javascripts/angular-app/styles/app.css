@@ -10,3 +10,11 @@ body[ng-cloak] {
 .fa-2x {
   vertical-align: middle;
 }
+
+.busy-text {
+	color: #9c5052;
+}
+
+.free-text {
+	color: #8bc87a;
+}

@@ -1,18 +1,17 @@
 <div layout="row">
-    <div style="padding-right:10px">
+    <!--     <div style="padding-right:10px">
         <i class="fa fa-circle-o" aria-hidden="true" style="color:#9c5052"></i>
-    </div>
+    </div> -->
     <div class="availability">
-        <b style="margin-right:10px">
+        <b style="margin-right:10px" ng-class="storeAvailable ? 'free-text' : 'busy-text'">
             {{statusString}}
         </b>
-        <span >{{timeRange}}</span>
+        <span>{{timeRange}}</span>
         <span></span>
     </div>
     <div flex></div>
-    <div >
-    <span>Student Machine Shop  E5 1101</span>
-        
+    <div show-gt-sm hide>
+        <span>Student Machine Shop  E5 1101</span>
         <i class="fa fa-cog fa-spin fa-2x fa-fw slow-spin"></i>
     </div>
 </div>

@@ -22,7 +22,7 @@
 
 <body layout="column" ng-controller="DataController as dc" ng-cloak>
     <div flex layout="row">
-        <md-sidenav flex="20" md-is-locked-open="true" class="md-whiteframe-4dp" layout="column">
+        <md-sidenav flex="20" md-is-locked-open="$mdMedia('gt-md')" class="md-whiteframe-4dp" layout="column">
             <img src="images/waterloo-logo-yellow-white.svg" style="width:100%">
             <md-divider></md-divider>
             <md-list flex>
@@ -31,8 +31,9 @@
                     <img ng-src="images/milling.svg" class="md-avatar" style="border-radius: 0;" />
                     <div class="md-list-item-text" layout="column">
                         <h3>Milling</h3>
-                        <h4 style="color:#16a085"><b style="font-size:larger">5</b> Units available</h4>
-                        <bar-chart flex></bar-chart>
+                        <h4><b style="font-size:larger">5</b> Units available</h4>
+                         <md-progress-linear md-mode="determinate" value="{{$root.currentReading>1? 0: 100}}" style="margin-top:1em"></md-progress-linear>
+                        <!-- <bar-chart flex></bar-chart> -->
                     </div>
                 </md-list-item>
                 <md-divider></md-divider>
@@ -40,8 +41,9 @@
                     <img ng-src="images/lathe.svg" class="md-avatar" style="border-radius: 0;" />
                     <div class="md-list-item-text" layout="column">
                         <h3>Lathe</h3>
-                        <h4 style="color:#16a085"><b style="font-size:larger">2</b> Units available</h4>
-                        <bar-chart flex></bar-chart>
+                        <h4 ><b style="font-size:larger">3</b> Units available</h4>
+                        <!-- <bar-chart flex></bar-chart> -->
+                         <md-progress-linear md-mode="determinate" value="0" style="margin-top:1em"></md-progress-linear>
                     </div>
                 </md-list-item>
             </md-list>

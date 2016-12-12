@@ -27,6 +27,9 @@ angular.module('app').controller('DataController', ['$rootScope', '$scope', 'Soc
 
 
     Socket.on('0013A20040B09A44', function(updateMsg) {
+        $rootScope.currentReading = {date: new Date(), current:updateMsg};
+
+
             $rootScope.messages = $rootScope.messages.map(function(d) {
                 if (d.panId === updateMsg.panId) {
                 	//detect if there is change of state
