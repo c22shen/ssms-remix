@@ -1,13 +1,18 @@
-
-    <div layout="row">
-        <p style="font-size:1.3em">
-            <span style="color:white; padding-left:8px">{{statusString}}</span><span style="padding-left:3em; color:white">Today open from {{startTime}} to {{closeTime}}</span></p>
+<div layout="row">
+    <div style="padding-right:10px">
+        <i class="fa fa-circle-o" aria-hidden="true" style="color:#9c5052"></i>
     </div>
-<!--     <div class="container">
-        <div class="row" style="margin-bottom:20px">
-            <div class="col-xs-12 col-md-9 col-md-offset-1 text-center" style="margin-bottom:20px; margin-top:40px">
-                <h1 class="lead" style="color:white; font-size:2.5em">Student Machine Shop Occupancy Monitoring System</h1>
-                <p style="color:white"> E5 1101, University of Waterloo, Waterloo, ON N2L 3G1</p>
-            </div>
-        </div>
-    </div> -->
+    <div class="availability">
+        <b style="margin-right:10px">
+            {{statusString}}
+        </b>
+        <span >{{timeRange}}</span>
+        <span></span>
+    </div>
+    <div flex></div>
+    <div >
+    <span>Student Machine Shop  E5 1101</span>
+        
+        <i class="fa fa-cog fa-spin fa-2x fa-fw slow-spin"></i>
+    </div>
+</div>

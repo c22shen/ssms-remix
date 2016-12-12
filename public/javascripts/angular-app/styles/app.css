@@ -1,11 +1,12 @@
-/*.red { 
-background-color: red;
+body[ng-cloak] {
+    display: none;
 }
 
-.lightblue { 
-background-color: lightblue;
+.slow-spin {
+  -webkit-animation: fa-spin 6s infinite linear !important;
+  animation: fa-spin 6s infinite linear !important;
 }
 
-.lightgreen { 
-background-color: lightgreen;
-}*/
+.fa-2x {
+  vertical-align: middle;
+}

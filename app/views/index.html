@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="/bower_components/angular-material/angular-material.min.css">
     <link rel="stylesheet" href="/javascripts/angular-app/styles/app.css">
     <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+    <link rel='stylesheet' href='http://fonts.googleapis.com/css?family=Roboto:100,400,700'>
     <script src="https://use.fontawesome.com/9801496e3d.js"></script>
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -19,114 +20,61 @@
     <![endif]-->
 </head>
 
-<body layout="column" ng-controller="DataController as dc">
-    <md-toolbar schedule>
-        <div class="md-toolbar-tools ">
-            <md-button class="md-icon-button " aria-label="Settings " ng-disabled="true ">
-                <md-icon md-svg-icon="img/icons/menu.svg "></md-icon>
-            </md-button>
-            <h2>{{statusString}}</h2>
-            <span flex></span>
-            <md-button class="md-icon-button " aria-label="Favorite ">
-                <md-icon md-svg-icon="img/icons/favorite.svg " style="color: greenyellow; "></md-icon>
-            </md-button>
-            <md-button class="md-icon-button " aria-label="More ">
-                <md-icon md-svg-icon="img/icons/more_vert.svg "></md-icon>
-            </md-button>
+<body layout="column" ng-controller="DataController as dc" ng-cloak>
+    <div flex layout="row">
+        <md-sidenav flex="20" md-is-locked-open="true" class="md-whiteframe-4dp" layout="column">
+            <img src="images/waterloo-logo-yellow-white.svg" style="width:100%">
+            <md-divider></md-divider>
+            <md-list flex>
+                <md-subheader class="md-no-sticky">Availability Summary</md-subheader>
+                <md-list-item class="md-3-line" ng-click="null">
+                    <img ng-src="images/milling.svg" class="md-avatar" style="border-radius: 0;" />
+                    <div class="md-list-item-text" layout="column">
+                        <h3>Milling</h3>
+                        <h4 style="color:#16a085"><b style="font-size:larger">5</b> Units available</h4>
+                        <bar-chart flex></bar-chart>
+                    </div>
+                </md-list-item>
+                <md-divider></md-divider>
+                <md-list-item class="md-3-line" ng-click="null">
+                    <img ng-src="images/lathe.svg" class="md-avatar" style="border-radius: 0;" />
+                    <div class="md-list-item-text" layout="column">
+                        <h3>Lathe</h3>
+                        <h4 style="color:#16a085"><b style="font-size:larger">2</b> Units available</h4>
+                        <bar-chart flex></bar-chart>
+                    </div>
+                </md-list-item>
+            </md-list>
+        </md-sidenav>
+        <div layout="column" flex>
+            <div schedule layout-padding></div>
+            <div class="header layout-padding layout-margin">
+                <h1 class="md-display-2 " style="font-weight:100; padding-bottom:0; margin-bottom:0">E5 1101 Real-time Status</h1>
+                <p style="margin-top:0; padding-top:0">Find out if the student machine shop is busy or not</p>
+            </div>
+            <div class="map" layout="row"  layout-align="center top" style="margin-top:2em" map-chart>
+
+                    <!-- <img src="images/map-shadow.svg" style="max-height:100%; max-width:70%"> -->
+                    <!-- <div style="width:100%" map-chart></div> -->
+                    <!-- <map-chart style="width:100%"></map-chart> -->
+            </div>
+<!--             <div class="bottom-section" flex layout="row" style="padding-bottom:8em">
+                <div class="summary" flex="50" layout="column" layout-align="end center">
+                    <div class="milling-summary" style="margin-bottom: 1em" layout="row" layout-align="center center">
+                        <div class="type" flex="20">Milling</div>
+                        <bar-chart flex></bar-chart>
+                        <div style="margin-left:15px" flex="10">5</div>
+                    </div>
+                    <div class="lathe-summary" layout="row" layout-align="center center">
+                        <div class="type" flex="20">Lathe</div>
+                        <bar-chart flex></bar-chart>
+                        <div style="margin-left:15px" flex="10">5</div>
+                    </div>
+                </div>
+                <div class="schedule" flex="50">
+                </div>
+            </div> -->
         </div>
-    </md-toolbar>
-    <div class="container" layout="row">
-        <md-content id="content " flex layout="column ">
-            <section>
-                <md-subheader class="md-primary ">Occupancy Map</md-subheader>
-                <md-card md-theme="{{ showDarkTheme ? 'dark-grey' : 'default' }} " md-theme-watch>
-                    <md-card-title>
-                        <md-card-title-text>
-                            <span class="md-headline ">Map</span>
-                            <span class="md-subhead ">using d3.js</span>
-                        </md-card-title-text>
-                        <md-card-title-media>
-                            <div class="md-media-lg card-media "></div>
-                        </md-card-title-media>
-                    </md-card-title>
-                    <md-card-actions layout="row " layout-align="end center ">
-                        <md-button>Action 1</md-button>
-                        <md-button>Action 2</md-button>
-                    </md-card-actions>
-                </md-card>
-            </section>
-            <section>
-                <md-subheader class="md-primary ">popuar Times Chart</md-subheader>
-                <md-card md-theme="{{ showDarkTheme ? 'dark-grey' : 'default' }} " md-theme-watch>
-                    <md-card-title>
-                        <md-card-title-text>
-                            <span class="md-headline ">popuar Times Chart</span>
-                            <span class="md-subhead ">using d3.js</span>
-                        </md-card-title-text>
-                        <md-card-title-media>
-                            <div class="md-media-lg card-media "></div>
-                        </md-card-title-media>
-                    </md-card-title>
-                    <md-card-actions layout="row " layout-align="end center ">
-                        <md-button>Action 1</md-button>
-                        <md-button>Action 2</md-button>
-                    </md-card-actions>
-                </md-card>
-            </section>
-            <md-sidenav md-is-locked-open="true" layout-padding class="md-sidenav-right md-whiteframe-4dp md-hue-2 md-primary" md-component-id="right">
-                <!-- <md-toolbar class="md-tall" layout="column" layout-align="center start" > -->
-                <!-- <div class="toolbar-content" layout-padding> -->
-                <!-- <md-icon md-svg-src="/images/uwaterloo-logo-white-small.svg" aria-label="uw"></md-icon> -->
-                <!-- <img src="/images/waterlooLogo.png" style="width:90%" alt=""> -->
-                <!-- <h1 class="title md-display-1">
-                Student Shop I
-            </h1>
-            <p class="address md-subhead">
-                <span>
-            E5 1101, University of Waterloo</span>
-                <span>Waterloo, ON N2L 3G1</span>
-            </p> -->
-                <!-- <p class="md-display-2" style="margin-top:10px">Availability</p> -->
-                <!-- </div> -->
-                <!-- </md-toolbar> -->
-                <md-list>
-                    <div class="list-item">
-                        <md-list-item>
-                            <md-button>
-                                <div layout="row" layout-align="center start">
-                                    <div flex="30">
-                                        <span class="md-display-3" style="float:left">20</span>
-                                    </div>
-                                    <div flex layout="column" layout-align="center start">
-                                        <h2 style="margin-top:0; margin-bottom:0">Milling</h2>
-                                        <p style="margin-top:-5px; margin-bottom:0">available out of 10</p>
-                                    </div>
-                                </div>
-                                <bar-chart></bar-chart>
-                            </md-button>
-                        </md-list-item>
-                        <md-divider></md-divider>
-                    </div>
-                    <div class="list-item">
-                        <md-list-item>
-                            <md-button>
-                                <div layout="row" layout-align="center start">
-                                    <div flex="30">
-                                        <span class="md-display-3" style="float:left">20</span>
-                                    </div>
-                                    <div flex layout="column" layout-align="center start">
-                                        <h2 style="margin-top:0; margin-bottom:0">Lathe</h2>
-                                        <p style="margin-top:-5px; margin-bottom:0">available out of 10</p>
-                                    </div>
-                                </div>
-                                <bar-chart></bar-chart>
-                            </md-button>
-                        </md-list-item>
-                        <!-- <md-divider></md-divider> -->
-                    </div>
-                </md-list>
-            </md-sidenav>
-        </md-content>
         <script type="text/javascript " src="/socket.io/socket.io.js "></script>
         <script src="/bower_components/angular/angular.min.js "></script>
         <script src="/bower_components/angular-animate/angular-animate.min.js "></script>
@@ -141,8 +89,9 @@
         <script src="/javascripts/angular-app/services/configuration.js "></script>
         <script src="/javascripts/angular-app/services/socket-service.js "></script>
         <script src="/javascripts/angular-app/services/d3-service.js "></script>
-        <script src="/javascripts/angular-app/directives/schedule-directive.js "></script>
-        <script src="/javascripts/angular-app/directives/bar-directive.js "></script>
+        <script src="/javascripts/angular-app/directives/schedule-directive.js"></script>
+        <script src="/javascripts/angular-app/directives/bar-directive.js"></script>
+        <script src="/javascripts/angular-app/directives/map-directive.js"></script>
 </body>
 
 </html>
