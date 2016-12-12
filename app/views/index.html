@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="app" ng-cloak>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <title>Yun Dashboard</title>
+    <link rel="stylesheet" href="/bower_components/angular-material/angular-material.min.css">
+    <link rel="stylesheet" href="/javascripts/angular-app/styles/app.css">
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+    <link rel='stylesheet' href='http://fonts.googleapis.com/css?family=Roboto:100,400,700'>
+    <script src="https://use.fontawesome.com/9801496e3d.js"></script>
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+
+<body layout="column" ng-controller="DataController as dc" ng-cloak>
+    <div flex layout="row">
+        <md-sidenav flex="20" md-is-locked-open="$mdMedia('gt-md')" class="md-whiteframe-4dp" layout="column">
+            <img src="images/waterloo-logo-yellow-white.svg" style="width:100%">
+            <md-divider></md-divider>
+            <md-list flex>
+                <md-subheader class="md-no-sticky">Availability Summary</md-subheader>
+                <md-list-item class="md-3-line" ng-click="null">
+                    <img ng-src="images/milling.svg" class="md-avatar" style="border-radius: 0;" />
+                    <div class="md-list-item-text" layout="column">
+                        <h3>Milling</h3>
+                        <h4><b style="font-size:larger">5</b> Units available</h4>
+                         <md-progress-linear md-mode="determinate" value="{{$root.currentReading>1? 0: 100}}" style="margin-top:1em"></md-progress-linear>
+                        <!-- <bar-chart flex></bar-chart> -->
+                    </div>
+                </md-list-item>
+                <md-divider></md-divider>
+                <md-list-item class="md-3-line" ng-click="null">
+                    <img ng-src="images/lathe.svg" class="md-avatar" style="border-radius: 0;" />
+                    <div class="md-list-item-text" layout="column">
+                        <h3>Lathe</h3>
+                        <h4 ><b style="font-size:larger">3</b> Units available</h4>
+                        <!-- <bar-chart flex></bar-chart> -->
+                         <md-progress-linear md-mode="determinate" value="0" style="margin-top:1em"></md-progress-linear>
+                    </div>
+                </md-list-item>
+            </md-list>
+        </md-sidenav>
+        <div layout="column" flex>
+            <div schedule layout-padding></div>
+            <div class="header layout-padding layout-margin">
+                <h1 class="md-display-2 " style="font-weight:100; padding-bottom:0; margin-bottom:0">E5 1101 Real-time Status</h1>
+                <p style="margin-top:0; padding-top:0">Find out if the student machine shop is busy or not</p>
+            </div>
+            <div class="map" layout="row"  layout-align="center top" style="margin-top:2em" map-chart>
+
+                    <!-- <img src="images/map-shadow.svg" style="max-height:100%; max-width:70%"> -->
+                    <!-- <div style="width:100%" map-chart></div> -->
+                    <!-- <map-chart style="width:100%"></map-chart> -->
+            </div>
+<!--             <div class="bottom-section" flex layout="row" style="padding-bottom:8em">
+                <div class="summary" flex="50" layout="column" layout-align="end center">
+                    <div class="milling-summary" style="margin-bottom: 1em" layout="row" layout-align="center center">
+                        <div class="type" flex="20">Milling</div>
+                        <bar-chart flex></bar-chart>
+                        <div style="margin-left:15px" flex="10">5</div>
+                    </div>
+                    <div class="lathe-summary" layout="row" layout-align="center center">
+                        <div class="type" flex="20">Lathe</div>
+                        <bar-chart flex></bar-chart>
+                        <div style="margin-left:15px" flex="10">5</div>
+                    </div>
+                </div>
+                <div class="schedule" flex="50">
+                </div>
+            </div> -->
+        </div>
+        <script type="text/javascript " src="/socket.io/socket.io.js "></script>
+        <script src="/bower_components/angular/angular.min.js "></script>
+        <script src="/bower_components/angular-animate/angular-animate.min.js "></script>
+        <script src="/bower_components/angular-aria/angular-aria.min.js "></script>
+        <script src="/bower_components/angular-material/angular-material.min.js "></script>
+        <script src="/bower_components/angular-messages/angular-messages.min.js "></script>
+        <script src="/bower_components/d3/d3.min.js "></script>
+        <script src="/bower_components/moment/moment.js "></script>
+        <script src="/javascripts/angular-app/app.js "></script>
+        <script src="/javascripts/angular-app/controllers/data-controller.js "></script>
+        <script src="/javascripts/angular-app/controllers/data-controller.js "></script>
+        <script src="/javascripts/angular-app/services/configuration.js "></script>
+        <script src="/javascripts/angular-app/services/socket-service.js "></script>
+        <script src="/javascripts/angular-app/services/d3-service.js "></script>
+        <script src="/javascripts/angular-app/directives/schedule-directive.js"></script>
+        <script src="/javascripts/angular-app/directives/bar-directive.js"></script>
+        <script src="/javascripts/angular-app/directives/map-directive.js"></script>
+</body>
+
+</html>

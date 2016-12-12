@@ -42,33 +42,6 @@ module.exports = function(io) {
     //     });
     // }
 
-    // function createDeviceInfo(iRms, panId) {
-    //     // console.log("safelyParseJSON string", json);
-    //     // if (json.)
-    //     // This function cannot be optimised, it's best to
-    //     // keep it small!
-    //     // var parsed;
-    //     var device;
-    //     try {
-
-    //         var device = new Device();
-
-    //         device.current = iRms;
-    //         device.panId = panId;
-    //         return device;
-
-    //         // device.status = message.toString();
-
-    //         // console.log("device.name", JSON.parse(message.toString()).id);
-    //         // device.value = parsed.value;
-    //         // console.log("device.value", JSON.parse(message).value);
-    //     } catch (e) {
-    //         console.log("error", e);
-    //         // Oh well, but whatever...
-    //     }
-
-    //     return device; // Could be undefined!
-    // }
 
     mqttClient.on('message', function(panId, iRms) {
         console.log("panId", panId);

@@ -1,0 +1,20 @@
+body[ng-cloak] {
+    display: none;
+}
+
+.slow-spin {
+  -webkit-animation: fa-spin 6s infinite linear !important;
+  animation: fa-spin 6s infinite linear !important;
+}
+
+.fa-2x {
+  vertical-align: middle;
+}
+
+.busy-text {
+	color: #9c5052;
+}
+
+.free-text {
+	color: #8bc87a;
+}

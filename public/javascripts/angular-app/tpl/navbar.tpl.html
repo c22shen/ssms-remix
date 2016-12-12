@@ -1,32 +1,17 @@
-    <nav class="navbar" style="background: #2980b9; box-shadow: 0px 4.33px 0px 0px rgba(41, 128, 185, 0.5); padding: 0.5em 0">
-        <div class="col-xs-5">
-            <p style="font-size:1.3em">
-
-          <!--   <i class="fa fa-spinner fa-pulse fa-3x fa-fw margin-bottom" style="color:green;" ></i> -->
-                <i class="fa fa-circle" ng-class="storeAvailable? 'green-label' : 'red-label' " style="-webkit-text-stroke: 0.1em white;
-    font-size: 1.5em;
-    vertical-align: middle;" aria-hidden="true"></i>
-                <span style="color:white; padding-left:8px">Now Open</span><span style="padding-left:3em; color:white">Today open from {{startTime}} to {{closeTime}}</span></p>
-        </div>
-        <div class="col-xs-7 pull-right">
-            <img src="images/waterlooLogo.png" class="pull-right" style=" font-size: 8em; width:40%; padding-right: 50px" alt="">
-        </div>
-        <div class="container">
-        <!--             <div class="navbar-header" style="margin-top:5px">
-                Waterloo Student Machine Shop
-            </div>
-        <!-- <div class="container"> -->
-        <div class="row">
-            <!-- </div> -->
-        </div>
-        <div class="row">
-        </div>
-        <div class="row">
-            <div class="col-xs-12 col-md-8 col-md-offset-2 text-center" style="margin-bottom:20px; margin-top:40px">
-                <!-- fa-circle-o -->
-                <h1 class="lead" style="color:white; font-size:2.5em">Student Machine Shop Occupancy Monitoring System</h1>
-                <p style="color:white"> E5 1101, University of Waterloo, Waterloo, ON N2L 3G1</p>
-            </div>
-        </div>
-        </div>
-    </nav> -->
+<div layout="row">
+    <!--     <div style="padding-right:10px">
+        <i class="fa fa-circle-o" aria-hidden="true" style="color:#9c5052"></i>
+    </div> -->
+    <div class="availability">
+        <b style="margin-right:10px" ng-class="storeAvailable ? 'free-text' : 'busy-text'">
+            {{statusString}}
+        </b>
+        <span>{{timeRange}}</span>
+        <span></span>
+    </div>
+    <div flex></div>
+    <div show-gt-sm hide>
+        <span>Student Machine Shop  E5 1101</span>
+        <i class="fa fa-cog fa-spin fa-2x fa-fw slow-spin"></i>
+    </div>
+</div>
