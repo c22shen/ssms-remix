@@ -21,8 +21,7 @@
 </head>
 
 <body layout="column" ng-controller="DataController as dc" ng-cloak>
-
-  <!-- <md-toolbar class="md-hue-2"></md-toolbar> -->
+    <!-- <md-toolbar class="md-hue-2"></md-toolbar> -->
     <div flex layout="row">
         <md-sidenav flex="20" md-is-locked-open="$mdMedia('gt-md')" class="md-whiteframe-4dp" layout="column">
             <img src="images/waterloo-logo-yellow-white.svg" style="width:100%">
@@ -34,7 +33,7 @@
                     <div class="md-list-item-text" layout="column">
                         <h3>Milling</h3>
                         <h4><b style="font-size:larger">5</b> Units available</h4>
-                         <md-progress-linear md-mode="determinate" value="{{$root.currentReading>1? 0: 100}}" style="margin-top:1em"></md-progress-linear>
+                        <md-progress-linear md-mode="determinate" value="{{$root.currentReading>1? 0: 100}}" style="margin-top:1em"></md-progress-linear>
                         <!-- <bar-chart flex></bar-chart> -->
                     </div>
                 </md-list-item>
@@ -43,12 +42,21 @@
                     <img ng-src="images/lathe.svg" class="md-avatar" style="border-radius: 0;" />
                     <div class="md-list-item-text" layout="column">
                         <h3>Lathe</h3>
-                        <h4 ><b style="font-size:larger">3</b> Units available</h4>
+                        <h4><b style="font-size:larger">3</b> Units available</h4>
                         <!-- <bar-chart flex></bar-chart> -->
-                         <md-progress-linear md-mode="determinate" value="0" style="margin-top:1em"></md-progress-linear>
+                        <md-progress-linear md-mode="determinate" value="0" style="margin-top:1em"></md-progress-linear>
                     </div>
                 </md-list-item>
             </md-list>
+            <div class="footer">
+
+                <md-subheader class="md-no-sticky">Regular Hours</md-subheader>
+                <ul>
+                    Mon - Fri 8:30AM - 9:00PM
+                </ul>
+                <ul>Saturday 10:00AM - 5:00PM</ul>
+                <ul>Sunday Closed</ul>
+            </div>
         </md-sidenav>
         <div layout="column" flex>
             <div schedule layout-padding></div>
@@ -56,28 +64,8 @@
                 <h1 class="md-display-2 " style="font-weight:100; padding-bottom:0; margin-bottom:0">Student Shop Floor Map</h1>
                 <p style="margin-top:0; padding-top:0">Find out if the student machine shop is busy or not</p>
             </div>
-            <div class="map" layout="row"  layout-align="center top" style="margin-top:2em" map-chart>
-
-                    <!-- <img src="images/map-shadow.svg" style="max-height:100%; max-width:70%"> -->
-                    <!-- <div style="width:100%" map-chart></div> -->
-                    <!-- <map-chart style="width:100%"></map-chart> -->
+            <div class="map" layout="row" layout-align="center top" style="margin-top:2em" map-chart>
             </div>
-<!--             <div class="bottom-section" flex layout="row" style="padding-bottom:8em">
-                <div class="summary" flex="50" layout="column" layout-align="end center">
-                    <div class="milling-summary" style="margin-bottom: 1em" layout="row" layout-align="center center">
-                        <div class="type" flex="20">Milling</div>
-                        <bar-chart flex></bar-chart>
-                        <div style="margin-left:15px" flex="10">5</div>
-                    </div>
-                    <div class="lathe-summary" layout="row" layout-align="center center">
-                        <div class="type" flex="20">Lathe</div>
-                        <bar-chart flex></bar-chart>
-                        <div style="margin-left:15px" flex="10">5</div>
-                    </div>
-                </div>
-                <div class="schedule" flex="50">
-                </div>
-            </div> -->
         </div>
         <script type="text/javascript " src="/socket.io/socket.io.js "></script>
         <script src="/bower_components/angular/angular.min.js "></script>
