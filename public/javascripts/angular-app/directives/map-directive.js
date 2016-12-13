@@ -61,10 +61,11 @@ angular.module('app').directive('mapChart', ['d3', '$rootScope', 'myConfig', '$t
                 var latheSvg = "M76.894,41.202h-7.062c-0.029,1.98-1.64,3.581-3.625,3.581H46.524c-1.985,0-3.598-1.601-3.624-3.579 L7.158,41.206v23.206H28.63l3.579-10.733h33.998l5.369,10.733h10.735V44.783h-1.79C78.536,44.783,76.919,43.183,76.894,41.202z M24.157,53.679H13.42c-0.493,0-0.893-0.401-0.893-0.896c0-0.493,0.4-0.895,0.893-0.895h10.737c0.493,0,0.893,0.401,0.893,0.895 C25.051,53.277,24.65,53.679,24.157,53.679z M24.157,50.1H13.42c-0.493,0-0.893-0.4-0.893-0.896c0-0.494,0.4-0.895,0.893-0.895 h10.737c0.493,0,0.893,0.4,0.893,0.895C25.051,49.699,24.65,50.1,24.157,50.1z M24.157,46.521H13.42 c-0.493,0-0.893-0.398-0.893-0.895c0-0.494,0.4-0.894,0.893-0.894h10.737c0.493,0,0.893,0.399,0.893,0.894 C25.051,46.122,24.65,46.521,24.157,46.521z M84.101,28.629h-3.579c-0.985,0-1.791,0.804-1.791,1.79v10.734 c0,0.984,0.806,1.788,1.791,1.788h3.579c0.983,0,1.788-0.804,1.788-1.788V30.419C85.889,29.433,85.084,28.629,84.101,28.629z M32.209,37.575v-7.156c0-0.983-0.806-1.79-1.789-1.79h1.789c0.984,0,1.788-0.805,1.788-1.789V1.79c0-0.986-0.804-1.79-1.788-1.79 H1.789C0.807,0,0,0.804,0,1.79v25.05c0,0.984,0.807,1.789,1.789,1.789h3.579c-0.983,0-1.788,0.807-1.788,1.79v7.156 c0,0.985,0.805,1.789,1.788,1.789H30.42C31.403,39.364,32.209,38.561,32.209,37.575z M12.526,25.048 c-0.988,0-1.788-0.801-1.788-1.789c0-0.987,0.8-1.79,1.788-1.79c0.988,0,1.788,0.803,1.788,1.79 C14.314,24.247,13.515,25.048,12.526,25.048z M14.316,12.524c0,1.977-1.604,3.577-3.578,3.577c-1.977,0-3.58-1.601-3.58-3.577 c0-1.979,1.603-3.579,3.58-3.579c0.66,0,1.274,0.192,1.807,0.506l1.838-1.839c-0.039-0.147-0.066-0.297-0.066-0.457 c0-0.988,0.801-1.789,1.789-1.789s1.791,0.801,1.791,1.789s-0.803,1.79-1.791,1.79c-0.159,0-0.312-0.028-0.457-0.066l-1.838,1.837 C14.123,11.248,14.316,11.861,14.316,12.524z M17.895,35.783c-0.988,0-1.791-0.8-1.791-1.786c0-0.99,0.803-1.791,1.791-1.791 c0.988,0,1.788,0.801,1.788,1.791C19.683,34.983,18.883,35.783,17.895,35.783z M19.683,25.048c-0.988,0-1.788-0.801-1.788-1.789 c0-0.987,0.8-1.79,1.788-1.79c0.988,0,1.791,0.803,1.791,1.79C21.474,24.247,20.671,25.048,19.683,25.048z M25.051,35.783 c-0.987,0-1.789-0.8-1.789-1.786c0-0.99,0.802-1.791,1.789-1.791c0.988,0,1.79,0.801,1.79,1.791 C26.841,34.983,26.039,35.783,25.051,35.783z M26.841,25.048c-0.988,0-1.79-0.801-1.79-1.789c0-0.987,0.802-1.79,1.79-1.79 c0.987,0,1.789,0.803,1.789,1.79C28.63,24.247,27.828,25.048,26.841,25.048z M28.631,8.945c-0.159,0-0.311-0.028-0.457-0.066 l-1.838,1.837c0.313,0.532,0.507,1.146,0.507,1.809c0,1.977-1.605,3.577-3.579,3.577c-1.976,0-3.579-1.601-3.579-3.577 c0-1.979,1.604-3.579,3.579-3.579c0.661,0,1.274,0.192,1.808,0.506l1.838-1.839c-0.039-0.147-0.066-0.297-0.066-0.457 c0-0.988,0.8-1.789,1.788-1.789c0.989,0,1.791,0.801,1.791,1.789S29.62,8.945,28.631,8.945z M39.366,19.683h3.579V8.945h-3.579 v-1.79h-3.578v14.315h3.578V19.683z M55.472,17.892h-1.789v-3.578h-1.79v3.578h-1.79l-1.33,5.318h8.028L55.472,17.892z M53.683,32.206c0.66,0,1.231,0.363,1.54,0.896h1.912c-0.398-1.54-1.787-2.683-3.452-2.683c-1.668,0-3.055,1.143-3.453,2.683h1.91 C52.45,32.569,53.021,32.206,53.683,32.206z M46.524,42.941h19.683c0.984,0,1.788-0.804,1.788-1.788V26.84 c0-0.985-0.804-1.79-1.788-1.79H46.524c-0.983,0-1.79,0.805-1.79,1.79v14.314C44.734,42.138,45.541,42.941,46.524,42.941z M62.628,28.629c0.99,0,1.79,0.802,1.79,1.79c0,0.987-0.8,1.787-1.79,1.787c-0.988,0-1.79-0.8-1.79-1.787 C60.838,29.431,61.64,28.629,62.628,28.629z M53.683,28.629c2.962,0,5.366,2.402,5.366,5.368c0,2.963-2.404,5.365-5.366,5.365 c-2.965,0-5.369-2.402-5.369-5.365C48.313,31.031,50.718,28.629,53.683,28.629z M53.683,35.783c-0.661,0-1.23-0.359-1.543-0.892 H50.23c0.398,1.54,1.784,2.683,3.452,2.683c1.665,0,3.052-1.143,3.452-2.683h-1.912C54.914,35.424,54.343,35.783,53.683,35.783z M42.895,30.365v-1.736h-7.532c-0.319,0.559-0.782,1.029-1.34,1.352c0.016,0.126,0.022,0.255,0.024,0.384H42.895z M71.576,28.629 h-1.739v1.736h7.06c0.029-1.978,1.642-3.577,3.625-3.577h3.579c0.652,0,1.26,0.187,1.788,0.49v-4.018H71.576V28.629z M76.892,32.206 h-7.055v3.577h7.055V32.206z M76.892,37.625h-7.055v1.737h7.055V37.625z M42.895,32.206h-8.847v3.577h8.847V32.206z M33.559,39.362 h9.336v-1.737h-8.85C34.034,38.259,33.854,38.848,33.559,39.362z M88.574,10.733c-0.495,0-0.895,0.401-0.895,0.896v1.789h-1.791 v-2.686H71.576v7.158h1.789v3.528h10.735v-3.528h1.788v-2.683h1.791v1.788c0,0.496,0.399,0.895,0.895,0.895 c0.495,0,0.894-0.399,0.894-0.895v-1.788v-1.79V11.63C89.468,11.135,89.069,10.733,88.574,10.733z M69.735,16.101v-3.577h-1.74 l-1.788,1.789l1.788,1.788H69.735z";
                 var mapShadowPoints = "108.37,3.002 431.77,3.002 431.77,69.692 426.89,69.692 426.89,107.072 431.77,107.072 431.77,115.706 427.88,115.706 427.88,128.138 431.77,128.138 431.77,190.388 403,190.388 403,150.632 347.03,150.632 347.03,133.208 202.49,133.208 202.49,154.988 95.83,154.988 95.83,209.318 0,209.318 0,136.298 26.66,136.298 26.66,74.6 108.37,74.6";
                 var mapPoints = "108.37,0.002 431.77,0.002 431.77,66.692 426.89,66.692 426.89,104.072 431.77,104.072 431.77,112.706 427.88,112.706 427.88,125.138 431.77,125.138 431.77,187.388 403,187.388 403,147.632 347.03,147.632 347.03,130.208 202.49,130.208 202.49,151.988 95.83,151.988 95.83,206.318 0,206.318 0,133.298 26.66,133.298 26.66,71.6 108.37,71.6";
+                var arrowPath = "M62.002,1.851v30.945c0,0.745,0.504,1.349,1.126,1.349h118.477 c0.622,0,1.126,0.604,1.126,1.349v15.303c0,0.745-0.504,1.349-1.126,1.349H63.128c-0.622,0-1.126,0.604-1.126,1.349v30.295 c0,1.038-0.939,1.687-1.689,1.168L1.063,43.983c-0.751-0.519-0.751-1.817,0-2.336L60.312,0.683 C61.063,0.164,62.002,0.812,62.002,1.851z"
                 var margin = { top: 0, right: 15, bottom: 0, left: 15 };
                 var width = totalWidth - margin.left - margin.right;
                 var height = totalHeight - margin.top - margin.bottom;
-
+                var fontSize = 10;
                 svg = d3.select(elements[0]).append('svg')
                     .attr('width', totalWidth)
                     .attr('height', totalHeight)
@@ -88,6 +89,46 @@ angular.module('app').directive('mapChart', ['d3', '$rootScope', 'myConfig', '$t
                     .append('polygon')
                     .attr('fill', "#808080")
                     .attr('points', mapPoints);
+
+                var office = group
+                    .append('g')
+                    .attr("class", "office")
+                    .append('text')
+                    .attr('transform', 'translate(' + 30 + ',' + 80 + ') rotate(90)')
+                    .attr('fill', 'white')
+                    .attr('stroke', 'none')
+                    .attr('font-size', 15)
+                    .text("Office");
+
+                var arrow = group
+                    .append('g')
+                    .attr('transform', "scale(0.20,0.20)")
+                    .attr("class", "arrow");
+
+                arrow
+                    .append('g')
+                    .attr("class", "entrance")
+                    .append('text')
+                    .attr('transform', 'translate(' + 2030 + ',' + 460 + ')')
+                    .attr('fill', 'white')
+                    .attr('stroke', 'none')
+                    .attr('font-size', 45)
+                    .text("Entrance");
+
+
+
+
+                arrow
+                    .append('path')
+                    .attr('transform', 'translate(' + 2045 + ',' + 475 + ')')
+                    .attr('d', arrowPath)
+                    .attr("fill", "#1665a3");
+
+                arrow
+                    .append('path')
+                    .attr('transform', 'translate(' + 2040 + ',' + 470 + ')')
+                    .attr('d', arrowPath)
+                    .attr("fill", "#2196F3");
 
                 var millingGroup = group
                     .append('g')
@@ -150,15 +191,34 @@ angular.module('app').directive('mapChart', ['d3', '$rootScope', 'myConfig', '$t
                 var milling1 = millingGroup
                     .append('g')
                     .attr('class', "milling1")
-                    .attr('transform', 'translate(' + 0 + ',' + 0 + ')')
-                    .append('path')
+                    .attr('transform', 'translate(' + 0 + ',' + 0 + ')');
+
+                milling1
+                    .append("text")
+                    .attr('transform', 'translate(' + 0 + ',' + 40 + ')')
+                    .attr('fill', 'white')
+                    .attr('stroke', 'none')
+                    .attr('font-size', fontSize)
+                    .text("Mill 1");
+
+                var millingMachine = milling1.append('path')
                     .call(millingPathCreation)
-                    .style("fill", "2E7D6E")
+                    .style("fill", "2E7D6E");
 
                 var milling2 = millingGroup
                     .append('g')
-                    .attr('class', "milling1")
-                    .attr('transform', 'translate(' + 40 + ',' + 0 + ')')
+                    .attr('class', "milling2")
+                    .attr('transform', 'translate(' + 40 + ',' + 0 + ')');
+
+                milling2
+                    .append("text")
+                    .attr('transform', 'translate(' + 0 + ',' + 40 + ')')
+                    .attr('fill', 'white')
+                    .attr('stroke', 'none')
+                    .attr('font-size', fontSize)
+                    .text("Mill 2");
+
+                milling2
                     .append('path')
                     .attr('d', millingSvg)
                     .style("fill", "white")
@@ -166,8 +226,18 @@ angular.module('app').directive('mapChart', ['d3', '$rootScope', 'myConfig', '$t
 
                 var milling3 = millingGroup
                     .append('g')
-                    .attr('class', "milling1")
+                    .attr('class', "milling3")
                     .attr('transform', 'translate(' + 80 + ',' + 0 + ')')
+
+                milling3
+                    .append("text")
+                    .attr('transform', 'translate(' + 0 + ',' + 40 + ')')
+                    .attr('fill', 'white')
+                    .attr('stroke', 'none')
+                    .attr('font-size', fontSize)
+                    .text("Mill 3");
+
+                milling3
                     .append('path')
                     .attr('d', millingSvg)
                     .style("fill", "white")
@@ -175,8 +245,18 @@ angular.module('app').directive('mapChart', ['d3', '$rootScope', 'myConfig', '$t
 
                 var milling4 = millingGroup
                     .append('g')
-                    .attr('class', "milling1")
+                    .attr('class', "milling4")
                     .attr('transform', 'translate(' + 120 + ',' + 0 + ')')
+
+                milling4
+                    .append("text")
+                    .attr('transform', 'translate(' + 0 + ',' + 40 + ')')
+                    .attr('fill', 'white')
+                    .attr('stroke', 'none')
+                    .attr('font-size', fontSize)
+                    .text("Mill 4");
+
+                milling4
                     .append('path')
                     .attr('d', millingSvg)
                     .style("fill", "white")
@@ -186,6 +266,16 @@ angular.module('app').directive('mapChart', ['d3', '$rootScope', 'myConfig', '$t
                     .append('g')
                     .attr('class', "milling1")
                     .attr('transform', 'translate(' + 160 + ',' + 0 + ')')
+
+                milling5
+                    .append("text")
+                    .attr('transform', 'translate(' + 0 + ',' + 40 + ')')
+                    .attr('fill', 'white')
+                    .attr('stroke', 'none')
+                    .attr('font-size', fontSize)
+                    .text("Mill 5");
+
+                milling5
                     .append('path')
                     .attr('d', millingSvg)
                     .style("fill", "white")
@@ -231,6 +321,16 @@ angular.module('app').directive('mapChart', ['d3', '$rootScope', 'myConfig', '$t
                     .append('g')
                     .attr('class', "lathe1")
                     .attr('transform', 'translate(' + 0 + ',' + 0 + ')')
+
+                lathe1
+                    .append("text")
+                    .attr('transform', 'translate(' + 0 + ',' + 35 + ')')
+                    .attr('fill', 'white')
+                    .attr('stroke', 'none')
+                    .attr('font-size', fontSize)
+                    .text("Lathe 1");
+
+                lathe1
                     .append('path')
                     .attr('d', latheSvg)
                     .style("fill", "white")
@@ -240,6 +340,16 @@ angular.module('app').directive('mapChart', ['d3', '$rootScope', 'myConfig', '$t
                     .append('g')
                     .attr('class', "lathe2")
                     .attr('transform', 'translate(' + 50 + ',' + 0 + ')')
+
+                lathe2
+                    .append("text")
+                    .attr('transform', 'translate(' + 0 + ',' + 35 + ')')
+                    .attr('fill', 'white')
+                    .attr('stroke', 'none')
+                    .attr('font-size', fontSize)
+                    .text("Lathe 2");
+
+                lathe2
                     .append('path')
                     .attr('d', latheSvg)
                     .style("fill", "white")
@@ -249,10 +359,21 @@ angular.module('app').directive('mapChart', ['d3', '$rootScope', 'myConfig', '$t
                     .append('g')
                     .attr('class', "lathe3")
                     .attr('transform', 'translate(' + 0 + ',' + 45 + ')')
+
+                lathe3
+                    .append("text")
+                    .attr('transform', 'translate(' + 0 + ',' + 37 + ')')
+                    .attr('fill', 'white')
+                    .attr('stroke', 'none')
+                    .attr('font-size', fontSize)
+                    .text("Lathe 3");
+                lathe3
                     .append('path')
                     .attr('d', latheSvg)
                     .style("fill", "white")
                     .attr("transform", "scale(0.35,0.35)");
+
+
 
 
                 return function(scope, element, attrs) {
@@ -265,10 +386,10 @@ angular.module('app').directive('mapChart', ['d3', '$rootScope', 'myConfig', '$t
                         if (!!$rootScope.currentReading && $rootScope.currentReading.current > 1) {
                             // milling1.style("fill", "red");
 
-                            milling1.transition().duration(3000).style("fill", "pink").transition().duration(3000)
+                            millingMachine.transition().duration(3000).style("fill", "pink").transition().duration(3000)
                                 .style("fill", "red");
                         } else {
-                            milling1.transition().duration(3000).style("fill", "Aquamarine").transition().duration(3000)
+                            millingMachine.transition().duration(3000).style("fill", "Aquamarine").transition().duration(3000)
                                 .style("fill", "#1abc9c");
                         }
                     });

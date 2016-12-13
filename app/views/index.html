@@ -21,6 +21,8 @@
 </head>
 
 <body layout="column" ng-controller="DataController as dc" ng-cloak>
+
+  <!-- <md-toolbar class="md-hue-2"></md-toolbar> -->
     <div flex layout="row">
         <md-sidenav flex="20" md-is-locked-open="$mdMedia('gt-md')" class="md-whiteframe-4dp" layout="column">
             <img src="images/waterloo-logo-yellow-white.svg" style="width:100%">
@@ -51,7 +53,7 @@
         <div layout="column" flex>
             <div schedule layout-padding></div>
             <div class="header layout-padding layout-margin">
-                <h1 class="md-display-2 " style="font-weight:100; padding-bottom:0; margin-bottom:0">E5 1101 Real-time Status</h1>
+                <h1 class="md-display-2 " style="font-weight:100; padding-bottom:0; margin-bottom:0">Student Shop Floor Map</h1>
                 <p style="margin-top:0; padding-top:0">Find out if the student machine shop is busy or not</p>
             </div>
             <div class="map" layout="row"  layout-align="center top" style="margin-top:2em" map-chart>
