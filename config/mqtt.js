@@ -43,6 +43,22 @@ module.exports = function(io) {
     // }
 
 
+
+//     var today = moment().startOf('day')
+// var tomorrow = moment(today).add(1, 'days')
+
+// {"$gte": new Date(2012, 7, 14), "$lt": new Date(2012, 7, 15)}
+
+Device.find({
+  createdAt: {
+    "$gte": new Date(2012, 11, 12),
+    "$lt": new Date(2012, 11, 13)
+  }
+}, function (err, db_users) {
+    console.log("devices", db_users);
+})
+
+
     mqttClient.on('message', function(panId, iRms) {
         console.log("panId", panId);
         console.log("iRms", parseFloat(iRms).toFixed(2));
