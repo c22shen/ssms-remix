@@ -78,49 +78,49 @@ angular.module('app').directive('mapChart', ['d3', '$rootScope', 'myConfig', '$t
                     type: 'M',
                     panId: "0013A20040B09A44",
                     xCoordinate: 220,
-                    yCoordinate: 15,
+                    yCoordinate: 10,
                     text: "Mill 1"
                 }, {
                     type: 'M',
                     panId: "0013A20040D7B896",
                     xCoordinate: 260,
-                    yCoordinate: 15,
+                    yCoordinate: 10,
                     text: "Mill 2"
                 }, {
                     type: 'M',
                     panId: "0013A20041629B6A",
                     xCoordinate: 300,
-                    yCoordinate: 15,
+                    yCoordinate: 10,
                     text: "Mill 3"
                 }, {
                     type: 'M',
                     panId: "0013A20041629B72",
                     xCoordinate: 340,
-                    yCoordinate: 15,
+                    yCoordinate: 10,
                     text: "Mill 4"
                 }, {
                     type: 'M',
                     panId: "0013A20041629B76",
                     xCoordinate: 380,
-                    yCoordinate: 15,
+                    yCoordinate: 10,
                     text: "Mill 5"
                 }, {
                     type: 'L',
                     panId: "0013A20041629B77",
                     xCoordinate: 120,
-                    yCoordinate: 15,
+                    yCoordinate: 10,
                     text: "Lathe 1"
                 }, {
                     type: 'L',
                     panId: "0013A20040D7B872",
                     xCoordinate: 170,
-                    yCoordinate: 15,
+                    yCoordinate: 10,
                     text: "Lathe 2"
                 }, {
                     type: 'L',
                     panId: "0013A20040D7B885",
                     xCoordinate: 120,
-                    yCoordinate: 65,
+                    yCoordinate: 70,
                     text: "Lathe 3"
                 }];
                 $rootScope.determineStatus = function(iRms){
@@ -198,7 +198,7 @@ angular.module('app').directive('mapChart', ['d3', '$rootScope', 'myConfig', '$t
                     .attr('fill', 'white')
                     .attr('stroke', 'none')
                     .attr('font-size', 15)
-                    .text("Office");
+                    .text("OFFICE");
 
                 var arrowGroup = group
                     .append('g')
@@ -240,6 +240,12 @@ angular.module('app').directive('mapChart', ['d3', '$rootScope', 'myConfig', '$t
                             return determineStatusColor(data.iRms);
                         });
 
+                    update.select('.timeText')
+                        // .append('text')
+                        // .transition(transitionStyle)
+                        .text(function(data) {
+                            return !!data.datetime ? moment(data.datetime, "h:mm:ssa").format("h:mm:ss") : null ;
+                        });
 
                     var machineUnit = update
                         .enter()
@@ -271,6 +277,7 @@ angular.module('app').directive('mapChart', ['d3', '$rootScope', 'myConfig', '$t
 
                     machineUnit
                         .append("text")
+                        .classed("machineText", true)
                         .attr('transform', function(data) {
                             var yCoord = data.yCoordinate + 40;
                             return 'translate(' + data.xCoordinate + ',' + yCoord + ')';
@@ -280,6 +287,19 @@ angular.module('app').directive('mapChart', ['d3', '$rootScope', 'myConfig', '$t
                         .attr('font-size', fontSize)
                         .text(function(data) {
                             return data.text;
+                        });
+                    machineUnit
+                        .append("text")
+                        .classed("timeText", true)
+                        .attr('transform', function(data) {
+                            var yCoord = data.yCoordinate + 50;
+                            return 'translate(' + data.xCoordinate + ',' + yCoord + ')';
+                        })
+                        .attr('fill', 'white')
+                        .attr('stroke', 'none')
+                        .attr('font-size', fontSize-2)
+                        .text(function(data) {
+                            return data.datetime;
                         });
                 }
 

@@ -24,7 +24,7 @@ angular.module('app').controller('DataController', ['$rootScope', '$scope', 'Soc
                 $rootScope.machineData = $rootScope.machineData.map(function(data) {
                     if (data.panId === panId) {
                         data.iRms = updateMsg;
-                        data.datetime = new moment().format("hh:mm:ssa");
+                        data.datetime = new moment().format("h:mm:ssa");
                     }
                     return data;
                 })
