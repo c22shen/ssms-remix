@@ -14,10 +14,13 @@ var device = require(appRoot + '/app/controllers/device.controller');
 	   .post(device.create);
 	
 	// Set up the 'articles' parameterized routes
-	app.route('/api/devices/:device_id')
+	app.route('/api/devices/:panid')
 	   .get(device.read)
 	   .put(device.update)
 	   .delete(device.delete);
+
+
+
 };
 
 

@@ -4,6 +4,10 @@
 var mqtt = require('mqtt');
 var url = require('url');
 var Device = require(appRoot + '/app/models/device');
+var moment = require('moment');
+var jsonfile = require('jsonfile')
+
+var file = '/tmp/devicesNow.json'
 
 var mostCurrentData = {
     "0013A20040B09A44": 0
@@ -23,10 +27,17 @@ module.exports = function(io) {
     // m12.cloudmqtt.com:10818
 
     var mqtt_url = "mqtt://afkibthd:sAgz1qpRVNd4@m12.cloudmqtt.com:10818";
-    var topic_url = "0013A20040B09A44";
+    // var topic_url = "0013A20040B09A44";
     var mqttClient = mqtt.connect(mqtt_url);
     mqttClient.on('connect', function() { // When connected
-        mqttClient.subscribe(topic_url);
+        mqttClient.subscribe("0013A20040B09A44");
+        mqttClient.subscribe("0013A20040D7B896");
+        mqttClient.subscribe("0013A20041629B6A");
+        mqttClient.subscribe("0013A20041629B72");
+        mqttClient.subscribe("0013A20041629B76");
+        mqttClient.subscribe("0013A20041629B77");
+        mqttClient.subscribe("0013A20040D7B872");
+        mqttClient.subscribe("0013A20040D7B885");
     })
 
     // mqttClient.randomPublish = function() {
@@ -47,16 +58,27 @@ module.exports = function(io) {
 //     var today = moment().startOf('day')
 // var tomorrow = moment(today).add(1, 'days')
 
+    var now = moment();
+var halfNHourAgo = moment(now).add(-30, 'minutes')
+
 // {"$gte": new Date(2012, 7, 14), "$lt": new Date(2012, 7, 15)}
 
-Device.find({
-  createdAt: {
-    "$gte": new Date(2012, 11, 12),
-    "$lt": new Date(2012, 11, 13)
-  }
-}, function (err, db_users) {
-    console.log("devices", db_users);
-})
+// Device.find({
+//   created: {
+//     "$gte": halfNHourAgo,
+//     "$lt": now
+//   },
+//   'panId': '0013A20040B09A44',
+//   // 'iRms': {
+//   //   "$gte": 1
+//   // }
+// }, 'created iRms -_id', function (err, devices) {
+//     console.log("devices", devices);
+//     console.log("devices number", devices.length);
+//     var json = JSON.stringify(devices);
+//     console.log(json);
+//     // fs.writeFile('myjsonfile.json', json, 'utf8', function(){});
+// })
 
 
     mqttClient.on('message', function(panId, iRms) {

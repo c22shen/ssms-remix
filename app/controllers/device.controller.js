@@ -2,68 +2,87 @@
 'use strict';
 
 // How to hook this up without calling the model file?
-var Device = require(appRoot + '/app/controllers/device.controller');
+var Device = require(appRoot + '/app/models/device');
+var moment = require('moment');
 
+exports.create = function(req, res) {
+    var device = new Device();
+    device.name = req.body.name;
 
-exports.create = function(req, res){
-		var device = new Device();
-		device.name = req.body.name;
+    device.save(function(err) {
+        if (err) {
+            res.send(err);
+        }
 
-		device.save(function(err){
-			if(err) {
-				res.send(err);
-			}
+        res.json({ message: 'Device created' });
+    })
+};
 
-			res.json({message: 'Device created'});
-		})
-	};
+exports.readAll = function(req, res) {
 
-exports.readAll = function(resq, res){
-		Device.find(function(err, devices){
-			if (err) {
-				res.send(err);
-			}
-			res.json(devices);
-		});
-	};
+    Device.find(function(err, devices) {
+        if (err) {
+            res.send(err);
+        }
+        res.json(devices);
+    });
+};
 
-exports.read = function(req, res){
-		Device.findById(req.params.device_id, function(err, device){
-			if (err){
-				res.send(err);
-			}
-			res.json(device);
-		})
-	};
+exports.read = function(req, res) {
+    //panId, created minutes restriction
+    var panId = req.params.panid;
 
-exports.update = function(req, res){
-		Device.findById(req.params.device_id, function(err, device) {
-			if (err){
-				res.send(err);
-			}
-			device.name = req.body.name;
+    // var minutes = req.params.minutes;
+     var now = moment();
+	var halfNHourAgo = moment(now).add(-30, 'minutes');
+    Device.find({
+        created: {
+            "$gte": halfNHourAgo,
+            "$lt": now
+        },
+        'panId': panId,
+        // 'iRms': {
+        //   "$gte": 1
+        // }
+    }, 'created iRms -_id', function(err, devices) {
 
-			device.save(function(err){
-				if (err){
-					res.send(err);
-				}
+        if (err) {
+            res.send(err);
+        }
 
-				res.json({message: "Device updated"});
-			})
-		})
-	};
+        // devices.map(function(dataSet){
+        // 	var dateTime = new Date(dataSet.created).getT 
+        // })
+
+        res.json(devices);
+    });
+}
+
+exports.update = function(req, res) {
+    Device.findById(req.params.device_id, function(err, device) {
+        if (err) {
+            res.send(err);
+        }
+        device.name = req.body.name;
+
+        device.save(function(err) {
+            if (err) {
+                res.send(err);
+            }
+
+            res.json({ message: "Device updated" });
+        })
+    })
+};
 
 exports.delete = function(req, res) {
-		Device.remove({
-			_id: req.params.device_id
-		}, function(err, device) {
-			if(err) {
-				res.send(err);
-			}
+    Device.remove({
+        _id: req.params.device_id
+    }, function(err, device) {
+        if (err) {
+            res.send(err);
+        }
 
-			res.json({message: 'Successfully deleted'});
-		});
-	};
-
-
-
+        res.json({ message: 'Successfully deleted' });
+    });
+};
