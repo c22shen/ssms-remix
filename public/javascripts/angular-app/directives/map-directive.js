@@ -71,7 +71,7 @@ angular.module('app').directive('mapChart', ['d3', '$rootScope', 'myConfig', '$t
                 var width = totalWidth - margin.left - margin.right;
                 var height = totalHeight - margin.top - margin.bottom;
                 var fontSize = 10;
-                var transitionStyle = d3.transition().duration(5000);
+                var transitionStyle = d3.transition();
 
 
                 $rootScope.machineData = [{
@@ -123,7 +123,46 @@ angular.module('app').directive('mapChart', ['d3', '$rootScope', 'myConfig', '$t
                     yCoordinate: 65,
                     text: "Lathe 3"
                 }];
+                $rootScope.determineStatus = function(iRms){
+                    if (!iRms) {
+                        return "No data"
+                    } else if (iRms>1) {
+                        return "In Use"
+                    } else {
+                        return "Available"
+                    }
+                }
 
+                $rootScope.determineStatus = function(iRms){
+                    if (!iRms) {
+                        return "No data"
+                    } else if (iRms>1) {
+                        return "In Use"
+                    } else {
+                        return "Available"
+                    }
+                }
+
+                $rootScope.determineStatusClass = function(iRms){
+                    if (!iRms) {
+                        return "noDataStyle"
+                    } else if (iRms>1) {
+                        return "busyStyle"
+                    } else {
+                        return "freeStyle"
+                    }
+                }
+
+
+                var determineStatusColor = function(iRms){
+                    if (!iRms) {
+                        return "white"
+                    } else if (iRms>1) {
+                        return "#e74c3c"
+                    } else {
+                        return "#1abc9c"
+                    }
+                }
 
 
                 svg = d3.select(elements[0]).append('svg')
@@ -198,9 +237,8 @@ angular.module('app').directive('mapChart', ['d3', '$rootScope', 'myConfig', '$t
                     update.select('.machinePath')
                         .transition(transitionStyle)
                         .style('fill', function(data) {
-                            // console.log("data.iRms", data.iRms);
-                            return data.iRms > 1 ? '#e74c3c' : '#1abc9c';
-                        })
+                            return determineStatusColor(data.iRms);
+                        });
 
 
                     var machineUnit = update

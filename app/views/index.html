@@ -26,27 +26,18 @@
         <md-sidenav flex="20" md-is-locked-open="$mdMedia('gt-md')" class="md-whiteframe-4dp" layout="column">
             <img src="images/waterloo-logo-yellow-white.svg" style="width:100%">
             <md-divider></md-divider>
-            <md-list flex>
-                <md-subheader class="md-no-sticky">Availability Summary</md-subheader>
-                <md-list-item class="md-3-line" ng-click="null">
-                    <img ng-src="images/milling.svg" class="md-avatar" style="border-radius: 0;" />
+            <md-list >
+                <!-- <md-subheader class="md-no-sticky">Availability Summary</md-subheader> -->
+                <md-list-item class="md-3-line" ng-click="null" ng-repeat="machineInfo in $root.machineData">
+                    <img ng-src="{{machineInfo.type === 'M' ? 'images/milling.svg' : 'images/lathe.svg'}}" class="md-avatar" style="border-radius: 0;" />
                     <div class="md-list-item-text" layout="column">
-                        <h3>Milling</h3>
-                        <h4><b style="font-size:larger">5</b> Units available</h4>
-                        <md-progress-linear md-mode="determinate" value="{{$root.currentReading>1? 0: 100}}" style="margin-top:1em"></md-progress-linear>
-                        <!-- <bar-chart flex></bar-chart> -->
+                        <h3>{{machineInfo.text}}</h3>
+                        <h4 style="font-size:larger" ng-class="$root.determineStatusClass(machineInfo.iRms)">{{$root.determineStatus(machineInfo.iRms)}}</h4>
+                        <h4>{{machineInfo.datetime}}</h4>
+<!--                         <md-progress-linear md-mode="determinate" value="{{$root.currentReading>1? 0: 100}}" style="margin-top:1em"></md-progress-linear> -->
                     </div>
                 </md-list-item>
-                <md-divider></md-divider>
-                <md-list-item class="md-3-line" ng-click="null">
-                    <img ng-src="images/lathe.svg" class="md-avatar" style="border-radius: 0;" />
-                    <div class="md-list-item-text" layout="column">
-                        <h3>Lathe</h3>
-                        <h4><b style="font-size:larger">3</b> Units available</h4>
-                        <!-- <bar-chart flex></bar-chart> -->
-                        <md-progress-linear md-mode="determinate" value="0" style="margin-top:1em"></md-progress-linear>
-                    </div>
-                </md-list-item>
+ 
             </md-list>
             <div class="footer">
 

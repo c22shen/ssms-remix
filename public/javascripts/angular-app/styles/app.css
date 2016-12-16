@@ -12,9 +12,22 @@ body[ng-cloak] {
 }
 
 .busy-text {
+	
 	color: #9c5052;
 }
 
 .free-text {
 	color: #8bc87a;
+}
+
+.noDataStyle{
+	/*color: white;*/
+}
+
+.busyStyle{
+	color: #e74c3c !important;
+}
+
+.freeStyle{
+	color: #1abc9c !important;
 }
