@@ -29,9 +29,11 @@ angular.module('app').directive('mapChart', ['d3', '$rootScope', 'myConfig', '$t
 
             // get width of container and resize svg to fit it
             function resize() {
-                var targetWidth = parseInt(container.style("width"));
-                console.log("container width", parseInt(container.style("width")));
+
+                var targetWidth = parseInt(d3.select('.header').style("width"));
+                console.log("container width", parseInt(d3.select('.header').style("width")));
                 // console.log("container height", parseInt(container.style("height")));
+                
                 if (targetWidth > 800) {
                     targetWidth = 800;
                 }
@@ -39,7 +41,7 @@ angular.module('app').directive('mapChart', ['d3', '$rootScope', 'myConfig', '$t
                     svg.attr("width", targetWidth);
                     svg.attr("height", Math.round(targetWidth / aspect));
                 }
-
+                // d3.select('#map').style("height", Math.round(targetWidth / aspect)+'px');
             }
         };
 
@@ -212,8 +214,8 @@ angular.module('app').directive('mapChart', ['d3', '$rootScope', 'myConfig', '$t
                     .attr('transform', 'translate(' + 2030 + ',' + 460 + ')')
                     .attr('fill', 'white')
                     .attr('stroke', 'none')
-                    .attr('font-size', 45)
-                    .text("Entrance");
+                    .attr('font-size', 40)
+                    .text("ENTRANCE");
 
                 var arrowShadow = arrowGroup
                     .append('path')
