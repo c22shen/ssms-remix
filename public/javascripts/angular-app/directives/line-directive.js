@@ -6,10 +6,11 @@ angular.module('app').directive('lineChart', ['d3', '$rootScope', 'myConfig', '$
 
         function responsivefy(svg) {
             // get container + svg aspect ratio
-            var container = d3.select(svg.node().parentNode),
+            // var container = d3.select(svg.node().parentNode),
+            var container = d3.select('.header'),
                 width = parseInt(svg.style("width")),
                 height = parseInt(svg.style("height")),
-                aspect = width / height;
+                aspect = 734 / 264;
 
             // add viewBox and preserveAspectRatio properties,
             // and call resize so that svg resizes on inital page load
@@ -26,10 +27,14 @@ angular.module('app').directive('lineChart', ['d3', '$rootScope', 'myConfig', '$
             // get width of container and resize svg to fit it
             function resize() {
                 var targetWidth = parseInt(container.style("width"));
+
+                if (targetWidth > 800) {
+                    targetWidth = 800;
+                }
                 svg.attr("width", targetWidth);
                 svg.attr("height", Math.round(targetWidth / aspect));
-                container.style("width", targetWidth);
-                console.log("container", container);
+                // container.style("width", targetWidth);
+                // console.log("container", container);
             }
         }
 
@@ -40,8 +45,8 @@ angular.module('app').directive('lineChart', ['d3', '$rootScope', 'myConfig', '$
             compile: function(elements, attrs, transclude) {
 
                 var margin = { top: 10, right: 20, bottom: 30, left: 30 };
-                var width = 600 - margin.left - margin.right;
-                var height = 400 - margin.top - margin.bottom;
+                var width = 784 - margin.left - margin.right;
+                var height = 304 - margin.top - margin.bottom;
                 svg = d3.select(elements[0])
                     .append('svg')
                     .attr('width', width + margin.left + margin.right)
@@ -61,6 +66,7 @@ angular.module('app').directive('lineChart', ['d3', '$rootScope', 'myConfig', '$
 
                         var timedata = response.data.map(function(data) {
                             data.created = new Date(data.created);
+                            // data.iRms = data.iRms > 1 ? 1 : 0.2;
                             return data;
                         })
 
@@ -103,7 +109,7 @@ angular.module('app').directive('lineChart', ['d3', '$rootScope', 'myConfig', '$
                         x.domain(d3.extent(timedata, function(d) {
                             return d.created;
                         }));
-                        y.domain([0,2]);
+                        y.domain([0, 2]);
                         // svgGroup
                         //     .append('g')
                         //     .call(d3.axisLeft(y));
@@ -111,7 +117,7 @@ angular.module('app').directive('lineChart', ['d3', '$rootScope', 'myConfig', '$
                         svgGroup
                             .append('g')
                             .attr('transform', "translate(0, " + height + ")")
-                            .call(d3.axisBottom(x).ticks(5))
+                            .call(d3.axisBottom(x).ticks(5).tickSizeOuter(0).tickSizeInner(0))
 
                         // var line = d3.line()
                         //     .x(function(d) {
@@ -130,27 +136,31 @@ angular.module('app').directive('lineChart', ['d3', '$rootScope', 'myConfig', '$
                             .datum(timedata)
                             .attr("class", "line")
                             .attr("d", line)
-                        .style('stroke', "#2196F3")
+                            .style('stroke', "#2196F3")
                             .style('stroke-width', 2)
                             .style('fill', 'none');
-                        // svgGroup
-                        //     .selectAll('.line')
-                        //     .data(timedata)
-                        //     .enter()
-                        //     .append('path')
-                        //     .attr('class', 'line')
-                        //     .attr('d', function(data) {
-                        //         console.log("line data", data);
-                        //         return line(data)
-                        //     })
-                        //     .style('stroke', "white")
-                        //     .style('stroke-width', 2)
-                        // style('fill')
-                        // console.log();
-                        // svg.append('g').classed("lineChart")
-                        //     .attr('width', lineChartWidth)
-                        //     .attr('height', lineChartHeight)
-                        //     .call(responsivefy)
+
+                        // d3.selectAll('g.tick').select('line').attr('stroke', '#303030')
+                        d3.selectAll('g.tick').select('text').attr('fill', 'white')
+                        d3.selectAll('.domain').attr('stroke', '#303030')
+                            // svgGroup
+                            //     .selectAll('.line')
+                            //     .data(timedata)
+                            //     .enter()
+                            //     .append('path')
+                            //     .attr('class', 'line')
+                            //     .attr('d', function(data) {
+                            //         console.log("line data", data);
+                            //         return line(data)
+                            //     })
+                            //     .style('stroke', "white")
+                            //     .style('stroke-width', 2)
+                            // style('fill')
+                            // console.log();
+                            // svg.append('g').classed("lineChart")
+                            //     .attr('width', lineChartWidth)
+                            //     .attr('height', lineChartHeight)
+                            //     .call(responsivefy)
                     },
                     function errorCallback(error) {
                         console.log("error");

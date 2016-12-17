@@ -34,13 +34,13 @@ exports.read = function(req, res) {
 
     // var minutes = req.params.minutes;
      var now = moment();
-	// var halfNHourAgo = moment(now).add(-30, 'minutes');
+	var fiveHourAgo = moment(now).add(-5, 'hours');
 	var tenHoursAgo = moment(now).add(-10, 'hours');
 var threeHoursAgo = moment(now).add(-3, 'hours');
     Device.find({
         created: {
-            "$gte": tenHoursAgo,
-            "$lt": threeHoursAgo
+            "$gte": fiveHourAgo,
+            "$lt": now
         },
         'panId': panId,
         // 'iRms': {
