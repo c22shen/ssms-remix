@@ -1,5 +1,5 @@
-angular.module('app').controller('DataController', ['$rootScope', '$scope', 'Socket', 'myConfig',
-    function($rootScope, $scope, Socket, myConfig) {
+angular.module('app').controller('DataController', ['$rootScope', '$scope', 'Socket', 'myConfig', '$mdDialog',
+    function($rootScope, $scope, Socket, myConfig, $mdDialog) {
 
         var self = this;
 

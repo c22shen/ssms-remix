@@ -1,6 +1,6 @@
-angular.module('app').directive('mapChart', ['d3', '$rootScope', 'myConfig', '$timeout', '$http',
+angular.module('app').directive('mapChart', ['d3', '$rootScope', 'myConfig', '$timeout', '$http', '$mdDialog',
 
-    function(d3, $rootScope, myConfig, $timeout, $http) {
+    function(d3, $rootScope, myConfig, $timeout, $http, $mdDialog) {
         var svg;
 
 
@@ -33,7 +33,7 @@ angular.module('app').directive('mapChart', ['d3', '$rootScope', 'myConfig', '$t
                 var targetWidth = parseInt(d3.select('.header').style("width"));
                 console.log("container width", parseInt(d3.select('.header').style("width")));
                 // console.log("container height", parseInt(container.style("height")));
-                
+
                 if (targetWidth > 800) {
                     targetWidth = 800;
                 }
@@ -48,8 +48,6 @@ angular.module('app').directive('mapChart', ['d3', '$rootScope', 'myConfig', '$t
         return {
             restrict: 'A',
             compile: function(elements, attrs, transclude) {
-
-
                 var millingPathCreation = function(selection) {
                     selection
                         .attr('d', millingSvg)
@@ -125,30 +123,30 @@ angular.module('app').directive('mapChart', ['d3', '$rootScope', 'myConfig', '$t
                     yCoordinate: 70,
                     text: "Lathe 3"
                 }];
-                $rootScope.determineStatus = function(iRms){
+                $rootScope.determineStatus = function(iRms) {
                     if (!iRms) {
                         return "No data"
-                    } else if (iRms>1) {
+                    } else if (iRms > 1) {
                         return "In Use"
                     } else {
                         return "Available"
                     }
                 }
 
-                $rootScope.determineStatus = function(iRms){
+                $rootScope.determineStatus = function(iRms) {
                     if (!iRms) {
                         return "No data"
-                    } else if (iRms>1) {
+                    } else if (iRms > 1) {
                         return "In Use"
                     } else {
                         return "Available"
                     }
                 }
 
-                $rootScope.determineStatusClass = function(iRms){
+                $rootScope.determineStatusClass = function(iRms) {
                     if (!iRms) {
                         return "noDataStyle"
-                    } else if (iRms>1) {
+                    } else if (iRms > 1) {
                         return "busyStyle"
                     } else {
                         return "freeStyle"
@@ -156,10 +154,10 @@ angular.module('app').directive('mapChart', ['d3', '$rootScope', 'myConfig', '$t
                 }
 
 
-                var determineStatusColor = function(iRms){
+                var determineStatusColor = function(iRms) {
                     if (!iRms) {
                         return "white"
-                    } else if (iRms>1) {
+                    } else if (iRms > 1) {
                         return "#e74c3c"
                     } else {
                         return "#1abc9c"
@@ -246,14 +244,52 @@ angular.module('app').directive('mapChart', ['d3', '$rootScope', 'myConfig', '$t
                         // .append('text')
                         // .transition(transitionStyle)
                         .text(function(data) {
-                            return !!data.datetime ? moment(data.datetime, "h:mm:ssa").format("h:mm:ss") : null ;
+                            return !!data.datetime ? moment(data.datetime, "h:mm:ssa").format("h:mm:ss") : null;
                         });
 
                     var machineUnit = update
                         .enter()
                         .append('g')
-                        .classed('machine', true);
+                        .classed('machine', true)
+                        // .attr('ng-click', 'showAdvanced($event)')
+                        .on('click', function(d, i, elements) {
+                            $mdDialog.show({
+                                    locals: { data: d },
+                                    controller: ['$scope', 'data', function($scope, data) {
+                                        $scope.data = data;
+                                        $scope.exit = function() {
+                                            $mdDialog.hide();
+                                        }
+                                        console.log("controller scope data", data);
+                                        // capture display Data
+                                    }],
+                                    templateUrl: '/javascripts/angular-app/tpl/dialog.tpl.html',
+                                    parent: angular.element(document.body),
+                                    // targetEvent: ev,
 
+                                    clickOutsideToClose: true,
+                                    fullscreen: true // Only for -xs, -sm breakpoints.
+                                })
+                                .then(function() {}, function() {});
+                        })
+                        .on('mouseover', function(d, i, elements) {
+                            // d3.select(this).style('transform', 'scaleX(2)');
+                            // d3.select(this).select('.machinePath').style("fill", 'red');
+                            // console.log("mouseover", elements);
+                            d3.selectAll(elements)
+                                .filter(':not(:hover)')
+                                .style('fill-opacity', 0.5);
+                            // showAdvanced($event)
+                        })
+                        .on('mouseout', function(d, i, elements) {
+
+                            // d3.select(this).style('transform', 'scaleX(1)');
+                            // d3.select(this).select('.machinePath').style("fill", 'lightblue');
+                            // console.log("mouseover", this);
+                            d3.selectAll(elements)
+                                // .filter(':not(:hover)')
+                                .style('fill-opacity', 1);
+                        })
                     machineUnit
                         .append('path')
                         .attr('d', function(data) {
@@ -268,7 +304,7 @@ angular.module('app').directive('mapChart', ['d3', '$rootScope', 'myConfig', '$t
 
                     machineUnit
                         .append('path')
-                        .attr('class','machinePath')
+                        .attr('class', 'machinePath')
                         .attr('d', function(data) {
                             return pathPerType[data.type];
                         })
@@ -299,7 +335,7 @@ angular.module('app').directive('mapChart', ['d3', '$rootScope', 'myConfig', '$t
                         })
                         .attr('fill', 'white')
                         .attr('stroke', 'none')
-                        .attr('font-size', fontSize-2)
+                        .attr('font-size', fontSize - 2)
                         .text(function(data) {
                             return data.datetime;
                         });

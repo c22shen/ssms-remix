@@ -42,6 +42,9 @@ angular.module('app').directive('lineChart', ['d3', '$rootScope', 'myConfig', '$
 
         return {
             restrict: 'A',
+            // scope: {
+            //     lineChartData:
+            // }
             compile: function(elements, attrs, transclude) {
 
                 var margin = { top: 10, right: 20, bottom: 30, left: 30 };
@@ -142,7 +145,7 @@ angular.module('app').directive('lineChart', ['d3', '$rootScope', 'myConfig', '$
 
                         // d3.selectAll('g.tick').select('line').attr('stroke', '#303030')
                         d3.selectAll('g.tick').select('text').attr('fill', 'white')
-                        d3.selectAll('.domain').attr('stroke', '#303030')
+                        d3.selectAll('.domain').remove();
                             // svgGroup
                             //     .selectAll('.line')
                             //     .data(timedata)

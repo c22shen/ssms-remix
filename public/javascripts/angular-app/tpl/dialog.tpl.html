@@ -1,0 +1,19 @@
+<md-dialog aria-label="Mango (Fruit)">
+    <md-toolbar>
+        <div class="md-toolbar-tools">
+            <h2>{{data.text}}</h2>
+        </div>
+    </md-toolbar>
+    <md-dialog-content>
+        <div class="md-dialog-content">
+            <h4 ng-if="!!data.iRms">Current Reading: {{data.iRms}}</h4>
+            <div line-chart style="margin: 0 auto"></div>
+        </div>
+    </md-dialog-content>
+    <md-dialog-actions layout="row">
+        </md-button>
+        <md-button ng-click="exit()">
+            Back
+        </md-button>
+    </md-dialog-actions>
+</md-dialog>
