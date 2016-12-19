@@ -39,14 +39,14 @@ exports.read = function(req, res) {
 var threeHoursAgo = moment(now).add(-3, 'hours');
     Device.find({
         created: {
-            "$gte": fiveHourAgo,
-            "$lt": now
-        },
-        'panId': panId,
+            "$gte": moment(now).add(-30, 'minutes'),
+            "$lt": moment()
+        }
+        // 'panId': panId,
         // 'iRms': {
         //   "$gte": 1
         // }
-    }, 'created iRms -_id', function(err, devices) {
+    }, 'panId created iRms -_id', function(err, devices) {
 
         if (err) {
             res.send(err);

@@ -100,7 +100,9 @@ angular.module('app').directive('schedule', ['myConfig',
 
                 if (currentHour > startHour && currentHour < endHour) {
                     scope.storeAvailable = true;
-                } else if (currentHour === startHour && currentMinute > startMinute && currentMinute < endMinute) {
+                } else if (currentHour === startHour && currentMinute > startMinute) {
+                    scope.storeAvailable = true;
+                } else if (currentHour === endHour &&  currentMinute < endMinute) {
                     scope.storeAvailable = true;
                 } else {
                     scope.storeAvailable = false;

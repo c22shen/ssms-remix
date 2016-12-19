@@ -1,7 +1,64 @@
 angular.module('app').directive('lineChart', ['d3', '$rootScope', 'myConfig', '$timeout', '$http',
 
     function(d3, $rootScope, myConfig, $timeout, $http) {
-        var svg;
+        var svg, svgGroup, xAxis, splinePath;
+
+
+
+
+        var draw = function(svgGroup, height, width, timedata) {
+            // console.log("timedata within draw", timedata);
+
+            var timedata = timedata.map(function(data) {
+                data.created = new Date(data.created);
+                // data.iRms = data.iRms > 1 ? 1 : 0.2;
+                return data;
+            })
+
+            var margin = { top: 10, right: 20, bottom: 30, left: 30 };
+            var width = 784 - margin.left - margin.right;
+            var height = 304 - margin.top - margin.bottom;
+
+            var timeArray = timedata.map(function(data) {
+                return data.created;
+            })
+
+            var x = d3.scaleTime()
+                .rangeRound([0, width]);
+
+            var y = d3.scaleLinear()
+                .rangeRound([height, 0]);
+
+            var line = d3.line()
+                .x(function(d) {
+                    return x(d.created);
+                })
+                .y(function(d) {
+                    return y(d.iRms);
+                })
+
+
+
+            x.domain(d3.extent(timedata, function(d) {
+                return d.created;
+            }));
+            y.domain([0, 2]);
+            xAxis
+                .attr('transform', "translate(0, " + height + ")")
+                .call(d3.axisBottom(x).ticks(5).tickSizeOuter(0).tickSizeInner(0))
+
+            splinePath
+                .datum(timedata)
+                .attr("class", "line")
+                .attr("d", line)
+                .style('stroke', "#2196F3")
+                .style('stroke-width', 2)
+                .style('fill', 'none');
+
+            d3.selectAll('g.tick').select('text').attr('fill', 'white')
+            d3.selectAll('.domain').remove();
+
+        };
 
 
         function responsivefy(svg) {
@@ -42,9 +99,9 @@ angular.module('app').directive('lineChart', ['d3', '$rootScope', 'myConfig', '$
 
         return {
             restrict: 'A',
-            // scope: {
-            //     lineChartData:
-            // }
+            scope: {
+                data: '='
+            },
             compile: function(elements, attrs, transclude) {
 
                 var margin = { top: 10, right: 20, bottom: 30, left: 30 };
@@ -54,124 +111,27 @@ angular.module('app').directive('lineChart', ['d3', '$rootScope', 'myConfig', '$
                     .append('svg')
                     .attr('width', width + margin.left + margin.right)
                     .attr('height', height + margin.top + margin.bottom);
+
                 svgGroup = svg
                     .append('g')
                     .attr('transform', 'translate(' + margin.left + "," + margin.top + ")");
-                $http({
-                    method: 'GET',
-                    url: '/api/devices/0013A20040B09A44'
-                }).then(function successCallback(response) {
-                        // this callback will be called asynchronously
-                        // when the response is available
-                        // var lineChartWidth = 600;
-                        // var lineChartHeight = 400;
-                        // var parseTime = d3.timeParse('%H:%M:%S');
 
-                        var timedata = response.data.map(function(data) {
-                            data.created = new Date(data.created);
-                            // data.iRms = data.iRms > 1 ? 1 : 0.2;
-                            return data;
-                        })
+                xAxis = svgGroup
+                    .append('g').classed('xAxis', true);
 
-                        var timeArray = timedata.map(function(data) {
-                            return data.created;
-                        })
-
-                        // var xScale = d3.scaleTime()
-                        //     .domain([d3.min(timeArray), d3.max(timeArray)])
-                        //     .range([0, width]);
-
-
-
-
-                        // var yScale = d3.scaleLinear()
-                        //     .domain([
-                        //         0, d3.max(timedata.map(function(data) {
-                        //             return data.iRms
-                        //         }))
-                        //     ])
-                        //     .range([height, 0]);
-
-
-                        var x = d3.scaleTime()
-                            .rangeRound([0, width]);
-
-                        var y = d3.scaleLinear()
-                            .rangeRound([height, 0]);
-
-                        var line = d3.line()
-                            .x(function(d) {
-                                return x(d.created);
-                            })
-                            .y(function(d) {
-                                return y(d.iRms);
-                            })
-
-
-
-                        x.domain(d3.extent(timedata, function(d) {
-                            return d.created;
-                        }));
-                        y.domain([0, 2]);
-                        // svgGroup
-                        //     .append('g')
-                        //     .call(d3.axisLeft(y));
-
-                        svgGroup
-                            .append('g')
-                            .attr('transform', "translate(0, " + height + ")")
-                            .call(d3.axisBottom(x).ticks(5).tickSizeOuter(0).tickSizeInner(0))
-
-                        // var line = d3.line()
-                        //     .x(function(d) {
-                        //         // console.log("xScale(d.created)", xScale(d.created));
-                        //         return xScale(d.created);
-                        //     })
-                        //     .y(function(d) {
-                        //         // console.log("yScale(d.iRms)", yScale(d.iRms));
-                        //         return yScale(d.iRms);
-                        //     })
-
-
-
-
-                        svgGroup.append("path")
-                            .datum(timedata)
-                            .attr("class", "line")
-                            .attr("d", line)
-                            .style('stroke', "#2196F3")
-                            .style('stroke-width', 2)
-                            .style('fill', 'none');
-
-                        // d3.selectAll('g.tick').select('line').attr('stroke', '#303030')
-                        d3.selectAll('g.tick').select('text').attr('fill', 'white')
-                        d3.selectAll('.domain').remove();
-                            // svgGroup
-                            //     .selectAll('.line')
-                            //     .data(timedata)
-                            //     .enter()
-                            //     .append('path')
-                            //     .attr('class', 'line')
-                            //     .attr('d', function(data) {
-                            //         console.log("line data", data);
-                            //         return line(data)
-                            //     })
-                            //     .style('stroke', "white")
-                            //     .style('stroke-width', 2)
-                            // style('fill')
-                            // console.log();
-                            // svg.append('g').classed("lineChart")
-                            //     .attr('width', lineChartWidth)
-                            //     .attr('height', lineChartHeight)
-                            //     .call(responsivefy)
-                    },
-                    function errorCallback(error) {
-                        console.log("error");
-                    });
-
-
+                splinePath = svgGroup.append("path").classed('path', true);
 
                 return function(scope, element, attrs) {
+                    // $timeout(function() { responsivefy(svg) }, 100);
+                    var totalHeight = 304,
+                        totalWidth = 784;
+
+                    scope.$watch('data', function(newVal, oldVal, scope) {
+                        // Update the chart
+                        draw(svgGroup, totalHeight, totalWidth, scope.data);
+
+                        // draw(svg, width, height, scope.data);
+                    }, true);
                     $timeout(function() { responsivefy(svg) }, 100);
 
                 }

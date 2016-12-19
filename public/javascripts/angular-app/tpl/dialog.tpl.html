@@ -1,4 +1,4 @@
-<md-dialog aria-label="Mango (Fruit)">
+<md-dialog>
     <md-toolbar>
         <div class="md-toolbar-tools">
             <h2>{{data.text}}</h2>
@@ -7,7 +7,7 @@
     <md-dialog-content>
         <div class="md-dialog-content">
             <h4 ng-if="!!data.iRms">Current Reading: {{data.iRms}}</h4>
-            <div line-chart style="margin: 0 auto"></div>
+            <div line-chart style="margin: 0 auto" data="$root.recentHourData[data.panId]"></div>
         </div>
     </md-dialog-content>
     <md-dialog-actions layout="row">
