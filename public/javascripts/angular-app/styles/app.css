@@ -31,3 +31,17 @@ body[ng-cloak] {
 .freeStyle{
 	color: #1abc9c !important;
 }
+
+div.popover {
+  position: absolute;
+  text-align: left;
+  width: 120px;
+  height: 80px;
+  padding: 8px;
+  font: 14px sans-serif;
+  /*background-color: red;*/
+  border: 0px;
+  border-radius: 2px;
+  pointer-events: none;
+  opacity:0;
+}

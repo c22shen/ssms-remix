@@ -1,6 +1,6 @@
-angular.module('app').directive('mapChart', ['d3', '$rootScope', 'myConfig', '$timeout', '$http', '$mdDialog',
+angular.module('app').directive('mapChart', ['d3', '$rootScope', 'myConfig', '$timeout', '$http', '$mdDialog', '$compile',
 
-    function(d3, $rootScope, myConfig, $timeout, $http, $mdDialog) {
+    function(d3, $rootScope, myConfig, $timeout, $http, $mdDialog, $compile) {
         var svg;
 
 
@@ -31,7 +31,7 @@ angular.module('app').directive('mapChart', ['d3', '$rootScope', 'myConfig', '$t
             function resize() {
 
                 var targetWidth = parseInt(d3.select('.header').style("width"));
-                console.log("container width", parseInt(d3.select('.header').style("width")));
+                // console.log("container width", parseInt(d3.select('.header').style("width")));
                 // console.log("container height", parseInt(container.style("height")));
 
                 if (targetWidth > 800) {
@@ -74,55 +74,7 @@ angular.module('app').directive('mapChart', ['d3', '$rootScope', 'myConfig', '$t
                 var transitionStyle = d3.transition();
 
 
-                $rootScope.machineData = [{
-                    type: 'M',
-                    panId: "0013A20040B09A44",
-                    xCoordinate: 220,
-                    yCoordinate: 10,
-                    text: "Mill 1"
-                }, {
-                    type: 'M',
-                    panId: "0013A20040D7B896",
-                    xCoordinate: 260,
-                    yCoordinate: 10,
-                    text: "Mill 2"
-                }, {
-                    type: 'M',
-                    panId: "0013A20041629B6A",
-                    xCoordinate: 300,
-                    yCoordinate: 10,
-                    text: "Mill 3"
-                }, {
-                    type: 'M',
-                    panId: "0013A20041629B72",
-                    xCoordinate: 340,
-                    yCoordinate: 10,
-                    text: "Mill 4"
-                }, {
-                    type: 'M',
-                    panId: "0013A20041629B76",
-                    xCoordinate: 380,
-                    yCoordinate: 10,
-                    text: "Mill 5"
-                }, {
-                    type: 'L',
-                    panId: "0013A20041629B77",
-                    xCoordinate: 120,
-                    yCoordinate: 10,
-                    text: "Lathe 1"
-                }, {
-                    type: 'L',
-                    panId: "0013A20040D7B872",
-                    xCoordinate: 170,
-                    yCoordinate: 10,
-                    text: "Lathe 2"
-                }, {
-                    type: 'L',
-                    panId: "0013A20040D7B885",
-                    xCoordinate: 120,
-                    yCoordinate: 70,
-                    text: "Lathe 3"
-                }];
+
                 $rootScope.determineStatus = function(iRms) {
                     if (!iRms) {
                         return "No data"
@@ -170,10 +122,15 @@ angular.module('app').directive('mapChart', ['d3', '$rootScope', 'myConfig', '$t
                     .attr('height', totalHeight)
                     .call(responsivefy);
 
+                var div = d3.select(elements[0]).append("div")
+                    .attr("class", "tooltip")
+                    .style("opacity", 0);
 
                 var group = svg
                     .append('g')
                     .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
+
+
 
                 var mapShadow = group
                     .append('g')
@@ -229,7 +186,7 @@ angular.module('app').directive('mapChart', ['d3', '$rootScope', 'myConfig', '$t
 
 
 
-                function render() {
+                function render(scope) {
                     var update = group.selectAll('.machine')
                         .data($rootScope.machineData)
 
@@ -247,49 +204,57 @@ angular.module('app').directive('mapChart', ['d3', '$rootScope', 'myConfig', '$t
                             return !!data.datetime ? moment(data.datetime, "h:mm:ssa").format("h:mm:ss") : null;
                         });
 
+
+
                     var machineUnit = update
                         .enter()
                         .append('g')
                         .classed('machine', true)
                         // .attr('ng-click', 'showAdvanced($event)')
                         .on('click', function(d, i, elements) {
-                            $mdDialog.show({
-                                    locals: { data: d },
-                                    controller: ['$scope', 'data', function($scope, data) {
-                                        $scope.data = data;
-                                        $scope.exit = function() {
-                                            $mdDialog.hide();
-                                        }
-                                        console.log("controller scope data", data);
-                                        // capture display Data
-                                    }],
-                                    templateUrl: '/javascripts/angular-app/tpl/dialog.tpl.html',
-                                    parent: angular.element(document.body),
-                                    // targetEvent: ev,
+                            // $mdDialog.show({
+                            //         locals: { data: d },
+                            //         controller: ['$scope', 'data', function($scope, data) {
+                            //             $scope.data = data;
+                            //             $scope.exit = function() {
+                            //                 $mdDialog.hide();
+                            //             }
+                            //             // capture display Data
+                            //         }],
+                            //         templateUrl: '/javascripts/angular-app/tpl/dialog.tpl.html',
+                            //         parent: angular.element(document.body),
+                            //         // targetEvent: ev,
 
-                                    clickOutsideToClose: true,
-                                    fullscreen: true // Only for -xs, -sm breakpoints.
-                                })
-                                .then(function() {}, function() {});
+                            //         clickOutsideToClose: true,
+                            //         fullscreen: true // Only for -xs, -sm breakpoints.
+                            //     })
+                            //     .then(function() {}, function() {});
                         })
                         .on('mouseover', function(d, i, elements) {
-                            // d3.select(this).style('transform', 'scaleX(2)');
-                            // d3.select(this).select('.machinePath').style("fill", 'red');
-                            // console.log("mouseover", elements);
-                            d3.selectAll(elements)
-                                .filter(':not(:hover)')
-                                .style('fill-opacity', 0.5);
-                            // showAdvanced($event)
+
+                            if (!!d.iRms) {
+                                var popoverDiv = d3.select('.popover').transition()
+                                    .duration(200)
+                                    .style("opacity", 0.95)
+                                    .style("background-color", determineStatusColor(d.iRms))
+                                    .style("left", (d3.event.pageX) + "px")
+                                    .style("top", (d3.event.pageY - 28) + "px");
+                                d3.select('.popover .machineName').html(d.text);
+                                d3.select('.popover .machineStatus').html($rootScope.determineStatus(d.iRms));
+                                $rootScope.$apply(function() { // This wraps the changes.
+                                    $rootScope.popOverData = $rootScope.recentHourData[d.panId];
+                                });
+                            }
+
                         })
                         .on('mouseout', function(d, i, elements) {
+                            d3.select('.popover').transition()
+                                .duration(500)
+                                .style("opacity", 0);
 
-                            // d3.select(this).style('transform', 'scaleX(1)');
-                            // d3.select(this).select('.machinePath').style("fill", 'lightblue');
-                            // console.log("mouseover", this);
-                            d3.selectAll(elements)
-                                // .filter(':not(:hover)')
-                                .style('fill-opacity', 1);
-                        })
+                        });
+
+
                     machineUnit
                         .append('path')
                         .attr('d', function(data) {
@@ -341,7 +306,7 @@ angular.module('app').directive('mapChart', ['d3', '$rootScope', 'myConfig', '$t
                         });
                 }
 
-                render();
+                // render();
 
 
 
@@ -352,20 +317,11 @@ angular.module('app').directive('mapChart', ['d3', '$rootScope', 'myConfig', '$t
                     $timeout(function() { responsivefy(svg) }, 100);
 
                     scope.$watch('$root.machineData', function() {
-                        // console.log("watch ran");
-                        render();
-                        // milling1.transition().duration(2000).attr("transform", "scale(1.5,1.5)");
-                        // if (!!$rootScope.currentReading && $rootScope.currentReading.current > 1) {
-                        //     // milling1.style("fill", "red");
-
-                        //     millingMachine.transition().duration(3000).style("fill", "pink").transition().duration(3000)
-                        //         .style("fill", "red");
-                        // } else {
-                        //     millingMachine.transition().duration(3000).style("fill", "Aquamarine").transition().duration(3000)
-                        //         .style("fill", "#1abc9c");
-                        // }
+                        render(scope);
                     });
 
+                    // element.removeAttr("map-chart");
+                    //  $compile(element)(scope);
                 };
             }
         }

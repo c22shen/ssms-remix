@@ -11,7 +11,7 @@ angular.module('app').directive('lineChart', ['d3', '$rootScope', 'myConfig', '$
 
             var timedata = timedata.map(function(data) {
                 data.created = new Date(data.created);
-                // data.iRms = data.iRms > 1 ? 1 : 0.2;
+                data.iRms = data.iRms > 1 ? 2 : 0;
                 return data;
             })
 
@@ -26,8 +26,8 @@ angular.module('app').directive('lineChart', ['d3', '$rootScope', 'myConfig', '$
             var x = d3.scaleTime()
                 .rangeRound([0, width]);
 
-            var y = d3.scaleLinear()
-                .rangeRound([height, 0]);
+            var y = d3.scaleQuantize()
+                .range([height, 0]);
 
             var line = d3.line()
                 .x(function(d) {
@@ -43,16 +43,16 @@ angular.module('app').directive('lineChart', ['d3', '$rootScope', 'myConfig', '$
                 return d.created;
             }));
             y.domain([0, 2]);
-            xAxis
-                .attr('transform', "translate(0, " + height + ")")
-                .call(d3.axisBottom(x).ticks(5).tickSizeOuter(0).tickSizeInner(0))
+            // xAxis
+            //     .attr('transform', "translate(0, " + height + ")")
+            //     .call(d3.axisBottom(x).ticks(5).tickSizeOuter(0).tickSizeInner(0))
 
             splinePath
                 .datum(timedata)
                 .attr("class", "line")
                 .attr("d", line)
-                .style('stroke', "#2196F3")
-                .style('stroke-width', 2)
+                .style('stroke', "white")
+                .style('stroke-width', 10)
                 .style('fill', 'none');
 
             d3.selectAll('g.tick').select('text').attr('fill', 'white')
@@ -63,8 +63,8 @@ angular.module('app').directive('lineChart', ['d3', '$rootScope', 'myConfig', '$
 
         function responsivefy(svg) {
             // get container + svg aspect ratio
-            // var container = d3.select(svg.node().parentNode),
-            var container = d3.select('.header'),
+            var container = d3.select(svg.node().parentNode),
+                // var container = d3.select('.header'),
                 width = parseInt(svg.style("width")),
                 height = parseInt(svg.style("height")),
                 aspect = 734 / 264;
@@ -83,6 +83,9 @@ angular.module('app').directive('lineChart', ['d3', '$rootScope', 'myConfig', '$
 
             // get width of container and resize svg to fit it
             function resize() {
+                console.log("container", container);
+                console.log("container width", container.style("width"));
+
                 var targetWidth = parseInt(container.style("width"));
 
                 if (targetWidth > 800) {
@@ -99,10 +102,11 @@ angular.module('app').directive('lineChart', ['d3', '$rootScope', 'myConfig', '$
 
         return {
             restrict: 'A',
-            scope: {
-                data: '='
-            },
+            // scope: {
+            //     data: '='
+            // },
             compile: function(elements, attrs, transclude) {
+                    console.log("line directive compile function");
 
                 var margin = { top: 10, right: 20, bottom: 30, left: 30 };
                 var width = 784 - margin.left - margin.right;
@@ -122,16 +126,21 @@ angular.module('app').directive('lineChart', ['d3', '$rootScope', 'myConfig', '$
                 splinePath = svgGroup.append("path").classed('path', true);
 
                 return function(scope, element, attrs) {
+                    console.log("line directive link function");
                     // $timeout(function() { responsivefy(svg) }, 100);
                     var totalHeight = 304,
                         totalWidth = 784;
 
-                    scope.$watch('data', function(newVal, oldVal, scope) {
+
+                    scope.$watch('$root.popOverData', function(newVal, oldVal) {
+                        console.log("dataChanged!", newVal);
                         // Update the chart
-                        draw(svgGroup, totalHeight, totalWidth, scope.data);
+                        if (!!newVal) {
+                            draw(svgGroup, totalHeight, totalWidth, newVal);
+                        }
 
                         // draw(svg, width, height, scope.data);
-                    }, true);
+                    }, 0);
                     $timeout(function() { responsivefy(svg) }, 100);
 
                 }

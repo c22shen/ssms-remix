@@ -54,11 +54,11 @@
             </div>
             <div class="map" layout="row" layout-align="center top" style="display: block; margin: 2em auto" id="map" map-chart>
             </div>
-<!--             <div class="header-past" layout-padding layout-margin>
-                <h2 class="md-display-2 " style="font-weight:100; padding-bottom:0; margin-bottom:0">Status in the Past Hour</h2>
-            </div> -->
-
-            <!-- <div line-chart style="margin: 0 auto"></div> -->
+            <div class="popover">
+                <span class="machineName"></span><span style="float:right" class="machineStatus"></span>
+                <div line-chart class="lineChart" id="popOverChart" style="margin: 0 auto; margin-top:10px" data="$root.tempChartData"></div>
+                <div style="font-size:smaller">Activities in past hour</div>
+            </div>
         </div>
         <script type="text/javascript " src="/socket.io/socket.io.js "></script>
         <script src="/bower_components/angular/angular.min.js "></script>
