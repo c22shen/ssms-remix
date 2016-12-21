@@ -37,10 +37,12 @@ exports.read = function(req, res) {
     var fiveHourAgo = moment(now).add(-5, 'hours');
     var tenHoursAgo = moment(now).add(-10, 'hours');
     var threeHoursAgo = moment(now).add(-3, 'hours');
+    var today = moment().startOf('day')
+var tomorrow = moment(today).add(1, 'days')
     Device.find({
         created: {
-            "$gte": moment({ y: 2016, M: 11, d: 20, h: 8, m: 30 }),
-            "$lt": moment({ y: 2016, M: 11, d: 20, h: 21, m: 0 })
+            "$gte": today.toDate(),
+            "$lt": tomorrow.toDate()
         }
 
 

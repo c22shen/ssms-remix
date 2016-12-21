@@ -2,7 +2,7 @@ angular.module('app').directive('lineChart', ['d3', '$rootScope', 'myConfig', '$
 
     function(d3, $rootScope, myConfig, $timeout, $http) {
         var svg, svgGroup, xAxis, yAxis, splinePath;
-        var margin = { top: 10, right: 0, bottom: 15, left: 20 };
+        var margin = { top: 10, right: 0, bottom: 15, left: 23 };
 
 
 
@@ -57,7 +57,7 @@ angular.module('app').directive('lineChart', ['d3', '$rootScope', 'myConfig', '$
             yAxis
                 .call(d3.axisLeft(y).tickFormat(function(d) {
                     if (d === 0) {
-                        return "";
+                        return "OFF";
                     } else if (d === 2) {
                         return "ON"
                     } else {
