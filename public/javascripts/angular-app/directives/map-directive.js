@@ -71,7 +71,7 @@ angular.module('app').directive('mapChart', ['d3', '$rootScope', 'myConfig', '$t
                 var width = totalWidth - margin.left - margin.right;
                 var height = totalHeight - margin.top - margin.bottom;
                 var fontSize = 10;
-                var transitionStyle = d3.transition();
+                // var transitionStyle = d3.transition();
 
 
 
@@ -192,7 +192,7 @@ angular.module('app').directive('mapChart', ['d3', '$rootScope', 'myConfig', '$t
 
 
                     update.select('.machinePath')
-                        .transition(transitionStyle)
+                        // .transition(transitionStyle)
                         .style('fill', function(data) {
                             return determineStatusColor(data.iRms);
                         });
@@ -210,7 +210,6 @@ angular.module('app').directive('mapChart', ['d3', '$rootScope', 'myConfig', '$t
                         .enter()
                         .append('g')
                         .classed('machine', true)
-                        // .attr('ng-click', 'showAdvanced($event)')
                         .on('click', function(d, i, elements) {
                             // $mdDialog.show({
                             //         locals: { data: d },
@@ -243,6 +242,7 @@ angular.module('app').directive('mapChart', ['d3', '$rootScope', 'myConfig', '$t
                                 d3.select('.popover .machineStatus').html($rootScope.determineStatus(d.iRms));
                                 $rootScope.$apply(function() { // This wraps the changes.
                                     $rootScope.popOverData = $rootScope.recentHourData[d.panId];
+                                    // console.log("mouseover popOVerData", $rootScope.popOverData);
                                 });
                             }
 

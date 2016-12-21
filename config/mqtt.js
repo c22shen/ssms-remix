@@ -91,7 +91,7 @@ var halfNHourAgo = moment(now).add(-30, 'minutes')
         var currentValue = parseFloat(iRms).toFixed(2);
         panId = panId.toString();
         io.emit(panId, currentValue);
-        if (Math.abs(currentValue-mostCurrentData[panId])>0.1 || true) {
+        if (Math.abs(currentValue-mostCurrentData[panId])>0.1 ) {
             var device = new Device();
             device.iRms = currentValue;
             device.panId = panId;

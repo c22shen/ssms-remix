@@ -30,16 +30,16 @@ exports.readAll = function(req, res) {
 
 exports.read = function(req, res) {
     //panId, created minutes restriction
-    var panId = req.params.panid;
+    // var panId = req.params.panid;
 
     // var minutes = req.params.minutes;
-     var now = moment();
-	var fiveHourAgo = moment(now).add(-5, 'hours');
-	var tenHoursAgo = moment(now).add(-10, 'hours');
-var threeHoursAgo = moment(now).add(-3, 'hours');
+    var now = moment();
+    var fiveHourAgo = moment(now).add(-5, 'hours');
+    var tenHoursAgo = moment(now).add(-10, 'hours');
+    var threeHoursAgo = moment(now).add(-3, 'hours');
     Device.find({
         created: {
-            "$gte": moment(now).add(-1, 'hours'),
+            "$gte": moment(now).add(-60, 'minute'),
             "$lt": moment()
         }
         // 'panId': panId,
@@ -53,11 +53,18 @@ var threeHoursAgo = moment(now).add(-3, 'hours');
         }
 
         // devices.map(function(dataSet){
-        // 	var dateTime = new Date(dataSet.created).getT 
+        //  var dateTime = new Date(dataSet.created).getT 
         // })
 
         res.json(devices);
     });
+
+    // Device.find().sort('created', -1).limit(5).exec(function(err, p) {
+    //     if (err) { res.send(err); };
+    //     console.log("p", p);
+    //     res.json(p);
+
+    // })
 }
 
 exports.update = function(req, res) {
