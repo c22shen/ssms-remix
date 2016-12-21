@@ -8,22 +8,16 @@ angular.module('app').directive('lineChart', ['d3', '$rootScope', 'myConfig', '$
 
 
         var draw = function(svgGroup, totalHeight, totalWidth, timedata) {
-            // console.log("timedata within draw", timedata);
 
-            // var revisedData = timedata.map(function(data) {
-            //     data.created = new Date(data.created);
-            //     data.iRms = data.iRms > 1 ? 'ON' : 'OFF';
-            //     return data;
-            // })
 
-            if (timedata.length < 2 || timedata.filter(function(d) {
-                    d.iRms > 1
-                }).length === 0) {
-                $rootScope.displayText = true;
+            // if (timedata.length < 2 || timedata.filter(function(d) {
+            //         d.iRms > 1
+            //     }).length === 0) {
+            //     $rootScope.displayText = true;
 
-            } else {
-                $rootScope.displayText = false;
-            }
+            // } else {
+            //     $rootScope.displayText = false;
+            // }
             var width = totalWidth - margin.left - margin.right;
             var height = totalHeight - margin.top - margin.bottom;
 
@@ -59,7 +53,7 @@ angular.module('app').directive('lineChart', ['d3', '$rootScope', 'myConfig', '$
 
             xAxis
                 .attr('transform', "translate(0, " + height + ")")
-                .call(d3.axisBottom(x).ticks(2).tickSizeOuter(0).tickSizeInner(0))
+                .call(d3.axisBottom(x).ticks(3).tickSizeOuter(0).tickSizeInner(0))
             yAxis
                 .call(d3.axisLeft(y).tickFormat(function(d) {
                     if (d === 0) {
