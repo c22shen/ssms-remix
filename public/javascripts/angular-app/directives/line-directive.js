@@ -53,7 +53,7 @@ angular.module('app').directive('lineChart', ['d3', '$rootScope', 'myConfig', '$
 
             xAxis
                 .attr('transform', "translate(0, " + height + ")")
-                .call(d3.axisBottom(x).ticks(3).tickSizeOuter(0).tickSizeInner(0))
+                .call(d3.axisBottom(x).ticks(2).tickSizeOuter(0).tickSizeInner(0))
             yAxis
                 .call(d3.axisLeft(y).tickFormat(function(d) {
                     if (d === 0) {
