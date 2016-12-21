@@ -72,6 +72,7 @@ angular.module('app').controller('DataController', ['$rootScope', '$scope', 'Soc
             console.log('retrieving database error!');
         });
 
+        // function determineStatus()
 
         $rootScope.machineData.forEach(function(machineUnitData) {
             var panId = machineUnitData.panId;
@@ -89,13 +90,16 @@ angular.module('app').controller('DataController', ['$rootScope', '$scope', 'Soc
                         created: new Date(),
                         iRms: parsedCurrent
                     }   
-                    // debugger
                 $rootScope.recentHourData[panId].shift();
                 $rootScope.recentHourData[panId].push(statusUpdate);
-                // console.log("just pushed array", $rootScope.recentHourData[panId]);
                 $rootScope.machineData = $rootScope.machineData.map(function(data) {
                     if (data.panId === panId) {
-                        data.iRms = updateMsg;
+                        if (Math.abs(data.iRms-updateMsg)>1){
+                            // statusChange
+                            data.statusChangeMoment = new moment();
+                        }
+                        data.iRms = parsedCurrent;
+                        data.status = 
                         data.datetime = new moment().format("h:mm:ssa");
                     }
                     return data;

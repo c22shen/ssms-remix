@@ -106,13 +106,27 @@ angular.module('app').directive('mapChart', ['d3', '$rootScope', 'myConfig', '$t
                 }
 
 
-                var determineStatusColor = function(iRms) {
-                    if (!iRms) {
+                var determineStatusColor = function(iRms, statusChangeMoment) {
+
+                    debugger
+                    if (iRms === undefined || iRms === null) {
                         return "white"
                     } else if (iRms > 1) {
                         return "#e74c3c"
                     } else {
-                        return "#1abc9c"
+                        // debugger
+                        if (!!statusChangeMoment) {
+                            var now = moment();
+                            var duration = moment.duration(now.diff(statusChangeMoment));
+                            var minutes = duration.asMinutes();
+                            if (minutes < 15) {
+                                return "#f39c12";
+                            } else {
+                                return "#1abc9c";
+                            }
+                        } else {
+                            return "#1abc9c";
+                        }
                     }
                 }
 
@@ -194,7 +208,9 @@ angular.module('app').directive('mapChart', ['d3', '$rootScope', 'myConfig', '$t
                     update.select('.machinePath')
                         // .transition(transitionStyle)
                         .style('fill', function(data) {
-                            return determineStatusColor(data.iRms);
+                            console.log("data iRms", data.iRms);
+                            console.log("data statusChangeTime", data.statusChangeMoment);
+                            return determineStatusColor(data.iRms, data.statusChangeMoment);
                         });
 
                     update.select('.timeText')
@@ -236,14 +252,13 @@ angular.module('app').directive('mapChart', ['d3', '$rootScope', 'myConfig', '$t
                                 var popoverDiv = d3.select('.popover').transition()
                                     .duration(200)
                                     .style("opacity", 0.95)
-                                    // .style("background-color", determineStatusColor(mouseoverData.iRms))
                                     .style("left", (d3.event.pageX - 60) + "px")
                                     .style("top", (d3.event.pageY + 18) + "px");
                                 // d3.select('.popover .machineName').html(mouseoverData.text);
                                 // d3.select('.popover .machineStatus').html($rootScope.determineStatus(d.iRms));
                                 $rootScope.$apply(function() { // This wraps the changes.
                                     $rootScope.popOverPanId = mouseoverData.panId;
-                                    $rootScope.popOverIndex = $rootScope.machineData.findIndex(function(d){
+                                    $rootScope.popOverIndex = $rootScope.machineData.findIndex(function(d) {
                                         return mouseoverData.panId === d.panId;
                                     });
 
