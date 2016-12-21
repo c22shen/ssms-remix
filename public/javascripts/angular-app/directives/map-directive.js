@@ -122,9 +122,9 @@ angular.module('app').directive('mapChart', ['d3', '$rootScope', 'myConfig', '$t
                     .attr('height', totalHeight)
                     .call(responsivefy);
 
-                var div = d3.select(elements[0]).append("div")
-                    .attr("class", "tooltip")
-                    .style("opacity", 0);
+                // var div = d3.select(elements[0]).append("div")
+                //     .attr("class", "tooltip")
+                //     .style("opacity", 0);
 
                 var group = svg
                     .append('g')
@@ -248,9 +248,9 @@ angular.module('app').directive('mapChart', ['d3', '$rootScope', 'myConfig', '$t
 
                         })
                         .on('mouseout', function(d, i, elements) {
-                            d3.select('.popover').transition()
-                                .duration(500)
-                                .style("opacity", 0);
+                            // d3.select('.popover').transition()
+                            //     .duration(500)
+                            //     .style("opacity", 0);
 
                         });
 

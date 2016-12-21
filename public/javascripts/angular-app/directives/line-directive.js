@@ -2,12 +2,12 @@ angular.module('app').directive('lineChart', ['d3', '$rootScope', 'myConfig', '$
 
     function(d3, $rootScope, myConfig, $timeout, $http) {
         var svg, svgGroup, xAxis, yAxis, splinePath;
-        var margin = { top: 0, right: 10, bottom: 0, left: 10 };
+        var margin = { top: 10, right: 0, bottom: 15, left: 20 };
 
 
 
 
-        var draw = function(svgGroup, height, width, timedata) {
+        var draw = function(svgGroup, totalHeight, totalWidth, timedata) {
             // console.log("timedata within draw", timedata);
 
             // var revisedData = timedata.map(function(data) {
@@ -16,8 +16,8 @@ angular.module('app').directive('lineChart', ['d3', '$rootScope', 'myConfig', '$
             //     return data;
             // })
 
-            var width = width - margin.left - margin.right;
-            var height = height - margin.top - margin.bottom;
+            var width = totalWidth - margin.left - margin.right;
+            var height = totalHeight - margin.top - margin.bottom;
 
             // var timeArray = timedata.map(function(data) {
             //     return new Date(data.created);
@@ -30,7 +30,8 @@ angular.module('app').directive('lineChart', ['d3', '$rootScope', 'myConfig', '$
                 }));
             var y = d3.scaleQuantize()
                 .domain([0, 2])
-                .range([height,0]);
+                .range([height, 0])
+
             // console.log("y(1.5)", y(1.5));
 
             var line = d3.line()
@@ -47,12 +48,22 @@ angular.module('app').directive('lineChart', ['d3', '$rootScope', 'myConfig', '$
 
 
 
-            
-            // xAxis
-            //     .attr('transform', "translate(0, " + height + ")")
-            //     .call(d3.axisBottom(x).ticks(5).tickSizeOuter(0).tickSizeInner(0))
-            // yAxis
-            //     .call(d3.axisLeft(y));
+
+            xAxis
+                .attr('transform', "translate(0, " + height + ")")
+                .call(d3.axisBottom(x).ticks(2).tickSizeOuter(0).tickSizeInner(0))
+            yAxis
+                .call(d3.axisLeft(y).tickFormat(function(d){
+                    if (d=== 0) {
+                        return "";
+                    } else if (d === 2) {
+                        return "ON"
+                    } else {
+                        return ""
+                    }
+                    // console.log("axis y d", d);
+                    return d;
+                }).ticks(2).tickSizeOuter(0).tickSizeInner(0));
 
             splinePath
                 .datum(timedata)
@@ -78,7 +89,7 @@ angular.module('app').directive('lineChart', ['d3', '$rootScope', 'myConfig', '$
                 // console.log("line directive compile function");
                 svg = d3.select(elements[0])
                     .append('svg')
-                  
+
 
                 svgGroup = svg
                     .append('g')
@@ -95,10 +106,10 @@ angular.module('app').directive('lineChart', ['d3', '$rootScope', 'myConfig', '$
 
                 return function(scope, element, attrs) {
                     // $timeout(function() { responsivefy(svg) }, 100);
-                    var totalHeight = 44,
+                    var totalHeight = 38,
                         totalWidth = 120;
-                        svg.attr('width', totalWidth - margin.left - margin.right);
-                        svg.attr('height', totalHeight - margin.top - margin.bottom);
+                    svg.attr('width', totalWidth);
+                    svg.attr('height', totalHeight);
 
                     $rootScope.$watch('$root.popOverData', function(newVal, oldVal) {
 
@@ -107,7 +118,7 @@ angular.module('app').directive('lineChart', ['d3', '$rootScope', 'myConfig', '$
                             // console.log("I'm drawing");
                             // console.log("draw Data", $rootScope.popOverData);
                             // $timeout(function(){
-                                draw(svgGroup, totalHeight, totalWidth, $rootScope.popOverData);
+                            draw(svgGroup, totalHeight, totalWidth, $rootScope.popOverData);
                             // },500)
 
                         }
