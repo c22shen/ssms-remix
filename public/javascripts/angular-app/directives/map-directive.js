@@ -108,7 +108,7 @@ angular.module('app').directive('mapChart', ['d3', '$rootScope', 'myConfig', '$t
 
                 var determineStatusColor = function(iRms, statusChangeMoment) {
 
-                    debugger
+                    // debugger
                     if (iRms === undefined || iRms === null) {
                         return "white"
                     } else if (iRms > 1) {
