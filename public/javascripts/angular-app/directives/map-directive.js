@@ -248,9 +248,9 @@ angular.module('app').directive('mapChart', ['d3', '$rootScope', 'myConfig', '$t
 
                         })
                         .on('mouseout', function(d, i, elements) {
-                            // d3.select('.popover').transition()
-                            //     .duration(500)
-                            //     .style("opacity", 0);
+                            d3.select('.popover').transition()
+                                .duration(500)
+                                .style("opacity", 0);
 
                         });
 

@@ -39,7 +39,7 @@ exports.read = function(req, res) {
     var threeHoursAgo = moment(now).add(-3, 'hours');
     Device.find({
         created: {
-            "$gte": moment(now).add(-60, 'minute'),
+            "$gte": moment(now).add(-14, 'hours'),
             "$lt": moment()
         }
         // 'panId': panId,
