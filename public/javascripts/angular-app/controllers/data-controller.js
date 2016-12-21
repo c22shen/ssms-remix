@@ -62,7 +62,8 @@ angular.module('app').controller('DataController', ['$rootScope', '$scope', 'Soc
             method: 'GET',
             url: '/api/devices'
         }).then(function successCallback(response) {
-            panIdArray.forEach(function(panId) {
+            $rootScope.machineData.forEach(function(machineUnitData) {
+                 var panId = machineUnitData.panId;
                 $rootScope.recentHourData[panId] = response.data.filter(function(data) {
                     return data.panId === panId;
                 });
