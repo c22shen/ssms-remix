@@ -16,6 +16,14 @@ angular.module('app').directive('lineChart', ['d3', '$rootScope', 'myConfig', '$
             //     return data;
             // })
 
+            if (timedata.length < 2 || timedata.filter(function(d) {
+                    d.iRms > 1
+                }).length === 0) {
+                $rootScope.displayText = true;
+
+            } else {
+                $rootScope.displayText = false;
+            }
             var width = totalWidth - margin.left - margin.right;
             var height = totalHeight - margin.top - margin.bottom;
 
@@ -53,8 +61,8 @@ angular.module('app').directive('lineChart', ['d3', '$rootScope', 'myConfig', '$
                 .attr('transform', "translate(0, " + height + ")")
                 .call(d3.axisBottom(x).ticks(2).tickSizeOuter(0).tickSizeInner(0))
             yAxis
-                .call(d3.axisLeft(y).tickFormat(function(d){
-                    if (d=== 0) {
+                .call(d3.axisLeft(y).tickFormat(function(d) {
+                    if (d === 0) {
                         return "";
                     } else if (d === 2) {
                         return "ON"
@@ -106,7 +114,7 @@ angular.module('app').directive('lineChart', ['d3', '$rootScope', 'myConfig', '$
 
                 return function(scope, element, attrs) {
                     // $timeout(function() { responsivefy(svg) }, 100);
-                    var totalHeight = 38,
+                    var totalHeight = 65,
                         totalWidth = 120;
                     svg.attr('width', totalWidth);
                     svg.attr('height', totalHeight);
