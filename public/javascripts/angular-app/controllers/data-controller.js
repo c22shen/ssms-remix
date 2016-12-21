@@ -5,15 +5,6 @@ angular.module('app').controller('DataController', ['$rootScope', '$scope', 'Soc
 
         $rootScope.myConfig = myConfig;
         $rootScope.recentHourData = {};
-        var panIdArray = ["0013A20040B09A44",
-            '0013A20040D7B896',
-            "0013A20041629B6A",
-            "0013A20041629B72",
-            "0013A20041629B76",
-            "0013A20041629B77",
-            "0013A20040D7B872",
-            "0013A20040D7B885"
-        ];
         $rootScope.machineData = [{
             type: 'M',
             panId: "0013A20040B09A44",
@@ -58,7 +49,7 @@ angular.module('app').controller('DataController', ['$rootScope', '$scope', 'Soc
             text: "Lathe 2"
         }, {
             type: 'L',
-            panId: "0013A20040D7B885",
+            panId: "0013A20041629B6C",
             xCoordinate: 120,
             yCoordinate: 70,
             text: "Lathe 3"
@@ -81,8 +72,8 @@ angular.module('app').controller('DataController', ['$rootScope', '$scope', 'Soc
         });
 
 
-        panIdArray.forEach(function(panId) {
-
+        $rootScope.machineData.forEach(function(machineUnitData) {
+            var panId = machineUnitData.panId;
             Socket.on(panId, function(updateMsg) {
 
                 console.log("Date: ", new Date());

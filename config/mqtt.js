@@ -30,14 +30,14 @@ module.exports = function(io) {
     // var topic_url = "0013A20040B09A44";
     var mqttClient = mqtt.connect(mqtt_url);
     mqttClient.on('connect', function() { // When connected
-        mqttClient.subscribe("0013A20040B09A44");
-        mqttClient.subscribe("0013A20040D7B896");
-        mqttClient.subscribe("0013A20041629B6A");
-        mqttClient.subscribe("0013A20041629B72");
+        mqttClient.subscribe("0013A20041629B6C");
         mqttClient.subscribe("0013A20041629B76");
+        mqttClient.subscribe("0013A20040D7B896");
+        mqttClient.subscribe("0013A20041629B72");
         mqttClient.subscribe("0013A20041629B77");
+        mqttClient.subscribe("0013A20041629B6A");
         mqttClient.subscribe("0013A20040D7B872");
-        mqttClient.subscribe("0013A20040D7B885");
+        mqttClient.subscribe("0013A20040B09A44");
     })
 
     // mqttClient.randomPublish = function() {
