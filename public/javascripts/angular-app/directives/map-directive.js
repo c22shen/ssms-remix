@@ -229,25 +229,31 @@ angular.module('app').directive('mapChart', ['d3', '$rootScope', 'myConfig', '$t
                             //     })
                             //     .then(function() {}, function() {});
                         })
-                        .on('mouseover', function(d, i, elements) {
+                        .on('mouseover', function(mouseoverData, i, elements) {
 
-                            if (!!d.iRms) {
+                            if (!!mouseoverData.iRms) {
+                                d3.select(this).style("cursor", "pointer");
                                 var popoverDiv = d3.select('.popover').transition()
                                     .duration(200)
                                     .style("opacity", 0.95)
-                                    .style("background-color", determineStatusColor(d.iRms))
-                                    .style("left", (d3.event.pageX) + "px")
-                                    .style("top", (d3.event.pageY - 28) + "px");
-                                d3.select('.popover .machineName').html(d.text);
-                                d3.select('.popover .machineStatus').html($rootScope.determineStatus(d.iRms));
+                                    // .style("background-color", determineStatusColor(mouseoverData.iRms))
+                                    .style("left", (d3.event.pageX - 60) + "px")
+                                    .style("top", (d3.event.pageY + 18) + "px");
+                                // d3.select('.popover .machineName').html(mouseoverData.text);
+                                // d3.select('.popover .machineStatus').html($rootScope.determineStatus(d.iRms));
                                 $rootScope.$apply(function() { // This wraps the changes.
-                                    $rootScope.popOverData = $rootScope.recentHourData[d.panId];
+                                    $rootScope.popOverPanId = mouseoverData.panId;
+                                    $rootScope.popOverIndex = $rootScope.machineData.findIndex(function(d){
+                                        return mouseoverData.panId === d.panId;
+                                    });
+
                                     // console.log("mouseover popOVerData", $rootScope.popOverData);
                                 });
                             }
 
                         })
                         .on('mouseout', function(d, i, elements) {
+                            d3.select(this).style("cursor", "default");
                             d3.select('.popover').transition()
                                 .duration(500)
                                 .style("opacity", 0);

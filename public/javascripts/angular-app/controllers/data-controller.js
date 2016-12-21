@@ -83,16 +83,16 @@ angular.module('app').controller('DataController', ['$rootScope', '$scope', 'Soc
                 // if (updateMsg>0) {
                 //     statusString = "ON";
                 // }
+                var parsedCurrent = parseFloat(updateMsg);
                 var statusUpdate = {
                         panId: panId,
                         created: new Date(),
-                        iRms: parseFloat(updateMsg)
+                        iRms: parsedCurrent
                     }   
                     // debugger
                 $rootScope.recentHourData[panId].shift();
                 $rootScope.recentHourData[panId].push(statusUpdate);
                 // console.log("just pushed array", $rootScope.recentHourData[panId]);
-
                 $rootScope.machineData = $rootScope.machineData.map(function(data) {
                     if (data.panId === panId) {
                         data.iRms = updateMsg;

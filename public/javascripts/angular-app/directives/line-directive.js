@@ -9,7 +9,9 @@ angular.module('app').directive('lineChart', ['d3', '$rootScope', 'myConfig', '$
 
         var draw = function(svgGroup, totalHeight, totalWidth, timedata) {
 
-
+            // var timedata = $rootScope.recentHourData[panId];
+            // console.log("panId", panId);
+            // console.log("timedata", timedata);
             // if (timedata.length < 2 || timedata.filter(function(d) {
             //         d.iRms > 1
             //     }).length === 0) {
@@ -113,14 +115,16 @@ angular.module('app').directive('lineChart', ['d3', '$rootScope', 'myConfig', '$
                     svg.attr('width', totalWidth);
                     svg.attr('height', totalHeight);
 
-                    $rootScope.$watch('$root.popOverData', function(newVal, oldVal) {
+                    $rootScope.$watch('$root.recentHourData[$root.popOverPanId]', function(newVal, oldVal) {
 
                         // Update the chart
-                        if (!!newVal) {
+                        var machineRecentData = $rootScope.recentHourData[$rootScope.popOverPanId];
+                        if (!!machineRecentData) {
+
                             // console.log("I'm drawing");
                             // console.log("draw Data", $rootScope.popOverData);
                             // $timeout(function(){
-                            draw(svgGroup, totalHeight, totalWidth, $rootScope.popOverData);
+                            draw(svgGroup, totalHeight, totalWidth, machineRecentData);
                             // },500)
 
                         }
