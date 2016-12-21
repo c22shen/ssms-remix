@@ -208,8 +208,8 @@ angular.module('app').directive('mapChart', ['d3', '$rootScope', 'myConfig', '$t
                     update.select('.machinePath')
                         // .transition(transitionStyle)
                         .style('fill', function(data) {
-                            console.log("data iRms", data.iRms);
-                            console.log("data statusChangeTime", data.statusChangeMoment);
+                            // console.log("data iRms", data.iRms);
+                            // console.log("data statusChangeTime", data.statusChangeMoment);
                             return determineStatusColor(data.iRms, data.statusChangeMoment);
                         });
 
@@ -247,7 +247,7 @@ angular.module('app').directive('mapChart', ['d3', '$rootScope', 'myConfig', '$t
                         })
                         .on('mouseover', function(mouseoverData, i, elements) {
 
-                            if (!!mouseoverData.iRms) {
+                            if (mouseoverData.iRms !== undefined && mouseoverData.iRms !== null) {
                                 d3.select(this).style("cursor", "pointer");
                                 var popoverDiv = d3.select('.popover').transition()
                                     .duration(200)
