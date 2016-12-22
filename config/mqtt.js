@@ -10,17 +10,9 @@ var jsonfile = require('jsonfile')
 var file = '/tmp/devicesNow.json'
 
 var mostCurrentData = {
-    "0013A20040B09A44": 0
 }
 
-var getMachineType = function(machineId) {
-    return 0;
-}
 
-var getMachineStatus = function(currentValue) {
-    var currentVal = parseInt(currentValue) || 0;
-    return currentVal;
-}
 
 module.exports = function(io) {
     // Parse 
@@ -84,6 +76,7 @@ var halfNHourAgo = moment(now).add(-30, 'minutes')
     mqttClient.on('message', function(panId, iRms) {
         console.log("panId", panId);
         console.log("iRms", parseFloat(iRms).toFixed(2));
+        console.log("mostCurrentData", mostCurrentData); 
         // var buffer = new ArrayBuffer(4);
         // var dataview = new DataView(iRms);
         // console.log(dataview.getFloat32(1)); // 0
