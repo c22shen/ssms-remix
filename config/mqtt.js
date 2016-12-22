@@ -82,7 +82,7 @@ module.exports = function(io) {
         // mqttClient.subscribe("0013A20041629B76");
         // mqttClient.subscribe("0013A20040D7B896");
         // mqttClient.subscribe("0013A20041629B72");
-        // mqttClient.subscribe("0013A20041629B77");
+        mqttClient.subscribe("0013A20041629B77");
         // mqttClient.subscribe("0013A20041629B6A");
         // mqttClient.subscribe("0013A20040D7B872");
         mqttClient.subscribe("0013A20040B09A44");
@@ -138,10 +138,10 @@ module.exports = function(io) {
         // console.log(dataview.getFloat32(1)); // 0
 
 
-            var rightNow = new moment();
-            var openCloseInfo = timeAvailable[rightNow.day()];
-            var openTime = new moment({ h: openCloseInfo.open.hour, m: openCloseInfo.open.minute });
-            var closeTime = new moment({ h: openCloseInfo.close.hour, m: openCloseInfo.close.minute });
+        var rightNow = new moment();
+        var openCloseInfo = timeAvailable[rightNow.day()];
+        var openTime = new moment({ h: openCloseInfo.open.hour, m: openCloseInfo.open.minute });
+        var closeTime = new moment({ h: openCloseInfo.close.hour, m: openCloseInfo.close.minute });
 
 
 
@@ -157,12 +157,7 @@ module.exports = function(io) {
                 "$lt": closeTime
             }
         }, {}, { sort: { 'created': -1 } }, function(err, lastAvailableData) {
-            // console.log("this should be the last record recorded", data);
-            console.log("currentValue", currentValue);
-            console.log("lastAvailableData iRms", lastAvailableData.iRms);
-            console.log("Math.abs(currentValue - data.iRms)", Math.abs(currentValue - lastAvailableData.iRms));
-            // var recentRecordDate = new moment(lastAvailableData.created);
-           
+
             if (rightNow > openTime && rightNow < closeTime && (!lastAvailableData || Math.abs(currentValue - lastAvailableData.iRms) > 0.1)) {
                 var device = new Device();
                 device.iRms = currentValue;

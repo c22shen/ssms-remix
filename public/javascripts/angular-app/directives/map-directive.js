@@ -233,7 +233,10 @@ angular.module('app').directive('mapChart', ['d3', '$rootScope', 'myConfig', '$t
                         .attr('d', function(data) {
                             return pathPerType[data.type];
                         })
-                        .style('fill', 'white')
+                        .style('fill', function(d){
+                            console.log("fill data", d);
+                            return 'white';
+                        })
                         .attr('transform', function(data) {
                             return "translate( " + data.xCoordinate + ',' + data.yCoordinate + '), scale(0.35,0.35)';
                         })
@@ -278,7 +281,7 @@ angular.module('app').directive('mapChart', ['d3', '$rootScope', 'myConfig', '$t
 
                     scope.$watch('$root.machineData', function() {
                         render(scope);
-                    });
+                    }, true);
 
                     // element.removeAttr("map-chart");
                     //  $compile(element)(scope);

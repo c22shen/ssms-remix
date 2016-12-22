@@ -13,7 +13,7 @@ angular.module('app').controller('DataController', ['$rootScope', 'd3', '$scope'
                 return 'In Use'
             } else if (status === 'idle') {
                 return "Available"
-            } else if (status === 'unsure'){
+            } else if (status === 'unsure') {
                 return "Used recently"
             } else {
                 return "No data available"
@@ -122,9 +122,25 @@ angular.module('app').controller('DataController', ['$rootScope', 'd3', '$scope'
         }).then(function successCallback(response) {
             $rootScope.machineData.forEach(function(machineUnitData) {
                 var panId = machineUnitData.panId;
+
                 $rootScope.recentHourData[panId] = response.data.filter(function(data) {
                     return data.panId === panId;
+                }).sort(function(a, b) {
+                    return new Date(b) > new Date(a);
                 });
+                var recentDataSet = $rootScope.recentHourData[panId];
+                if (recentDataSet.length > 0) {
+                    var mostRecentData = recentDataSet[recentDataSet.length - 1];
+                    machineUnitData.iRms = mostRecentData.iRms;
+                    machineUnitData.statusChangeMoment = new moment(mostRecentData.created); //assumption
+                    // machineUnitData.datetime = machineUnitData.statusChangeMoment.format("h:mm:ssa");
+
+                    var statusAndColor = determineStatusColor(machineUnitData.iRms, machineUnitData.statusChangeMoment);
+                    machineUnitData.status = statusAndColor.status;
+                    machineUnitData.statusColor = statusAndColor.color;
+                }
+
+
             })
         }, function errorCallback(errr) {
             console.log('retrieving database error!');
@@ -143,13 +159,13 @@ angular.module('app').controller('DataController', ['$rootScope', 'd3', '$scope'
                 // }
                 var parsedCurrent = parseFloat(updateMsg);
                 var statusUpdate = {
-                    panId: panId,
-                    created: new Date(),
-                    iRms: parsedCurrent
-                }
-                if ($rootScope.recentHourData[panId].length>360) {
-                    $rootScope.recentHourData[panId].shift();
-                }
+                        panId: panId,
+                        created: new Date(),
+                        iRms: parsedCurrent
+                    }
+                    // if ($rootScope.recentHourData[panId].length>360) {
+                    // $rootScope.recentHourData[panId].shift();
+                    // }
                 $rootScope.recentHourData[panId].push(statusUpdate);
                 $rootScope.machineData = $rootScope.machineData.map(function(data) {
                     if (data.panId === panId) {
