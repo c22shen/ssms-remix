@@ -42,6 +42,7 @@ angular.module('app').directive('lineChart', ['d3', '$rootScope', 'myConfig', '$
             // console.log("y(1.5)", y(1.5));
 
             var line = d3.line()
+                .curve(d3.curveStepBefore)
                 .x(function(d) {
                     // console.log("d.created", d.created);
                     // console.log("d.created", x(new Date(d.created)));
