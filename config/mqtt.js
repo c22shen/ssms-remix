@@ -22,13 +22,13 @@ module.exports = function(io) {
     // var topic_url = "0013A20040B09A44";
     var mqttClient = mqtt.connect(mqtt_url);
     mqttClient.on('connect', function() { // When connected
-        mqttClient.subscribe("0013A20041629B6C");
-        mqttClient.subscribe("0013A20041629B76");
-        mqttClient.subscribe("0013A20040D7B896");
-        mqttClient.subscribe("0013A20041629B72");
-        mqttClient.subscribe("0013A20041629B77");
-        mqttClient.subscribe("0013A20041629B6A");
-        mqttClient.subscribe("0013A20040D7B872");
+        // mqttClient.subscribe("0013A20041629B6C");
+        // mqttClient.subscribe("0013A20041629B76");
+        // mqttClient.subscribe("0013A20040D7B896");
+        // mqttClient.subscribe("0013A20041629B72");
+        // mqttClient.subscribe("0013A20041629B77");
+        // mqttClient.subscribe("0013A20041629B6A");
+        // mqttClient.subscribe("0013A20040D7B872");
         mqttClient.subscribe("0013A20040B09A44");
     })
 
@@ -85,9 +85,12 @@ module.exports = function(io) {
         panId = panId.toString();
         io.emit(panId, currentValue);
 
-        Device.findOne({ 'panId': panId }, {}, { sort: { 'created_at': -1 } }, function(err, data) {
+        Device.findOne({ 'panId': panId }, {}, { sort: { 'created': -1 } }, function(err, data) {
             console.log("this should be the last record recorded", data);
-            if (Math.abs(currentValue - data.iRms) > 0.1) {
+            console.log("currentValue", currentValue);
+            console.log("data.iRms", data.iRms);
+            console.log("Math.abs(currentValue - data.iRms)", Math.abs(currentValue - data.iRms));
+            if (Math.abs(currentValue - data.iRms) > 0.1 ) {
                 var device = new Device();
                 device.iRms = currentValue;
                 device.panId = panId;

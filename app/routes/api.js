@@ -7,6 +7,9 @@
 module.exports = function(app) {
 var device = require(appRoot + '/app/controllers/device.controller');
 
+	// Set up the 'articles' base routes 
+	app.route('/api/devices30')
+	   .get(device.readAll)
 
 	// Set up the 'articles' base routes 
 	app.route('/api/devices')

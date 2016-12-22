@@ -19,13 +19,18 @@ exports.create = function(req, res) {
 };
 
 exports.readAll = function(req, res) {
-
-    Device.find(function(err, devices) {
+    // ,{ sort: { 'created_at': 1 } }
+    Device.find({
+        created: {
+            "$gte": moment({ hour: 8, minute: 30 }),
+            "$lt": moment({ hour: 21, minute: 0 })
+        }
+    }, 'panId created iRms -_id', function(err, devices) {
         if (err) {
             res.send(err);
         }
         res.json(devices);
-    });
+    })
 };
 
 exports.read = function(req, res) {
@@ -37,8 +42,8 @@ exports.read = function(req, res) {
     var fiveHourAgo = moment(now).add(-5, 'hours');
     var tenHoursAgo = moment(now).add(-10, 'hours');
     var threeHoursAgo = moment(now).add(-3, 'hours');
-//     var today = moment().startOf('day')
-// var tomorrow = moment(today).add(1, 'days')
+    //     var today = moment().startOf('day')
+    // var tomorrow = moment(today).add(1, 'days')
     Device.find({
         created: {
             "$gte": moment(now).add(-1, 'hours'),
