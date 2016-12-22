@@ -71,64 +71,6 @@ angular.module('app').directive('mapChart', ['d3', '$rootScope', 'myConfig', '$t
                 var width = totalWidth - margin.left - margin.right;
                 var height = totalHeight - margin.top - margin.bottom;
                 var fontSize = 10;
-                // var transitionStyle = d3.transition();
-
-
-
-                $rootScope.determineStatus = function(iRms) {
-                    if (!iRms) {
-                        return "No data"
-                    } else if (iRms > 1) {
-                        return "In Use"
-                    } else {
-                        return "Available"
-                    }
-                }
-
-                $rootScope.determineStatus = function(iRms) {
-                    if (!iRms) {
-                        return "No data"
-                    } else if (iRms > 1) {
-                        return "In Use"
-                    } else {
-                        return "Available"
-                    }
-                }
-
-                $rootScope.determineStatusClass = function(iRms) {
-                    if (!iRms) {
-                        return "noDataStyle"
-                    } else if (iRms > 1) {
-                        return "busyStyle"
-                    } else {
-                        return "freeStyle"
-                    }
-                }
-
-
-                var determineStatusColor = function(iRms, statusChangeMoment) {
-
-                    // debugger
-                    if (iRms === undefined || iRms === null) {
-                        return "white"
-                    } else if (iRms > 1) {
-                        return "#e74c3c"
-                    } else {
-                        // debugger
-                        if (!!statusChangeMoment) {
-                            var now = moment();
-                            var duration = moment.duration(now.diff(statusChangeMoment));
-                            var minutes = duration.asMinutes();
-                            if (minutes < 15) {
-                                return "#f39c12";
-                            } else {
-                                return "#1abc9c";
-                            }
-                        } else {
-                            return "#1abc9c";
-                        }
-                    }
-                }
 
 
                 svg = d3.select(elements[0]).append('svg')
@@ -136,9 +78,6 @@ angular.module('app').directive('mapChart', ['d3', '$rootScope', 'myConfig', '$t
                     .attr('height', totalHeight)
                     .call(responsivefy);
 
-                // var div = d3.select(elements[0]).append("div")
-                //     .attr("class", "tooltip")
-                //     .style("opacity", 0);
 
                 var group = svg
                     .append('g')
@@ -210,7 +149,7 @@ angular.module('app').directive('mapChart', ['d3', '$rootScope', 'myConfig', '$t
                         .style('fill', function(data) {
                             // console.log("data iRms", data.iRms);
                             // console.log("data statusChangeTime", data.statusChangeMoment);
-                            return determineStatusColor(data.iRms, data.statusChangeMoment);
+                            return data.statusColor;
                         });
 
                     update.select('.timeText')

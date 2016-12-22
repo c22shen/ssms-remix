@@ -31,7 +31,7 @@
                     <img ng-src="{{machineInfo.type === 'M' ? 'images/milling.svg' : 'images/lathe.svg'}}" class="md-avatar" style="border-radius: 0;" />
                     <div class="md-list-item-text" layout="column">
                         <h3>{{machineInfo.text}}</h3>
-                        <h4 style="font-size:larger" ng-class="$root.determineStatusClass(machineInfo.iRms)">{{$root.determineStatus(machineInfo.iRms)}}</h4>
+                        <h4 style="font-size:larger" ng-style="{'color': machineInfo.statusColor}">{{$root.determineStatusString(machineInfo.status)}}</h4>
                         <h4>{{machineInfo.datetime}}</h4>
                     </div>
                 </md-list-item>
@@ -76,7 +76,7 @@
             </div>
             <div class="map" layout="row" layout-align="center top" style="display: block; margin: 2em auto" id="map" map-chart>
             </div>
-            <div class="popover" ng-class="$root.machineData[$root.popOverIndex].iRms<1 ? 'tileAvailableBackground' : 'tileBusyBackground' ">
+            <div class="popover" ng-style="{'background-color': $root.machineData[$root.popOverIndex].statusColor}">
                 <div style="font-size: smaller"><b>Over the last hour...</b></div>
                 <!-- <span class="machineName"></span><span style="float:right" class="machineStatus"></span> -->
                 <div line-chart class="lineChart" id="popOverChart" style="margin: 0 auto;" data="$root.tempChartData"></div>

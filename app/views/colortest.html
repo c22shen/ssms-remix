@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title></title>
+    <style type="text/css" media="screen">
+    div {
+        width: 60px;
+        height: 60px;
+        float: left;
+        margin: 1px;
+    }
+    </style>
+</head>
+
+<body>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script src="https://d3js.org/d3.v4.min.js"></script>
+    <script type="text/javascript">
+    var interpolateStyles = [
+        d3.interpolateHsl,
+        d3.interpolateHslLong,
+        d3.interpolateLab,
+        d3.interpolateHcl,
+        d3.interpolateCubehelix,
+        d3.interpolateCubehelixLong
+    ]
+
+    var body = d3.select("body"),
+        length = 15;
+
+
+    interpolateStyles.forEach(function(style) {
+        var color = d3.scaleLinear().domain([1, length])
+            .interpolate(style)
+            .range(["#e74c3c", "#1abc9c"]);
+        for (var i = 0; i < length; i++) {
+            body.append('div').attr('style', function(d) {
+                return 'background-color: ' + color(i);
+            });
+            if(i === (length -1)){
+              body.append('div').html("<br>")
+            }
+        }
+    })
+
+var color = d3.scaleLinear().domain([1, Math.round(length/2), length])
+           .range(["#e74c3c", "#F39C12", "#1abc9c"]);
+        for (var i = 0; i < length; i++) {
+            body.append('div').attr('style', function(d) {
+                return 'background-color: ' + color(i);
+            });
+
+        }
+
+
+    </script>
+</body>
+
+</html>

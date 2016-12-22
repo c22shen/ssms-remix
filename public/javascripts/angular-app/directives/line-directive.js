@@ -27,6 +27,9 @@ angular.module('app').directive('lineChart', ['d3', '$rootScope', 'myConfig', '$
             //     return new Date(data.created);
             // })
 
+            // pass in color
+            // console.log("colorScale(7)", colorScale(8));
+
             var x = d3.scaleTime()
                 .rangeRound([0, width])
                 .domain(d3.extent(timedata, function(d) {

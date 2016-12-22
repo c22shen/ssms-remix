@@ -1,7 +1,56 @@
-angular.module('app').controller('DataController', ['$rootScope', '$scope', 'Socket', 'myConfig', '$mdDialog', '$http',
-    function($rootScope, $scope, Socket, myConfig, $mdDialog, $http) {
+angular.module('app').controller('DataController', ['$rootScope', 'd3', '$scope', 'Socket', 'myConfig', '$mdDialog', '$http',
+    function($rootScope, d3, $scope, Socket, myConfig, $mdDialog, $http) {
 
         var self = this;
+
+        var colorScale = d3.scaleLinear()
+            .domain([0, 7.5, 15])
+            // .interpolate(d3.interpolateCubehelixLong)
+            .range(["#e74c3c", "#F39C12", "#1abc9c"]);
+
+        $rootScope.determineStatusString = function(status) {
+            if (status === 'busy') {
+                return 'In Use'
+            } else if (status === 'idle') {
+                return "Available"
+            } else if (status === 'unsure'){
+                return "Used recently"
+            } else {
+                return "No data available"
+            }
+        }
+
+        var determineStatusColor = function(iRms, statusChangeMoment) {
+            var result = {
+                status: null,
+                color: "white"
+            }
+            if (iRms === undefined || iRms === null) {
+                return result;
+            }
+
+            if (iRms > 1) {
+                result.status = "busy";
+                result.color = "#e74c3c";
+            } else if (!!statusChangeMoment) {
+                var now = moment();
+                var duration = moment.duration(now.diff(statusChangeMoment));
+                var minutes = duration.asMinutes();
+                if (minutes < 15) {
+                    result.status = "unsure";
+                    result.color = colorScale(minutes);
+                } else {
+                    result.status = "idle";
+                    result.color = "#1abc9c";
+                }
+            } else {
+                result.status = "idle";
+                result.color = "#1abc9c";
+            }
+            return result;
+        }
+
+
 
         $rootScope.myConfig = myConfig;
         $rootScope.recentHourData = {};
@@ -10,49 +59,58 @@ angular.module('app').controller('DataController', ['$rootScope', '$scope', 'Soc
             panId: "0013A20040B09A44",
             xCoordinate: 220,
             yCoordinate: 10,
-            text: "Mill 1"
+            text: "Mill 1",
+            statusColor: "white"
         }, {
             type: 'M',
             panId: "0013A20040D7B896",
             xCoordinate: 260,
             yCoordinate: 10,
-            text: "Mill 2"
+            text: "Mill 2",
+            statusColor: "white"
         }, {
             type: 'M',
             panId: "0013A20041629B6A",
             xCoordinate: 300,
             yCoordinate: 10,
-            text: "Mill 3"
+            text: "Mill 3",
+            statusColor: "white"
+
         }, {
             type: 'M',
             panId: "0013A20041629B72",
             xCoordinate: 340,
             yCoordinate: 10,
-            text: "Mill 4"
+            text: "Mill 4",
+            statusColor: "white"
         }, {
             type: 'M',
             panId: "0013A20041629B76",
             xCoordinate: 380,
             yCoordinate: 10,
-            text: "Mill 5"
+            text: "Mill 5",
+            statusColor: "white"
         }, {
             type: 'L',
             panId: "0013A20041629B77",
             xCoordinate: 120,
             yCoordinate: 10,
-            text: "Lathe 1"
+            text: "Lathe 1",
+            statusColor: "white"
         }, {
             type: 'L',
             panId: "0013A20040D7B872",
             xCoordinate: 170,
             yCoordinate: 10,
-            text: "Lathe 2"
+            text: "Lathe 2",
+            statusColor: "white"
         }, {
             type: 'L',
             panId: "0013A20041629B6C",
             xCoordinate: 120,
             yCoordinate: 70,
-            text: "Lathe 3"
+            text: "Lathe 3",
+            statusColor: "white"
         }];
 
 
@@ -63,7 +121,7 @@ angular.module('app').controller('DataController', ['$rootScope', '$scope', 'Soc
             url: '/api/devices'
         }).then(function successCallback(response) {
             $rootScope.machineData.forEach(function(machineUnitData) {
-                 var panId = machineUnitData.panId;
+                var panId = machineUnitData.panId;
                 $rootScope.recentHourData[panId] = response.data.filter(function(data) {
                     return data.panId === panId;
                 });
@@ -72,7 +130,6 @@ angular.module('app').controller('DataController', ['$rootScope', '$scope', 'Soc
             console.log('retrieving database error!');
         });
 
-        // function determineStatus()
 
         $rootScope.machineData.forEach(function(machineUnitData) {
             var panId = machineUnitData.panId;
@@ -86,20 +143,22 @@ angular.module('app').controller('DataController', ['$rootScope', '$scope', 'Soc
                 // }
                 var parsedCurrent = parseFloat(updateMsg);
                 var statusUpdate = {
-                        panId: panId,
-                        created: new Date(),
-                        iRms: parsedCurrent
-                    }   
+                    panId: panId,
+                    created: new Date(),
+                    iRms: parsedCurrent
+                }
                 $rootScope.recentHourData[panId].shift();
                 $rootScope.recentHourData[panId].push(statusUpdate);
                 $rootScope.machineData = $rootScope.machineData.map(function(data) {
                     if (data.panId === panId) {
-                        if (Math.abs(data.iRms-updateMsg)>1){
+                        if (Math.abs(data.iRms - updateMsg) > 1) {
                             // statusChange
                             data.statusChangeMoment = new moment();
                         }
                         data.iRms = parsedCurrent;
-                        data.status = 
+                        var statusAndColor = determineStatusColor(data.iRms, data.statusChangeMoment);
+                        data.status = statusAndColor.status;
+                        data.statusColor = statusAndColor.color;
                         data.datetime = new moment().format("h:mm:ssa");
                     }
                     return data;

@@ -32,14 +32,17 @@ body[ng-cloak] {
 	color: #1abc9c !important;
 }
 
-.tileAvailableBackground {
+.idle {
 	background-color: #1abc9c;
 }
 
-.tileBusyBackground {
+.busy {
 	background-color: #e74c3c;
 }
 
+.maybe {
+	background-color: #f39c12;
+}
 
 div.popover {
   position: absolute;
