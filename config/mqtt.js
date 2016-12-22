@@ -9,8 +9,8 @@ var jsonfile = require('jsonfile')
 
 var file = '/tmp/devicesNow.json'
 
-var mostCurrentData = {
-}
+// var mostCurrentData = {
+// }
 
 
 
@@ -47,36 +47,36 @@ module.exports = function(io) {
 
 
 
-//     var today = moment().startOf('day')
-// var tomorrow = moment(today).add(1, 'days')
+    //     var today = moment().startOf('day')
+    // var tomorrow = moment(today).add(1, 'days')
 
     var now = moment();
-var halfNHourAgo = moment(now).add(-30, 'minutes')
+    var halfNHourAgo = moment(now).add(-30, 'minutes')
 
-// {"$gte": new Date(2012, 7, 14), "$lt": new Date(2012, 7, 15)}
+    // {"$gte": new Date(2012, 7, 14), "$lt": new Date(2012, 7, 15)}
 
-// Device.find({
-//   created: {
-//     "$gte": halfNHourAgo,
-//     "$lt": now
-//   },
-//   'panId': '0013A20040B09A44',
-//   // 'iRms': {
-//   //   "$gte": 1
-//   // }
-// }, 'created iRms -_id', function (err, devices) {
-//     console.log("devices", devices);
-//     console.log("devices number", devices.length);
-//     var json = JSON.stringify(devices);
-//     console.log(json);
-//     // fs.writeFile('myjsonfile.json', json, 'utf8', function(){});
-// })
+    // Device.find({
+    //   created: {
+    //     "$gte": halfNHourAgo,
+    //     "$lt": now
+    //   },
+    //   'panId': '0013A20040B09A44',
+    //   // 'iRms': {
+    //   //   "$gte": 1
+    //   // }
+    // }, 'created iRms -_id', function (err, devices) {
+    //     console.log("devices", devices);
+    //     console.log("devices number", devices.length);
+    //     var json = JSON.stringify(devices);
+    //     console.log(json);
+    //     // fs.writeFile('myjsonfile.json', json, 'utf8', function(){});
+    // })
 
 
     mqttClient.on('message', function(panId, iRms) {
         console.log("panId", panId);
         console.log("iRms", parseFloat(iRms).toFixed(2));
-        console.log("mostCurrentData", mostCurrentData); 
+        // console.log("mostCurrentData", mostCurrentData); 
         // var buffer = new ArrayBuffer(4);
         // var dataview = new DataView(iRms);
         // console.log(dataview.getFloat32(1)); // 0
@@ -84,21 +84,28 @@ var halfNHourAgo = moment(now).add(-30, 'minutes')
         var currentValue = parseFloat(iRms).toFixed(2);
         panId = panId.toString();
         io.emit(panId, currentValue);
-        if (Math.abs(currentValue-mostCurrentData[panId])>0.1) {
-            var device = new Device();
-            device.iRms = currentValue;
-            device.panId = panId;
 
-            device.save(function(err) {
-                if (err) {
-                    console.log(err);
-                } else {
-                    console.log("device saved");
-                }
-                
-                mostCurrentData[panId] =currentValue; 
-            })
-        }
+        Device.findOne({ 'panId': panId }, {}, { sort: { 'created_at': -1 } }, function(err, data) {
+            console.log("this should be the last record recorded", data);
+            if (Math.abs(currentValue - data.iRms) > 0.1) {
+                var device = new Device();
+                device.iRms = currentValue;
+                device.panId = panId;
+
+                device.save(function(err) {
+                    if (err) {
+                        console.log(err);
+                    } else {
+                        console.log("device saved");
+                    }
+
+                    // mostCurrentData[panId] = currentValue;
+                })
+            }
+
+        });
+
+
 
 
 
