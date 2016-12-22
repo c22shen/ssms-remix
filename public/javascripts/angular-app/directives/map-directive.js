@@ -149,7 +149,7 @@ angular.module('app').directive('mapChart', ['d3', '$rootScope', 'myConfig', '$t
                         .style('fill', function(data) {
                             // console.log("data iRms", data.iRms);
                             // console.log("data statusChangeTime", data.statusChangeMoment);
-                            return data.statusColor;
+                            return ($rootScope.storeAvailable && !$rootScope.onBreak) ? data.statusColor : 'white';
                         });
 
                     update.select('.timeText')
@@ -234,7 +234,6 @@ angular.module('app').directive('mapChart', ['d3', '$rootScope', 'myConfig', '$t
                             return pathPerType[data.type];
                         })
                         .style('fill', function(d){
-                            console.log("fill data", d);
                             return 'white';
                         })
                         .attr('transform', function(data) {

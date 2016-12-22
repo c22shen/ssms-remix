@@ -3,7 +3,7 @@
         <i class="fa fa-circle-o" aria-hidden="true" style="color:#9c5052"></i>
     </div> -->
     <div class="availability">
-        <b style="margin-right:10px" ng-class="storeAvailable ? 'free-text' : 'busy-text'">
+        <b style="margin-right:10px" ng-class="(storeAvailable && !onBreak) ? 'free-text' : 'busy-text'">
             {{statusString}}
         </b>
         <span>{{timeRange}}</span>
