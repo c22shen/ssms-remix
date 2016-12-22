@@ -29,7 +29,7 @@ angular.module('app').controller('DataController', ['$rootScope', 'd3', '$scope'
                 return result;
             }
 
-            if (iRms > 1) {
+            if (iRms >= 1) {
                 result.status = "busy";
                 result.color = "#e74c3c";
             } else if (!!statusChangeMoment) {
