@@ -7,10 +7,66 @@ var Device = require(appRoot + '/app/models/device');
 var moment = require('moment');
 var jsonfile = require('jsonfile')
 
-var file = '/tmp/devicesNow.json'
+// var file = '/tmp/devicesNow.json'
 
-// var mostCurrentData = {
-// }
+var weekDayBreakTime = [{
+    start: { hour: 12, minute: 0 },
+    end: { hour: 12, minute: 30 }
+}, {
+    start: { hour: 16, minute: 30 },
+    end: { hour: 17, minute: 0 }
+}, {
+    start: { hour: 19, minute: 0 },
+    end: { hour: 19, minute: 20 }
+}];
+
+
+var saturdayBreakTime = [{
+    start: { hour: 12, minute: 0 },
+    end: { hour: 12, minute: 30 }
+}, {
+    start: { hour: 15, minute: 0 },
+    end: { hour: 15, minute: 20 }
+}];
+var timeAvailable = {
+    0: {
+        open: { hour: 0, minute: 0 },
+        close: { hour: 0, minute: 0 }
+    },
+    1: {
+        open: { hour: 8, minute: 30 },
+        close: { hour: 17, minute: 0 },
+        break: weekDayBreakTime
+    },
+    2: {
+        open: { hour: 8, minute: 30 },
+        close: { hour: 21, minute: 0 },
+        break: weekDayBreakTime
+    },
+    3: {
+        open: { hour: 8, minute: 30 },
+        close: { hour: 21, minute: 0 },
+        break: weekDayBreakTime
+    },
+    4: {
+        open: { hour: 8, minute: 30 },
+        close: { hour: 21, minute: 0 },
+        break: weekDayBreakTime
+    },
+    5: {
+        open: { hour: 8, minute: 30 },
+        close: { hour: 21, minute: 0 },
+        break: weekDayBreakTime
+
+    },
+    6: {
+        open: { hour: 10, minute: 0 },
+        close: { hour: 17, minute: 0 },
+        break: saturdayBreakTime
+    }
+}
+
+
 
 
 
@@ -50,8 +106,8 @@ module.exports = function(io) {
     //     var today = moment().startOf('day')
     // var tomorrow = moment(today).add(1, 'days')
 
-    var now = moment();
-    var halfNHourAgo = moment(now).add(-30, 'minutes')
+    // var now = moment();
+    // var halfNHourAgo = moment(now).add(-30, 'minutes')
 
     // {"$gte": new Date(2012, 7, 14), "$lt": new Date(2012, 7, 15)}
 
@@ -81,16 +137,33 @@ module.exports = function(io) {
         // var dataview = new DataView(iRms);
         // console.log(dataview.getFloat32(1)); // 0
 
+
+            var rightNow = new moment();
+            var openCloseInfo = timeAvailable[rightNow.day()];
+            var openTime = new moment({ h: openCloseInfo.open.hour, m: openCloseInfo.open.minute });
+            var closeTime = new moment({ h: openCloseInfo.close.hour, m: openCloseInfo.close.minute });
+
+
+
+
         var currentValue = parseFloat(iRms).toFixed(2);
         panId = panId.toString();
         io.emit(panId, currentValue);
 
-        Device.findOne({ 'panId': panId }, {}, { sort: { 'created': -1 } }, function(err, data) {
-            console.log("this should be the last record recorded", data);
+        Device.findOne({
+            'panId': panId,
+            'created': {
+                "$gte": openTime,
+                "$lt": closeTime
+            }
+        }, {}, { sort: { 'created': -1 } }, function(err, lastAvailableData) {
+            // console.log("this should be the last record recorded", data);
             console.log("currentValue", currentValue);
-            console.log("data.iRms", data.iRms);
-            console.log("Math.abs(currentValue - data.iRms)", Math.abs(currentValue - data.iRms));
-            if (Math.abs(currentValue - data.iRms) > 0.1 ) {
+            console.log("lastAvailableData iRms", lastAvailableData.iRms);
+            console.log("Math.abs(currentValue - data.iRms)", Math.abs(currentValue - lastAvailableData.iRms));
+            // var recentRecordDate = new moment(lastAvailableData.created);
+           
+            if (rightNow > openTime && rightNow < closeTime && (!lastAvailableData || Math.abs(currentValue - lastAvailableData.iRms) > 0.1)) {
                 var device = new Device();
                 device.iRms = currentValue;
                 device.panId = panId;
@@ -101,8 +174,6 @@ module.exports = function(io) {
                     } else {
                         console.log("device saved");
                     }
-
-                    // mostCurrentData[panId] = currentValue;
                 })
             }
 

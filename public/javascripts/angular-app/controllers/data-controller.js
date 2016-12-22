@@ -147,7 +147,9 @@ angular.module('app').controller('DataController', ['$rootScope', 'd3', '$scope'
                     created: new Date(),
                     iRms: parsedCurrent
                 }
-                $rootScope.recentHourData[panId].shift();
+                if ($rootScope.recentHourData[panId].length>360) {
+                    $rootScope.recentHourData[panId].shift();
+                }
                 $rootScope.recentHourData[panId].push(statusUpdate);
                 $rootScope.machineData = $rootScope.machineData.map(function(data) {
                     if (data.panId === panId) {
