@@ -7,6 +7,7 @@ var app = angular.module('app', ['ngMaterial'])
 $mdIconProvider
               // .defaultIconSet(rootURL + "assets/svg/avatars.svg", 128)
               .icon("menu", "/images/menu.svg", 24)
+              .icon("legend", "/images/legend.svg", 18)
 
   $mdThemingProvider.theme('default')
     .primaryPalette('blue')

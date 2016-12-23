@@ -147,8 +147,6 @@ angular.module('app').directive('mapChart', ['d3', '$rootScope', 'myConfig', '$t
                     update.select('.machinePath')
                         // .transition(transitionStyle)
                         .style('fill', function(data) {
-                            // console.log("data iRms", data.iRms);
-                            // console.log("data statusChangeTime", data.statusChangeMoment);
                             return ($rootScope.storeAvailable && !$rootScope.onBreak) ? data.statusColor : 'white';
                         });
 

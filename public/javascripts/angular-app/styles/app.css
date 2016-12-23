@@ -63,3 +63,10 @@ div.popover {
     -moz-box-shadow: 5px 5px 5px #666;
     -webkit-box-shadow: 5px 5px 5px #666;
 }
+
+.legend md-icon{
+  min-height:18px;
+  min-width: 18px;
+  height:18px;
+  width: 18px;
+}

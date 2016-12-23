@@ -132,9 +132,11 @@ angular.module('app').controller('DataController', ['$rootScope', 'd3', '$scope'
                 if (recentDataSet.length > 0) {
                     var mostRecentData = recentDataSet[recentDataSet.length - 1];
                     machineUnitData.iRms = mostRecentData.iRms;
-                    machineUnitData.statusChangeMoment = new moment(mostRecentData.created); //assumption
+                    if (recentDataSet > 1) {
+                        // first one is initialization, not a state change
+                        machineUnitData.statusChangeMoment = new moment(mostRecentData.created); //assumption
+                    }
                     // machineUnitData.datetime = machineUnitData.statusChangeMoment.format("h:mm:ssa");
-
                     var statusAndColor = determineStatusColor(machineUnitData.iRms, machineUnitData.statusChangeMoment);
                     machineUnitData.status = statusAndColor.status;
                     machineUnitData.statusColor = statusAndColor.color;
@@ -146,8 +148,7 @@ angular.module('app').controller('DataController', ['$rootScope', 'd3', '$scope'
             console.log('retrieving database error!');
         });
 
-        Socket.on("INTERNAL", function(d){
-            // console.log("Internal messaging", d);
+        Socket.on("INTERNAL", function(d) {
             $rootScope.storeAvailable = d.isStoreOpen;
             $rootScope.onBreak = d.isOnBreak;
         })
@@ -158,43 +159,29 @@ angular.module('app').controller('DataController', ['$rootScope', 'd3', '$scope'
         $rootScope.machineData.forEach(function(machineUnitData) {
             var panId = machineUnitData.panId;
             Socket.on(panId, function(updateMsg) {
-
-                console.log("Date: ", new Date());
-                console.log("new current", updateMsg);
-                // var statusString="OFF";
-                // if (updateMsg>0) {
-                //     statusString = "ON";
-                // }
                 var parsedCurrent = parseFloat(updateMsg);
                 var statusUpdate = {
                         panId: panId,
-                        created: new Date(),
+                        created: new moment().utc().format(),
                         iRms: parsedCurrent
                     }
-                    // if ($rootScope.recentHourData[panId].length>360) {
-                    // $rootScope.recentHourData[panId].shift();
-                    // }
-                $rootScope.recentHourData[panId].push(statusUpdate);
-                $rootScope.machineData = $rootScope.machineData.map(function(data) {
-                    if (data.panId === panId) {
-                        if (Math.abs(data.iRms - updateMsg) > 1) {
-                            // statusChange
-                            data.statusChangeMoment = new moment();
+                    $rootScope.recentHourData[panId].push(statusUpdate);
+                    $rootScope.machineData = $rootScope.machineData.map(function(data) {
+                        if (data.panId === panId) {
+                            if (Math.abs(data.iRms - updateMsg) > 1) {
+                                // statusChange
+                                data.statusChangeMoment = new moment();
+                            }
+                            data.iRms = parsedCurrent;
+                            var statusAndColor = determineStatusColor(data.iRms, data.statusChangeMoment);
+                            data.status = statusAndColor.status;
+                            data.statusColor = statusAndColor.color;
+                            data.datetime = new moment().format("h:mm:ssa");
                         }
-                        data.iRms = parsedCurrent;
-                        var statusAndColor = determineStatusColor(data.iRms, data.statusChangeMoment);
-                        data.status = statusAndColor.status;
-                        data.statusColor = statusAndColor.color;
-                        data.datetime = new moment().format("h:mm:ssa");
-                    }
-                    return data;
-                })
-
+                        return data;
+                    })
             });
-
-        });
-
-
+        })
 
     }
 ]);

@@ -56,7 +56,7 @@ var timeAvailable = {
         break: weekDayBreakTime
     },
     5: {
-        open: { hour: 8, minute: 30 },
+        open: { hour: 11, minute: 15 },
         close: { hour: 21, minute: 0 },
         break: weekDayBreakTime
 
