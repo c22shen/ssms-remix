@@ -32,7 +32,8 @@ var saturdayBreakTime = [{
 var timeAvailable = {
     0: {
         open: { hour: 0, minute: 0 },
-        close: { hour: 0, minute: 0 }
+        close: { hour: 0, minute: 0 },
+        break: []
     },
     1: {
         open: { hour: 8, minute: 30 },
@@ -139,12 +140,27 @@ module.exports = function(io) {
         // console.log(dataview.getFloat32(1)); // 0
 
 
-        var rightNow = new moment();
-        var openCloseInfo = timeAvailable[rightNow.day()];
+        
 
         // var openTime = moment.tz( {}, "America/Toronto");
 
         var easternDate = moment.tz( {}, "America/Toronto").date();
+        var easternDay = moment.tz( {}, "America/Toronto").day();
+
+        var openCloseInfo = timeAvailable[easternDay];
+        var breakTimes = openCloseInfo.break;
+
+
+        var onBreak = false;
+        breakTimes.forEach(function(breakTime){
+            // console.log("breakTime", breakTime);
+            var breakTimeStart = moment.tz({ d: easternDate, h: breakTime.start.hour, m: breakTime.start.minute }, "America/Toronto");
+            var breakTimeTime = moment.tz({ d: easternDate, h: breakTime.end.hour, m: breakTime.end.minute }, "America/Toronto");
+            if (moment()>breakTimeStart && moment()<breakTimeTime) {
+                onBreak = true;
+            }
+        })
+
 
         // var openTime = new moment({ d: easternDate, h: openCloseInfo.open.hour, m: openCloseInfo.open.minute });
         // var closeTime = new moment({ d: easternDate, h: openCloseInfo.close.hour, m: openCloseInfo.close.minute });
@@ -156,9 +172,9 @@ module.exports = function(io) {
         // var closeTime = moment.tz( {}, "America/Toronto"); 
 
 
-console.log("openTime",openTime.utc().format());
-console.log("closeTime",closeTime.utc().format());
-console.log("now ",moment().format());
+// console.log("openTime",openTime.utc().format());
+// console.log("closeTime",closeTime.utc().format());
+// console.log("now ",moment().format());
         
 
         var currentValue = parseFloat(iRms).toFixed(2);
@@ -172,11 +188,13 @@ console.log("now ",moment().format());
                 "$lt": closeTime
             }
         }, {}, { sort: { 'created': -1 } }, function(err, lastAvailableData) {
-            console.log("lastAvailableData ", lastAvailableData);
-            console.log("rightNow > openTime", rightNow > openTime);
-            console.log("rightNow < closeTime", rightNow < closeTime);
+            // console.log("lastAvailableData ", lastAvailableData);
+            // console.log("rightNow > openTime", rightNow > openTime);
+            // console.log("rightNow < closeTime", rightNow < closeTime);
             // console.log("Math.abs(currentValue - lastAvailableData.iRms)", Math.abs(currentValue - lastAvailableData.iRms));
-            if (rightNow > openTime && rightNow < closeTime && (!lastAvailableData || Math.abs(currentValue - lastAvailableData.iRms) > 0.1)) {
+
+            // check break time
+            if (moment() > openTime && moment() < closeTime && !onBreak && (!lastAvailableData || Math.abs(currentValue - lastAvailableData.iRms) > 0.1)) {
                 var device = new Device();
                 device.iRms = currentValue;
                 device.panId = panId;
