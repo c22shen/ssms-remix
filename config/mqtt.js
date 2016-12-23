@@ -157,7 +157,10 @@ module.exports = function(io) {
                 "$lt": closeTime
             }
         }, {}, { sort: { 'created': -1 } }, function(err, lastAvailableData) {
-
+            console.log("lastAvailableData ", lastAvailableData);
+            console.log("rightNow > openTime", rightNow > openTime);
+            console.log("rightNow < closeTime", rightNow < closeTime);
+            console.log("Math.abs(currentValue - lastAvailableData.iRms)", Math.abs(currentValue - lastAvailableData.iRms));
             if (rightNow > openTime && rightNow < closeTime && (!lastAvailableData || Math.abs(currentValue - lastAvailableData.iRms) > 0.1)) {
                 var device = new Device();
                 device.iRms = currentValue;

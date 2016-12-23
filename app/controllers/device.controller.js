@@ -70,6 +70,9 @@ var openCloseInfo = timeAvailable[rightNow.day()];
 var openTime = new moment({ h: openCloseInfo.open.hour, m: openCloseInfo.open.minute });
 var closeTime = new moment({ h: openCloseInfo.close.hour, m: openCloseInfo.close.minute });
 
+console.log("openTime",openTime.format("h:mm A"));
+console.log("closeTime",closeTime.format("h:mm A"));
+
 
 
 
