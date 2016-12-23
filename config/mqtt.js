@@ -5,6 +5,7 @@ var mqtt = require('mqtt');
 var url = require('url');
 var Device = require(appRoot + '/app/models/device');
 var moment = require('moment');
+var moment = require('moment-timezone');
 var jsonfile = require('jsonfile')
 
 // var file = '/tmp/devicesNow.json'
@@ -140,13 +141,23 @@ module.exports = function(io) {
 
         var rightNow = new moment();
         var openCloseInfo = timeAvailable[rightNow.day()];
-        var openTime = new moment({ h: openCloseInfo.open.hour, m: openCloseInfo.open.minute });
-        var closeTime = new moment({ h: openCloseInfo.close.hour, m: openCloseInfo.close.minute });
+
+        // var openTime = moment.tz( {}, "America/Toronto");
+
+        var easternDate = moment.tz( {}, "America/Toronto").date();
+
+        var openTime = new moment({ d: easternDate, h: openCloseInfo.open.hour, m: openCloseInfo.open.minute });
+        var closeTime = new moment({ d: easternDate, h: openCloseInfo.close.hour, m: openCloseInfo.close.minute });
+        
+
+
+        // var closeTime = moment.tz( {}, "America/Toronto"); 
+
 
 console.log("openTime",openTime.format());
 console.log("closeTime",closeTime.format());
-
-
+console.log("now ",moment().format());
+        
 
         var currentValue = parseFloat(iRms).toFixed(2);
         panId = panId.toString();

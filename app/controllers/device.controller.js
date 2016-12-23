@@ -4,6 +4,7 @@
 // How to hook this up without calling the model file?
 var Device = require(appRoot + '/app/models/device');
 var moment = require('moment');
+var moment = require('moment-timezone');
 
 var weekDayBreakTime = [{
     start: { hour: 12, minute: 0 },
@@ -67,14 +68,14 @@ var timeAvailable = {
 
 var rightNow = new moment();
 var openCloseInfo = timeAvailable[rightNow.day()];
-var openTime = new moment({ h: openCloseInfo.open.hour, m: openCloseInfo.open.minute });
-var closeTime = new moment({ h: openCloseInfo.close.hour, m: openCloseInfo.close.minute });
 
-console.log("openTime",openTime.format("h:mm A"));
-console.log("closeTime",closeTime.format("h:mm A"));
+var easternDate = moment.tz( {}, "America/Toronto").date();
 
-
-
+var openTime = new moment({ d: easternDate, h: openCloseInfo.open.hour, m: openCloseInfo.open.minute });
+var closeTime = new moment({ d: easternDate, h: openCloseInfo.close.hour, m: openCloseInfo.close.minute });
+       
+// console.log("openTime",openTime.format());
+// console.log("closeTime",closeTime.format());
 
 
 
