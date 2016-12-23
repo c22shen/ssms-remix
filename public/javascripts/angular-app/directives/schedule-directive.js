@@ -81,77 +81,39 @@ angular.module('app').directive('schedule', ['myConfig', '$rootScope',
 
 
 
-                var currentTime = new moment({
-                    h: new Date().getHours(),
-                    m: new Date().getMinutes()
-                });
-                var weekDay = currentTime.weekday();
 
-                var startHour = timeAvailable[weekDay].open.hour;
-                var startMinute = timeAvailable[weekDay].open.minute;
+                var easternDate = moment.tz({}, "America/Toronto").date();
+                var easternDay = moment.tz({}, "America/Toronto").day();
 
-                var endHour = timeAvailable[weekDay].close.hour;
-                var endMinute = timeAvailable[weekDay].close.minute;
+                var openCloseInfo = timeAvailable[easternDay];
+                var breakTimes = openCloseInfo.break;
 
 
 
+                var openTime = moment.tz({ d: easternDate, h: openCloseInfo.open.hour, m: openCloseInfo.open.minute }, "America/Toronto");
+                var closeTime = moment.tz({ d: easternDate, h: openCloseInfo.close.hour, m: openCloseInfo.close.minute }, "America/Toronto");
 
-
-                var closeHour = timeAvailable[weekDay].close.hour;
-                var closeMinute = timeAvailable[weekDay].close.minute;
-
-
-                var startTime = moment({
-                    h: startHour,
-                    m: startMinute
-
-                });
-
-                // console.log("is between the dates", moment('2010-10-20').isBetween('2010-10-19', '2010-10-25'));
-
-
-                var closeTime = moment({
-                    h: closeHour,
-                    m: closeMinute
-                });
-
-                var startTime = startTime.format("h:mm A");
-                // console.log("startTime", startTime);
-                var closeTime = closeTime.format("h:mm A");
-                // console.log("closeTime", closeTime);
-
-                // console.log("moment", moment());
-                var currentHour = moment().hour();
-                var currentMinute = moment().minutes();
-
-                if (currentHour > startHour && currentHour < endHour) {
-                    scope.storeAvailable = true;
-                } else if (currentHour === startHour && currentMinute > startMinute) {
-                    scope.storeAvailable = true;
-                } else if (currentHour === endHour && currentMinute < endMinute) {
-                    scope.storeAvailable = true;
-                } else {
-                    scope.storeAvailable = false;
+                var storeOpen = false;
+                if (moment() > openTime && moment() < closeTime) {
+                    storeOpen = true;
                 }
 
-                scope.onBreak = false;
-                $rootScope.onBreak = scope.onBreak;
-                if (scope.storeAvailable) {
-                    var breakTimes = timeAvailable[weekDay].break;
-                    breakTimes.forEach(function(breakTime) {
-                        var startTime = new moment({ h: breakTime.start.hour, m: breakTime.start.minute });
-                        var endTime = new moment({ h: breakTime.end.hour, m: breakTime.end.minute });
 
-                        if (moment() > startTime && moment() < endTime) {
-                            scope.onBreak = true;
-                            scope.timeRange = startTime.format("h:mm A") + " - " + endTime.format("h:mm A");
-                        }
-                    })
 
-                }
+                var onBreak = false;
+                breakTimes.forEach(function(breakTime) {
+                    // console.log("breakTime", breakTime);
+                    var breakTimeStart = moment.tz({ d: easternDate, h: breakTime.start.hour, m: breakTime.start.minute }, "America/Toronto");
+                    var breakTimeTime = moment.tz({ d: easternDate, h: breakTime.end.hour, m: breakTime.end.minute }, "America/Toronto");
+                    if (moment() > breakTimeStart && moment() < breakTimeTime) {
+                        onBreak = true;
+                    }
+                })
+
+
 
                 $rootScope.onBreak = scope.onBreak;
-                $rootScope.storeAvailable = scope.storeAvailable;
+                $rootScope.storeAvailable = storeOpen;
 
                 if (scope.onBreak) {
                     scope.statusString = "ON BREAK";
@@ -162,10 +124,10 @@ angular.module('app').directive('schedule', ['myConfig', '$rootScope',
                 }
 
                 // scope.statusString = scope.storeAvailable ? "NOW OPEN" : "NOW CLOSED";
-                if (startTime === closeTime) {
+                if (openTime === closeTime) {
                     scope.timeRange = "Closed for Sunday";
                 } else if (!scope.timeRange) {
-                    scope.timeRange = startTime + " - " + closeTime;
+                    scope.timeRange = openTime.format("h:mm A") + " - " + closeTime.format("h:mm A");
                 }
             }
         }

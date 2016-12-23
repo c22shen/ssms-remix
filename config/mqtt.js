@@ -52,7 +52,7 @@ var timeAvailable = {
     },
     4: {
         open: { hour: 8, minute: 30 },
-        close: { hour: 21, minute: 0 },
+        close: { hour: 23, minute: 46 },
         break: weekDayBreakTime
     },
     5: {
@@ -72,13 +72,17 @@ var timeAvailable = {
 
 
 
+
+
+
 module.exports = function(io) {
     // Parse 
     // m12.cloudmqtt.com:10818
-
     var mqtt_url = "mqtt://afkibthd:sAgz1qpRVNd4@m12.cloudmqtt.com:10818";
     // var topic_url = "0013A20040B09A44";
     var mqttClient = mqtt.connect(mqtt_url);
+    
+
     mqttClient.on('connect', function() { // When connected
         // mqttClient.subscribe("0013A20041629B6C");
         // mqttClient.subscribe("0013A20041629B76");
@@ -131,6 +135,8 @@ module.exports = function(io) {
     // })
 
 
+
+
     mqttClient.on('message', function(panId, iRms) {
         console.log("panId", panId);
         console.log("iRms", parseFloat(iRms).toFixed(2));
@@ -139,24 +145,19 @@ module.exports = function(io) {
         // var dataview = new DataView(iRms);
         // console.log(dataview.getFloat32(1)); // 0
 
-
-        
-
-        // var openTime = moment.tz( {}, "America/Toronto");
-
-        var easternDate = moment.tz( {}, "America/Toronto").date();
-        var easternDay = moment.tz( {}, "America/Toronto").day();
+        var easternDate = moment.tz({}, "America/Toronto").date();
+        var easternDay = moment.tz({}, "America/Toronto").day();
 
         var openCloseInfo = timeAvailable[easternDay];
         var breakTimes = openCloseInfo.break;
 
 
         var onBreak = false;
-        breakTimes.forEach(function(breakTime){
+        breakTimes.forEach(function(breakTime) {
             // console.log("breakTime", breakTime);
             var breakTimeStart = moment.tz({ d: easternDate, h: breakTime.start.hour, m: breakTime.start.minute }, "America/Toronto");
             var breakTimeTime = moment.tz({ d: easternDate, h: breakTime.end.hour, m: breakTime.end.minute }, "America/Toronto");
-            if (moment()>breakTimeStart && moment()<breakTimeTime) {
+            if (moment() > breakTimeStart && moment() < breakTimeTime) {
                 onBreak = true;
             }
         })
@@ -166,20 +167,29 @@ module.exports = function(io) {
         // var closeTime = new moment({ d: easternDate, h: openCloseInfo.close.hour, m: openCloseInfo.close.minute });
         var openTime = moment.tz({ d: easternDate, h: openCloseInfo.open.hour, m: openCloseInfo.open.minute }, "America/Toronto");
         var closeTime = moment.tz({ d: easternDate, h: openCloseInfo.close.hour, m: openCloseInfo.close.minute }, "America/Toronto");
- 
 
+        var storeOpen = false;
+        if (moment() > openTime && moment() < closeTime) {
+            storeOpen = true;
+        }
+        io.emit("INTERNAL", {isStoreOpen: storeOpen, isOnBreak: onBreak}); 
 
         // var closeTime = moment.tz( {}, "America/Toronto"); 
 
 
-// console.log("openTime",openTime.utc().format());
-// console.log("closeTime",closeTime.utc().format());
-// console.log("now ",moment().format());
-        
+        // console.log("openTime",openTime.utc().format());
+        // console.log("closeTime",closeTime.utc().format());
+        // console.log("now ",moment().format());
+
 
         var currentValue = parseFloat(iRms).toFixed(2);
         panId = panId.toString();
-        io.emit(panId, currentValue);
+
+        if (storeOpen && !onBreak) {
+            io.emit(panId, currentValue);
+        }
+
+
 
         Device.findOne({
             'panId': panId,
@@ -194,7 +204,7 @@ module.exports = function(io) {
             // console.log("Math.abs(currentValue - lastAvailableData.iRms)", Math.abs(currentValue - lastAvailableData.iRms));
 
             // check break time
-            if (moment() > openTime && moment() < closeTime && !onBreak && (!lastAvailableData || Math.abs(currentValue - lastAvailableData.iRms) > 0.1)) {
+            if (storeOpen && !onBreak && (!lastAvailableData || Math.abs(currentValue - lastAvailableData.iRms) > 0.1)) {
                 var device = new Device();
                 device.iRms = currentValue;
                 device.panId = panId;

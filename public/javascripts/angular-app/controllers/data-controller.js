@@ -146,6 +146,14 @@ angular.module('app').controller('DataController', ['$rootScope', 'd3', '$scope'
             console.log('retrieving database error!');
         });
 
+        Socket.on("INTERNAL", function(d){
+            // console.log("Internal messaging", d);
+            $rootScope.storeAvailable = d.isStoreOpen;
+            $rootScope.onBreak = d.isOnBreak;
+        })
+
+
+
 
         $rootScope.machineData.forEach(function(machineUnitData) {
             var panId = machineUnitData.panId;

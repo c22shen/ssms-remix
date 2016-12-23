@@ -4,10 +4,12 @@
     </div> -->
     <div class="availability">
         <b style="margin-right:10px" ng-class="(storeAvailable && !onBreak) ? 'free-text' : 'busy-text'">
-            {{statusString}}
+            <span ng-switch="storeAvailable && !onBreak">
+                <span ng-switch-when=true>NOW OPEN</span>
+                <span ng-switch-when="false">NOW CLOSED</span>
+            </span>
         </b>
         <span>{{timeRange}}</span>
-        <span></span>
     </div>
     <div flex></div>
     <div show-gt-sm hide>

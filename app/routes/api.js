@@ -6,6 +6,7 @@
 // Define the routes module' method
 module.exports = function(app) {
 var device = require(appRoot + '/app/controllers/device.controller');
+// var shop = require(appRoot + '/app/controllers/shop.controller');
 
 	// Set up the 'articles' base routes 
 	app.route('/api/devices30')
@@ -22,6 +23,9 @@ var device = require(appRoot + '/app/controllers/device.controller');
 	   .put(device.update)
 	   .delete(device.delete);
 
+	// app.route('/api/shop')
+	//    .get(shop.read)
+	//    .post(shop.create);
 
 
 };

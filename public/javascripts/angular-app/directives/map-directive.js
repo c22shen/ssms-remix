@@ -186,7 +186,7 @@ angular.module('app').directive('mapChart', ['d3', '$rootScope', 'myConfig', '$t
                         })
                         .on('mouseover', function(mouseoverData, i, elements) {
 
-                            if (mouseoverData.iRms !== undefined && mouseoverData.iRms !== null) {
+                            if (mouseoverData.iRms !== undefined && mouseoverData.iRms !== null && $rootScope.storeAvailable && !$rootScope.onBreak) {
                                 d3.select(this).style("cursor", "pointer");
                                 var popoverDiv = d3.select('.popover').transition()
                                     .duration(200)
@@ -282,6 +282,13 @@ angular.module('app').directive('mapChart', ['d3', '$rootScope', 'myConfig', '$t
                         render(scope);
                     }, true);
 
+                    scope.$watch('$root.storeAvailable', function() {
+                        render(scope);
+                    }, true);
+
+                    scope.$watch('$root.onBreak', function() {
+                        render(scope);
+                    }, true);
                     // element.removeAttr("map-chart");
                     //  $compile(element)(scope);
                 };
