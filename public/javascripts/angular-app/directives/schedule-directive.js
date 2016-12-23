@@ -1,6 +1,6 @@
-angular.module('app').directive('schedule', ['myConfig', '$rootScope',
+angular.module('app').directive('schedule', ['myConfig', '$rootScope', '$mdSidenav',
 
-    function(myConfig, $rootScope) {
+    function(myConfig, $rootScope, $mdSidenav) {
 
         return {
             restrict: 'A',
@@ -63,7 +63,9 @@ angular.module('app').directive('schedule', ['myConfig', '$rootScope',
                     }
                 }
 
-
+                scope.toggleList = function() {
+                        $mdSidenav('left').toggle();
+                }
 
 
 

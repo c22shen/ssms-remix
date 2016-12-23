@@ -1,8 +1,8 @@
 <div layout="row">
-    <!--     <div style="padding-right:10px">
-        <i class="fa fa-circle-o" aria-hidden="true" style="color:#9c5052"></i>
-    </div> -->
-    <div class="availability">
+    <md-button class="menu" hide-gt-sm ng-click="toggleList()">
+        <md-icon md-svg-icon="menu"></md-icon>
+    </md-button>
+    <div class="availability" style="margin-top:1em">
         <b style="margin-right:10px" ng-class="(storeAvailable && !onBreak) ? 'free-text' : 'busy-text'">
             <span ng-switch="storeAvailable && !onBreak">
                 <span ng-switch-when=true>NOW OPEN</span>
@@ -12,7 +12,7 @@
         <span>{{timeRange}}</span>
     </div>
     <div flex></div>
-    <div show-gt-sm hide>
+    <div show-gt-sm hide style="margin-top:1em">
         <span>Student Machine Shop  E5 1101</span>
         <!-- <i class="fa fa-cog fa-spin fa-2x fa-fw slow-spin"></i> -->
     </div>
