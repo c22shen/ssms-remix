@@ -11,11 +11,11 @@ var jsonfile = require('jsonfile')
 // var file = '/tmp/devicesNow.json'
 
 var weekDayBreakTime = [{
-    start: { hour: 12, minute: 0 },
-    end: { hour: 12, minute: 30 }
+    start: { hour: 12, minute: 33 },
+    end: { hour: 12, minute: 40 }
 }, {
-    start: { hour: 16, minute: 30 },
-    end: { hour: 17, minute: 0 }
+    start: { hour: 14, minute: 33 },
+    end: { hour: 14, minute: 34 }
 }, {
     start: { hour: 19, minute: 0 },
     end: { hour: 19, minute: 20 }
@@ -52,11 +52,11 @@ var timeAvailable = {
     },
     4: {
         open: { hour: 8, minute: 30 },
-        close: { hour: 23, minute: 46 },
+        close: { hour: 21, minute: 0 },
         break: weekDayBreakTime
     },
     5: {
-        open: { hour: 11, minute: 15 },
+        open: { hour: 8, minute: 30 },
         close: { hour: 21, minute: 0 },
         break: weekDayBreakTime
 
@@ -153,12 +153,18 @@ module.exports = function(io) {
 
 
         var onBreak = false;
+        var breakTimeStartText, breakTimeEndText;
         breakTimes.forEach(function(breakTime) {
             // console.log("breakTime", breakTime);
             var breakTimeStart = moment.tz({ d: easternDate, h: breakTime.start.hour, m: breakTime.start.minute }, "America/Toronto");
-            var breakTimeTime = moment.tz({ d: easternDate, h: breakTime.end.hour, m: breakTime.end.minute }, "America/Toronto");
-            if (moment() > breakTimeStart && moment() < breakTimeTime) {
+            var breakTimeEnd = moment.tz({ d: easternDate, h: breakTime.end.hour, m: breakTime.end.minute }, "America/Toronto").endOf("minute");;
+            // console.log("breakTimeEnd END", breakTimeEnd);
+            if (moment() > breakTimeStart && moment() < breakTimeEnd) {
                 onBreak = true;
+                breakTimeStartText = breakTimeStart.tz('America/Toronto').format("h:mm A");
+                breakTimeEndText = breakTimeEnd.tz('America/Toronto').format("h:mm A");
+                // console.log("breakTimeStartText", breakTimeStartText);
+                // console.log("breakTimeEndText", breakTimeEndText);
             }
         })
 
@@ -172,7 +178,7 @@ module.exports = function(io) {
         if (moment() > openTime && moment() < closeTime) {
             storeOpen = true;
         }
-        io.emit("INTERNAL", {isStoreOpen: storeOpen, isOnBreak: onBreak}); 
+        io.emit("INTERNAL", {isStoreOpen: storeOpen, isOnBreak: onBreak, breakTimeStart: breakTimeStartText, breakTimeEnd: breakTimeEndText}); 
 
         // var closeTime = moment.tz( {}, "America/Toronto"); 
 

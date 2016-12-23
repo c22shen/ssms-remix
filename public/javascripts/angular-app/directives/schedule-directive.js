@@ -7,8 +7,8 @@ angular.module('app').directive('schedule', ['myConfig', '$rootScope', '$mdSiden
             templateUrl: "/javascripts/angular-app/tpl/navbar.tpl.html",
             link: function postLink(scope, iElement, iAttrs) {
                 var weekDayBreakTime = [{
-                    start: { hour: 12, minute: 0 },
-                    end: { hour: 12, minute: 30 }
+                    start: { hour: 12, minute: 33 },
+                    end: { hour: 12, minute: 40 }
                 }, {
                     start: { hour: 16, minute: 30 },
                     end: { hour: 17, minute: 0 }
@@ -64,7 +64,7 @@ angular.module('app').directive('schedule', ['myConfig', '$rootScope', '$mdSiden
                 }
 
                 scope.toggleList = function() {
-                        $mdSidenav('left').toggle();
+                    $mdSidenav('left').toggle();
                 }
 
 
@@ -103,21 +103,21 @@ angular.module('app').directive('schedule', ['myConfig', '$rootScope', '$mdSiden
 
 
                 var onBreak = false;
+                var breakTimeStart,breakTimeEnd; 
                 breakTimes.forEach(function(breakTime) {
-                    // console.log("breakTime", breakTime);
-                    var breakTimeStart = moment.tz({ d: easternDate, h: breakTime.start.hour, m: breakTime.start.minute }, "America/Toronto");
-                    var breakTimeTime = moment.tz({ d: easternDate, h: breakTime.end.hour, m: breakTime.end.minute }, "America/Toronto");
-                    if (moment() > breakTimeStart && moment() < breakTimeTime) {
+                    breakTimeStart = moment.tz({ d: easternDate, h: breakTime.start.hour, m: breakTime.start.minute }, "America/Toronto");
+                    breakTimeEnd = moment.tz({ d: easternDate, h: breakTime.end.hour, m: breakTime.end.minute }, "America/Toronto").endOf('minute');
+                    if (moment() > breakTimeStart && moment() < breakTimeEnd) {
                         onBreak = true;
                     }
                 })
 
 
 
-                $rootScope.onBreak = scope.onBreak;
+                $rootScope.onBreak = onBreak;
                 $rootScope.storeAvailable = storeOpen;
 
-                if (scope.onBreak) {
+                if (onBreak) {
                     scope.statusString = "ON BREAK";
                 } else if (scope.storeAvailable) {
                     scope.statusString = "NOW OPEN";
@@ -128,9 +128,13 @@ angular.module('app').directive('schedule', ['myConfig', '$rootScope', '$mdSiden
                 // scope.statusString = scope.storeAvailable ? "NOW OPEN" : "NOW CLOSED";
                 if (openTime === closeTime) {
                     scope.timeRange = "Closed for Sunday";
-                } else if (!scope.timeRange) {
-                    scope.timeRange = openTime.format("h:mm A") + " - " + closeTime.format("h:mm A");
+                } else if (onBreak) {
+                    $rootScope.breakTime.start = breakTimeStart;
+                    $rootScope.breakTimeEnd.end = breakTimeEnd;
                 }
+
+
+                scope.timeRange = openTime.format("h:mm A") + " - " + closeTime.format("h:mm A");
             }
         }
     }

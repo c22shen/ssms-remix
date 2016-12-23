@@ -64,9 +64,12 @@ div.popover {
     -webkit-box-shadow: 5px 5px 5px #666;
 }
 
-.legend md-icon{
-  min-height:18px;
-  min-width: 18px;
-  height:18px;
-  width: 18px;
+.myLegend md-icon{
+  min-height:15px;
+  min-width: 15px;
+  height:15px;
+  width: 15px;
+}
+.myLegend div{
+  margin-bottom:0.2em;
 }

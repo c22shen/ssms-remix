@@ -3,6 +3,7 @@ angular.module('app').controller('DataController', ['$rootScope', 'd3', '$scope'
 
         var self = this;
 
+        $rootScope.breakTime = {};
         var colorScale = d3.scaleLinear()
             .domain([0, 7.5, 15])
             // .interpolate(d3.interpolateCubehelixLong)
@@ -151,6 +152,8 @@ angular.module('app').controller('DataController', ['$rootScope', 'd3', '$scope'
         Socket.on("INTERNAL", function(d) {
             $rootScope.storeAvailable = d.isStoreOpen;
             $rootScope.onBreak = d.isOnBreak;
+            $rootScope.breakTime.start = d.breakTimeStart;
+            $rootScope.breakTime.end = d.breakTimeEnd;
         })
 
 

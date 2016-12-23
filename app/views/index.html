@@ -62,38 +62,38 @@
                 <h1 class="md-display-2 " style="font-weight:100; padding-bottom:0; margin-bottom:0">Usage Map
                 <b style="font-size: 0.6em; color: #e74c3c;" ng-if="$root.storeAvailable">LIVE</b>
                 </h1>
-                <p style="margin-top:0; padding-top:0">Find out if the E5 student machine shop is busy or not</p>
+                <p style="margin-top:0; padding-top:0; padding-bottom:0">Find out if the E5 student machine shop is busy or not</p>
             </div>
-            <div class="legend" layout="row" layout-padding style="padding-left:18px" layout-wrap>
-                <div class="available" style="margin: 0 0.8em">
+<!--             <div class="myLegend" style="padding-left:18px">
+                <div class="available" >
                     <md-tooltip md-direction="bottom">
                         Has not been used within the last 15 minutes.
                     </md-tooltip>
                     <md-icon md-svg-icon="legend"></md-icon>
                     <span style="margin-left:10px">Available</span>
                 </div>
-                <div class="inUse" style="margin: 0 0.8em">
+                <div class="inUse">
                     <md-tooltip md-direction="bottom">
                         Machine is currently running.
                     </md-tooltip>
                     <md-icon md-svg-icon="legend"></md-icon>
                     <span style="margin-left:10px">In Use</span>
                 </div>
-                <div class="recentlyUsed" style="margin: 0 0.8em">
+                <div class="recentlyUsed" >
                     <md-tooltip md-direction="bottom">
                         Machine may still be occupied due to recent activity.
                     </md-tooltip>
                     <md-icon md-svg-icon="legend"></md-icon>
                     <span style="margin-left:10px">Potentially occupied</span>
                 </div>
-                <div class="noData" style="margin: 0 0.8em">
+                <div class="noData">
                     <md-tooltip md-direction="bottom">
                         Stay tuned... coming soon!
                     </md-tooltip>
                     <md-icon md-svg-icon="legend"></md-icon>
                     <span style="margin-left:10px">No data</span>
                 </div>
-            </div>
+            </div> -->
             <div class="map" layout="row" layout-align="center top" style="display: block; margin: 2em auto" id="map" map-chart>
             </div>
             <div class="popover" ng-style="{'background-color': $root.machineData[$root.popOverIndex].statusColor}">

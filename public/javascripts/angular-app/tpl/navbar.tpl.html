@@ -4,12 +4,12 @@
     </md-button>
     <div class="availability" style="margin-top:1em">
         <b style="margin-right:10px" ng-class="(storeAvailable && !onBreak) ? 'free-text' : 'busy-text'">
-            <span ng-switch="storeAvailable && !onBreak">
-                <span ng-switch-when=true>NOW OPEN</span>
-                <span ng-switch-when="false">NOW CLOSED</span>
-            </span>
+                <span ng-if="storeAvailable && !onBreak">NOW OPEN</span>
+                <span ng-if="storeAvailable && onBreak">ON TEMPORARY BREAK</span>
+                <span ng-if="!storeAvailable">NOW CLOSED</span>
         </b>
-        <span>{{timeRange}}</span>
+        <span ng-if="!onBreak">{{timeRange}}</span>
+        <span ng-if="storeAvailable && onBreak">{{$root.breakTime.start}} - {{$root.breakTime.end}}</span>
     </div>
     <div flex></div>
     <div show-gt-sm hide style="margin-top:1em">
