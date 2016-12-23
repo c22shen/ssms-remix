@@ -156,8 +156,8 @@ module.exports = function(io) {
         // var closeTime = moment.tz( {}, "America/Toronto"); 
 
 
-console.log("openTime",openTime.format());
-console.log("closeTime",closeTime.format());
+console.log("openTime",openTime.utc().format());
+console.log("closeTime",closeTime.ut().format());
 console.log("now ",moment().format());
         
 
