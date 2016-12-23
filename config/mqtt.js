@@ -143,6 +143,8 @@ module.exports = function(io) {
         var openTime = new moment({ h: openCloseInfo.open.hour, m: openCloseInfo.open.minute });
         var closeTime = new moment({ h: openCloseInfo.close.hour, m: openCloseInfo.close.minute });
 
+console.log("openTime",openTime.format());
+console.log("closeTime",closeTime.format());
 
 
 
@@ -160,7 +162,7 @@ module.exports = function(io) {
             console.log("lastAvailableData ", lastAvailableData);
             console.log("rightNow > openTime", rightNow > openTime);
             console.log("rightNow < closeTime", rightNow < closeTime);
-            console.log("Math.abs(currentValue - lastAvailableData.iRms)", Math.abs(currentValue - lastAvailableData.iRms));
+            // console.log("Math.abs(currentValue - lastAvailableData.iRms)", Math.abs(currentValue - lastAvailableData.iRms));
             if (rightNow > openTime && rightNow < closeTime && (!lastAvailableData || Math.abs(currentValue - lastAvailableData.iRms) > 0.1)) {
                 var device = new Device();
                 device.iRms = currentValue;
