@@ -157,7 +157,7 @@ module.exports = function(io) {
 
 
 console.log("openTime",openTime.utc().format());
-console.log("closeTime",closeTime.ut().format());
+console.log("closeTime",closeTime.utc().format());
 console.log("now ",moment().format());
         
 
