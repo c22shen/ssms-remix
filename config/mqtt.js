@@ -146,9 +146,11 @@ module.exports = function(io) {
 
         var easternDate = moment.tz( {}, "America/Toronto").date();
 
-        var openTime = new moment({ d: easternDate, h: openCloseInfo.open.hour, m: openCloseInfo.open.minute });
-        var closeTime = new moment({ d: easternDate, h: openCloseInfo.close.hour, m: openCloseInfo.close.minute });
-        
+        // var openTime = new moment({ d: easternDate, h: openCloseInfo.open.hour, m: openCloseInfo.open.minute });
+        // var closeTime = new moment({ d: easternDate, h: openCloseInfo.close.hour, m: openCloseInfo.close.minute });
+        var openTime = moment.tz({ d: easternDate, h: openCloseInfo.open.hour, m: openCloseInfo.open.minute }, "America/Toronto");
+        var closeTime = moment.tz({ d: easternDate, h: openCloseInfo.close.hour, m: openCloseInfo.close.minute }, "America/Toronto");
+ 
 
 
         // var closeTime = moment.tz( {}, "America/Toronto"); 
