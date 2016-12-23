@@ -14,8 +14,8 @@ var weekDayBreakTime = [{
     start: { hour: 12, minute: 33 },
     end: { hour: 12, minute: 40 }
 }, {
-    start: { hour: 14, minute: 33 },
-    end: { hour: 14, minute: 34 }
+    start: { hour: 16, minute: 30 },
+    end: { hour: 17, minute: 0 }
 }, {
     start: { hour: 19, minute: 0 },
     end: { hour: 19, minute: 20 }
