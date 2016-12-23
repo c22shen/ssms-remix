@@ -59,8 +59,10 @@
         <div layout="column" flex>
             <div schedule layout-padding></div>
             <div class="header layout-padding layout-margin">
-                <h1 class="md-display-2 " style="font-weight:100; padding-bottom:0; margin-bottom:0">Live Status Map</h1>
-                <p style="margin-top:0; padding-top:0">Find out if the UW student machine shop is busy or not</p>
+                <h1 class="md-display-2 " style="font-weight:100; padding-bottom:0; margin-bottom:0" >Floor Map
+                <b style="font-size: 0.6em; color: #e74c3c;" ng-if="$root.storeAvailable">LIVE</b>
+                </h1>
+                <p style="margin-top:0; padding-top:0">Find out if the E5 student machine shop is busy or not</p>
             </div>
 <!--             <div class="legend" layout="row" layout-padding style="padding-left:18px" layout-wrap>
                 <div class="available" style="margin: 0 0.8em">
