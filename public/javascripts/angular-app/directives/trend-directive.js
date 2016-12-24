@@ -151,7 +151,7 @@ angular.module('app').directive('trendChart', ['d3', '$rootScope', 'myConfig', '
                 var yAxisGroup = svgGroup.call(yAxis);
                 yAxisGroup.selectAll('path').attr('stroke', 'white');
                 yAxisGroup.selectAll('text').attr('fill', 'white').attr('font-size', 15);
-                 yAxisGroup.selectAll('.domain').remove();
+                yAxisGroup.selectAll('.domain').remove();
                 // var xScale = d3.scaleTime()
                 //     .rangeRound([0, width])
                 //     .domain(d3.extent(processedData, function(d) {
@@ -172,10 +172,10 @@ angular.module('app').directive('trendChart', ['d3', '$rootScope', 'myConfig', '
                     }))
                     .range([0, width]);
                 var xAxis = d3.axisBottom(xScaleTime)
-                    .ticks(5)
+                    .ticks(d3.timeMinute, 10).tickFormat(d3.timeFormat('%H:%M'))
                     .tickSize(5)
                     .tickPadding(5)
-                    .tickSizeOuter(0).tickSizeInner(1)
+                    .tickSizeOuter(0).tickSizeInner(5)
 
                 var xAxisGroup = svgGroup.append('g').classed('xAxis', true).attr('transform', `translate(0, ${height})`).call(xAxis)
                 xAxisGroup.selectAll('path').attr('stroke', 'white');
@@ -186,7 +186,7 @@ angular.module('app').directive('trendChart', ['d3', '$rootScope', 'myConfig', '
                     .data(processedData)
                     .enter()
                     .append('rect')
-                    .attr('x', d => xScaleTime(d.time) - xScaleBand.bandwidth() / 2)
+                    .attr('x', d => xScaleTime(d.time) + xScaleBand.bandwidth()*0.2)
                     .attr('y', d => yScale(d.status))
                     .attr('width', d => xScaleBand.bandwidth())
                     .attr('height', d => height - yScale(d.status))

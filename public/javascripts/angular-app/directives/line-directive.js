@@ -45,7 +45,7 @@ angular.module('app').directive('lineChart', ['d3', '$rootScope', 'myConfig', '$
                 .curve(d3.curveStepAfter)
                 .x(function(d) {
                     // console.log("d.created", d.created);
-                    // console.log("d.created", x(new Date(d.created)));
+                     // console.log("d.created", x(new Date(d.created)));
                     return x(new Date(d.created));
                 })
                 .y(function(d) {
@@ -82,7 +82,7 @@ angular.module('app').directive('lineChart', ['d3', '$rootScope', 'myConfig', '$
                 .style('fill', 'none');
 
             d3.selectAll('g.tick').select('text').attr('fill', 'white')
-            d3.selectAll('.domain').remove();
+            svgGroup.selectAll('.domain').remove();
 
         };
 
