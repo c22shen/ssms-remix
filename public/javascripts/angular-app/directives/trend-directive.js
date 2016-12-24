@@ -151,6 +151,7 @@ angular.module('app').directive('trendChart', ['d3', '$rootScope', 'myConfig', '
                 var yAxisGroup = svgGroup.call(yAxis);
                 yAxisGroup.selectAll('path').attr('stroke', 'white');
                 yAxisGroup.selectAll('text').attr('fill', 'white').attr('font-size', 15);
+                 yAxisGroup.selectAll('.domain').remove();
                 // var xScale = d3.scaleTime()
                 //     .rangeRound([0, width])
                 //     .domain(d3.extent(processedData, function(d) {

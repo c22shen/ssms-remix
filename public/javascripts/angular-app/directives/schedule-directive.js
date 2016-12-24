@@ -84,8 +84,8 @@ angular.module('app').directive('schedule', ['myConfig', '$rootScope', '$mdSiden
 
 
 
-                var easternDate = moment.tz({}, "America/Toronto").date();
-                var easternDay = moment.tz({}, "America/Toronto").day();
+                var easternDate = moment.tz('America/Toronto').date();
+                var easternDay = moment.tz("America/Toronto").day();
 
                 var openCloseInfo = timeAvailable[easternDay];
                 var breakTimes = openCloseInfo.break;

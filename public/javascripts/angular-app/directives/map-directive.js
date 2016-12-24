@@ -185,7 +185,7 @@ angular.module('app').directive('mapChart', ['d3', '$rootScope', 'myConfig', '$t
                         })
                         .on('mouseover', function(mouseoverData, i, elements) {
 
-                            if (mouseoverData.iRms !== undefined && mouseoverData.iRms !== null && $rootScope.storeAvailable && !$rootScope.onBreak) {
+                            if (mouseoverData.iRms !== undefined && mouseoverData.iRms !== null && $rootScope.storeAvailable) {
                                 d3.select(this).style("cursor", "pointer");
                                 var popoverDiv = d3.select('.popover').transition()
                                     .duration(200)

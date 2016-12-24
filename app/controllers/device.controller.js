@@ -69,7 +69,8 @@ var timeAvailable = {
 var rightNow = new moment();
 var openCloseInfo = timeAvailable[rightNow.day()];
 
-var easternDate = moment.tz( {}, "America/Toronto").date();
+var easternDate = moment.tz("America/Toronto").date();
+console.log("easternDate", easternDate);
 
 var openTime = moment.tz({ d: easternDate, h: openCloseInfo.open.hour, m: openCloseInfo.open.minute }, "America/Toronto");
 var closeTime = moment.tz({ d: easternDate, h: openCloseInfo.close.hour, m: openCloseInfo.close.minute }, "America/Toronto").endOf('minute');
