@@ -154,6 +154,7 @@ angular.module('app').directive('mapChart', ['d3', '$rootScope', 'myConfig', '$t
                         // .append('text')
                         // .transition(transitionStyle)
                         .text(function(data) {
+                            // What is this ????!!!!
                             return !!data.datetime ? moment(data.datetime, "h:mm:ssa").format("h:mm:ss") : null;
                         });
 

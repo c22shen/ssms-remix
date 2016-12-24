@@ -5,7 +5,7 @@
     <div class="availability" style="margin-top:1em">
         <b style="margin-right:10px" ng-class="(storeAvailable && !onBreak) ? 'free-text' : 'busy-text'">
                 <span ng-if="storeAvailable && !onBreak">NOW OPEN</span>
-                <span ng-if="storeAvailable && onBreak">ON TEMPORARY BREAK</span>
+                <span ng-if="storeAvailable && onBreak">ON BREAK</span>
                 <span ng-if="!storeAvailable">NOW CLOSED</span>
         </b>
         <span ng-if="!onBreak">{{timeRange}}</span>

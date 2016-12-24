@@ -11,7 +11,7 @@ angular.module('app').directive('schedule', ['myConfig', '$rootScope', '$mdSiden
                     end: { hour: 12, minute: 40 }
                 }, {
                     start: { hour: 16, minute: 30 },
-                    end: { hour: 17, minute: 0 }
+                    end: { hour: 17, minute: 0}
                 }, {
                     start: { hour: 19, minute: 0 },
                     end: { hour: 19, minute: 20 }
@@ -104,11 +104,14 @@ angular.module('app').directive('schedule', ['myConfig', '$rootScope', '$mdSiden
 
                 var onBreak = false;
                 var breakTimeStart,breakTimeEnd; 
+                
                 breakTimes.forEach(function(breakTime) {
-                    breakTimeStart = moment.tz({ d: easternDate, h: breakTime.start.hour, m: breakTime.start.minute }, "America/Toronto");
-                    breakTimeEnd = moment.tz({ d: easternDate, h: breakTime.end.hour, m: breakTime.end.minute }, "America/Toronto").endOf('minute');
-                    if (moment() > breakTimeStart && moment() < breakTimeEnd) {
+                    var breakTimeStartCheck = moment.tz({ d: easternDate, h: breakTime.start.hour, m: breakTime.start.minute }, "America/Toronto");
+                    var breakTimeEndCheck = moment.tz({ d: easternDate, h: breakTime.end.hour, m: breakTime.end.minute }, "America/Toronto").endOf('minute');
+                    if (moment() > breakTimeStartCheck && moment() < breakTimeEndCheck) {
                         onBreak = true;
+                        breakTimeStart = breakTimeStartCheck;
+                        breakTimeEnd = breakTimeEndCheck;
                     }
                 })
 
@@ -129,8 +132,8 @@ angular.module('app').directive('schedule', ['myConfig', '$rootScope', '$mdSiden
                 if (openTime === closeTime) {
                     scope.timeRange = "Closed for Sunday";
                 } else if (onBreak) {
-                    $rootScope.breakTime.start = breakTimeStart;
-                    $rootScope.breakTimeEnd.end = breakTimeEnd;
+                    $rootScope.breakTime.start = breakTimeStart.tz('America/Toronto').format("h:mm A");
+                    $rootScope.breakTime.end = breakTimeEnd.tz('America/Toronto').format("h:mm A");
                 }
 
 
