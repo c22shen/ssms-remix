@@ -103,12 +103,12 @@
                 <p style="margin-top:0; padding-top:0; padding-bottom:0">Check out when is slow time on this day, so you don't have to wait in-line</p>
             </div>
             <!-- <div style="width:100%; display:block" layout="row" layout-align="center top"> -->
-            <div trend-chart></div>
+            <!-- <div trend-chart></div> -->
             <!-- </div> -->
             <div class="popover" ng-style="{'background-color': $root.machineData[$root.popOverIndex].statusColor}">
                 <div style="font-size: smaller"><b>Today so far...</b></div>
                 <!-- <span class="machineName"></span><span style="float:right" class="machineStatus"></span> -->
-                <!-- <div line-chart class="lineChart" id="popOverChart" data="$root.tempChartData"></div> -->
+                <div line-chart class="lineChart" id="popOverChart" data="$root.tempChartData"></div>
                 <!--                 <div style="font-size:smaller; float:right">No Activity</div> -->
             </div>
         </div>
