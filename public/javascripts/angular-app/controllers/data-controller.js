@@ -121,6 +121,7 @@ angular.module('app').controller('DataController', ['$rootScope', 'd3', '$scope'
             method: 'GET',
             url: '/api/devices'
         }).then(function successCallback(response) {
+            console.log("successCallback from devices!");
             $rootScope.machineData.forEach(function(machineUnitData) {
                 var panId = machineUnitData.panId;
 

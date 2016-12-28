@@ -11,7 +11,7 @@ angular.module('app').directive('schedule', ['myConfig', '$rootScope', '$mdSiden
                     end: { hour: 12, minute: 40 }
                 }, {
                     start: { hour: 16, minute: 30 },
-                    end: { hour: 17, minute: 0}
+                    end: { hour: 17, minute: 0 }
                 }, {
                     start: { hour: 19, minute: 0 },
                     end: { hour: 19, minute: 20 }
@@ -25,10 +25,12 @@ angular.module('app').directive('schedule', ['myConfig', '$rootScope', '$mdSiden
                     start: { hour: 15, minute: 0 },
                     end: { hour: 15, minute: 20 }
                 }];
+
                 var timeAvailable = {
                     0: {
                         open: { hour: 0, minute: 0 },
-                        close: { hour: 0, minute: 0 }
+                        close: { hour: 0, minute: 0 },
+                        break:[]
                     },
                     1: {
                         open: { hour: 8, minute: 30 },
@@ -94,7 +96,8 @@ angular.module('app').directive('schedule', ['myConfig', '$rootScope', '$mdSiden
 
                 var openTime = moment.tz({ d: easternDate, h: openCloseInfo.open.hour, m: openCloseInfo.open.minute }, "America/Toronto");
                 var closeTime = moment.tz({ d: easternDate, h: openCloseInfo.close.hour, m: openCloseInfo.close.minute }, "America/Toronto");
-
+                $rootScope.openTime = openTime;
+                $rootScope.closeTime = closeTime;
                 var storeOpen = false;
                 if (moment() > openTime && moment() < closeTime) {
                     storeOpen = true;
@@ -103,8 +106,8 @@ angular.module('app').directive('schedule', ['myConfig', '$rootScope', '$mdSiden
 
 
                 var onBreak = false;
-                var breakTimeStart,breakTimeEnd; 
-                
+                var breakTimeStart, breakTimeEnd;
+
                 breakTimes.forEach(function(breakTime) {
                     var breakTimeStartCheck = moment.tz({ d: easternDate, h: breakTime.start.hour, m: breakTime.start.minute }, "America/Toronto");
                     var breakTimeEndCheck = moment.tz({ d: easternDate, h: breakTime.end.hour, m: breakTime.end.minute }, "America/Toronto").endOf('minute');
@@ -129,7 +132,11 @@ angular.module('app').directive('schedule', ['myConfig', '$rootScope', '$mdSiden
                 }
 
                 // scope.statusString = scope.storeAvailable ? "NOW OPEN" : "NOW CLOSED";
-                if (openTime === closeTime) {
+                scope.timeRange = openTime.format("h:mm A") + " - " + closeTime.format("h:mm A");
+                console.log("openTime", openTime.format());
+
+                console.log("closeTime", closeTime.format());
+                if (openTime.format() === closeTime.format()) {
                     scope.timeRange = "Closed for Sunday";
                 } else if (onBreak) {
                     $rootScope.breakTime.start = breakTimeStart.tz('America/Toronto').format("h:mm A");
@@ -137,7 +144,6 @@ angular.module('app').directive('schedule', ['myConfig', '$rootScope', '$mdSiden
                 }
 
 
-                scope.timeRange = openTime.format("h:mm A") + " - " + closeTime.format("h:mm A");
             }
         }
     }

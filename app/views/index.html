@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="/javascripts/angular-app/styles/app.css">
     <link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Roboto:100,400,700'>
     <script src="https://use.fontawesome.com/9801496e3d.js"></script>
+    <script src="//d3js.org/d3.v4.min.js"></script>
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -97,7 +98,7 @@
             <div class="map" layout="row" layout-align="center top" style="display: block; margin: 2em auto" id="map" map-chart>
             </div>
             <div class="PopularTime layout-padding layout-margin">
-                <h2 class="md-display-2 " style="font-weight:100; padding-bottom:0; margin-bottom:0">Popular Times Today
+                <h2 class="md-display-2 " style="font-weight:100; padding-bottom:0; margin-bottom:0">Popular Times: <span>{{$root.openTime.format('dddd')}}</span>
                 </h2>
                 <p style="margin-top:0; padding-top:0; padding-bottom:0">Check out when is slow time on this day, so you don't have to wait in-line</p>
             </div>
@@ -118,17 +119,14 @@
     <script src="/bower_components/angular-aria/angular-aria.min.js "></script>
     <script src="/bower_components/angular-material/angular-material.min.js "></script>
     <script src="/bower_components/angular-messages/angular-messages.min.js "></script>
-    <script src="/bower_components/d3/d3.min.js "></script>
     <script src="/bower_components/moment/moment.js "></script>
-    <!-- <script src="/bower_components/moment-timezone/builds/moment-timezone.min.js"></script> -->
     <script src="/bower_components/moment-timezone/builds/moment-timezone-with-data.min.js"></script>
-    <!-- <script src="/bower_components/moment-timezone/builds/moment-timezone-with-data-2010-2020.min.js"></script> -->
     <script src="/javascripts/angular-app/app.js "></script>
     <script src="/javascripts/angular-app/controllers/data-controller.js "></script>
     <script src="/javascripts/angular-app/controllers/data-controller.js "></script>
     <script src="/javascripts/angular-app/services/configuration.js "></script>
     <script src="/javascripts/angular-app/services/socket-service.js "></script>
-    <script src="/javascripts/angular-app/services/d3-service.js "></script>
+    <script src="/javascripts/angular-app/services/d3-service.js"></script>
     <script src="/javascripts/angular-app/directives/schedule-directive.js"></script>
     <script src="/javascripts/angular-app/directives/bar-directive.js"></script>
     <script src="/javascripts/angular-app/directives/map-directive.js"></script>

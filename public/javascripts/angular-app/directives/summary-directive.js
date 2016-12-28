@@ -1,9 +1,8 @@
 angular.module('app').directive('trendChart', ['d3', '$rootScope', 'myConfig', '$timeout', '$http',
     function(d3, $rootScope, myConfig, $timeout, $http) {
         var svg, svgGroup;
-        var startDateTime = moment.tz({ date: moment.tz({}, "America/Toronto").date() - 1, hour: 8, minute: 30 }, "America/Toronto").add(-4, 'weeks');
+        var startDateTime = moment.tz({ date: moment.tz({}, "America/Toronto").date() - 1, hour: 8, minute: 30 }, "America/Toronto").add(-2, 'weeks');
         var closeDateTime = moment.tz({ date: moment.tz({}, "America/Toronto").date() - 1, hour: 21, minute: 0 }, "America/Toronto");
-        var easternWeekday = moment().tz('America/Toronto').day();
         var regulatedDataArray = [];
         var weekDayBreakTime = [{
             start: { hour: 12, minute: 33 },
@@ -172,7 +171,7 @@ angular.module('app').directive('trendChart', ['d3', '$rootScope', 'myConfig', '
                             var checkTimeStart = moment.tz({ month: iterateDate.month(), date: iterateDate.date(), hour: easternAvailability.open.hour, minute: easternAvailability.open.minute }, "America/Toronto");
                             var checkTimeEnd = moment.tz({ month: iterateDate.month(), date: iterateDate.date(), hour: easternAvailability.close.hour, minute: easternAvailability.close.minute }, "America/Toronto");
 
-                            var iterateTime = checkTimeStart.clone().startOf('hour');
+                            var iterateTime = checkTimeStart.clone();
                             var currentOperationStatus = 0;
 
                             while (iterateTime < checkTimeEnd) {
@@ -181,6 +180,7 @@ angular.module('app').directive('trendChart', ['d3', '$rootScope', 'myConfig', '
                                     return moment(a.created) >= iterateTime && moment(a.created) < timePlusHour;
                                 });
 
+                                // iterateTime.
                                 if (onDataWithinBucket.length > 0) {
                                     var onActivity = onDataWithinBucket.some(function(a) {
                                         return a.iRms >= 1;
@@ -197,69 +197,26 @@ angular.module('app').directive('trendChart', ['d3', '$rootScope', 'myConfig', '
                             iterateDate.add(1, 'days');
                         }
 
-                        regulatedDataArray = regulatedDataArray.filter(function(d) {
-                            return moment(d.created).tz('America/Toronto').day() === easternWeekday;
-                        })
-
-                        regulatedDataArray.map(function(d) {
-                            var today = new moment();
-                            today.set('second', 0);
-                            today.set('hour', d.created.getHours());
-                            today.set('minute', d.created.getMinutes());
-                            d.created = today.toDate();
-                            return d;
-                        });
-
-
-                        console.log("regulatedDataArray", regulatedDataArray);
-                        var summedData = d3.nest()
-                            .key(function(d) {
-                                return d.created; })
-                            .rollup(function(d) {
-                                return d3.sum(d, function(g) {
-                                    return g.status; });
-                            }).entries(regulatedDataArray)
-                            .map(function(d){
-                                d.key = new Date(d.key);
-                                return d;
-                            })
-
-
-
-                        console.log("summedData", summedData);
+                        console.log("regulatedDataArray", regulatedDataArray)
 
 
 
                         var yScale = d3.scaleLinear()
-                            .domain(d3.extent(summedData, function(d) {
-                                return d.value;
+                            .domain(d3.extent(regulatedDataArray, function(d) {
+                                return d.status;
                             }))
                             .range([height, 0]);
 
 
-                        // var yAxis = d3.axisLeft(yScale).tickSizeOuter(0).tickSizeInner(0).tickPadding(1).tickFormat(function(d) {
-                        //     if (d === 1) {
-                        //         return "Peak";
-                        //     } else {
-                        //         return ""
-                        //     }
-                        //     // console.log("axis y d", d);
-                        //     return d;
-                        // })
-
-                        var yAxis = d3.axisLeft(yScale).tickSizeOuter(0).tickSizeInner(0).tickPadding(1);
-
-
-
-                        // var yAxis = d3.axisLeft(yScale).tickSizeOuter(0).tickSizeInner(0).tickPadding(1).tickFormat(function(d) {
-                        //     if (d === 1) {
-                        //         return "Peak";
-                        //     } else {
-                        //         return ""
-                        //     }
-                        //     // console.log("axis y d", d);
-                        //     return d;
-                        // })
+                        var yAxis = d3.axisLeft(yScale).tickSizeOuter(0).tickSizeInner(0).tickPadding(1).tickFormat(function(d) {
+                            if (d === 1) {
+                                return "Peak";
+                            } else {
+                                return ""
+                            }
+                            // console.log("axis y d", d);
+                            return d;
+                        })
 
                         // yAxis.selectAll('path').attr('stroke', 'white');
                         var yAxisGroup = svgGroup.call(yAxis);
@@ -274,15 +231,15 @@ angular.module('app').directive('trendChart', ['d3', '$rootScope', 'myConfig', '
 
                         var xScaleBand = d3.scaleBand()
                             .padding(0.2)
-                            .domain(summedData.map(function(data) {
-                                return data.key;
+                            .domain(regulatedDataArray.map(function(data) {
+                                return data.created
                             })).range([0, width]);
 
 
 
                         var xScaleTime = d3.scaleTime()
-                            .domain(d3.extent(summedData, function(d) {
-                                return d.key;
+                            .domain(d3.extent(regulatedDataArray, function(d) {
+                                return d.created;
                             }))
                             .range([0, width]);
                         var xAxis = d3.axisBottom(xScaleTime)
@@ -296,36 +253,16 @@ angular.module('app').directive('trendChart', ['d3', '$rootScope', 'myConfig', '
                         xAxisGroup.selectAll('text').attr('fill', 'white').attr('font-size', 10);
                         xAxisGroup.selectAll('line').attr('stroke', 'white');
 
-                        var area = d3.area()
-                            .x(function(d) {
-                                return xScaleTime(d.key);
-                            })
-                            .y0(height)
-                            .y1(function(d) {
-                                return yScale(d.value);
-                            })
-                            // .curve(d3.curveCatmullRom.alpha(0.4));
-
-
                         svgGroup.selectAll('rect')
-                            .data(summedData)
+                            .data(regulatedDataArray)
                             .enter()
                             .append('rect')
-                            .attr('x', d => xScaleTime(d.key)+xScaleBand.bandwidth()*0.2)
-                            .attr('y', d => yScale(d.value))
+                            .attr('x', d => xScaleTime(d.created))
+                            .attr('y', d => yScale(d.status))
                             .attr('width', d => xScaleBand.bandwidth())
-                            .attr('height', d => height - yScale(d.value))
+                            .attr('height', d => height - yScale(d.status))
                             .attr('fill', '#2196F3');
-
-                        // svgGroup
-                        //     .append('path')
-                        //     .datum(summedData)
-                        //     .attr('d', area)
-                        //     .style('stroke', '#3369E8')
-                        //     .style('stroke-width', 2)
-                        //     .style('fill', '#3369E8')
-                        //     .style('fill-opacity', 0.5);
-
+                        console.log("regulatedDataArray", regulatedDataArray);
                     })
 
 

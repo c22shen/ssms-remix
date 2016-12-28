@@ -74,31 +74,98 @@ console.log("easternDate", easternDate);
 
 var openTime = moment.tz({ d: easternDate, h: openCloseInfo.open.hour, m: openCloseInfo.open.minute }, "America/Toronto");
 var closeTime = moment.tz({ d: easternDate, h: openCloseInfo.close.hour, m: openCloseInfo.close.minute }, "America/Toronto").endOf('minute');
-       
+
 // console.log("openTime",openTime.format());
 // console.log("closeTime",closeTime.format());
 
 
 
 exports.create = function(req, res) {
-    var device = new Device();
-    device.name = req.body.name;
+    var l1PanId = "0013A20041629B77";
+    var currentStatus = 0;
+    var monday10 = moment.tz({ d: 12, h: 9 }, "America/Toronto").toDate();
+    var monday11 = moment.tz({ d: 12, h: 11 }, "America/Toronto").toDate();
+    var monday20 = moment.tz({ d: 19, h: 10 }, "America/Toronto").toDate();
+    var monday21 = moment.tz({ d: 19, h: 12 }, "America/Toronto").toDate();
 
-    device.save(function(err) {
+
+
+
+    var monday10Device = new Device();
+    monday10Device.iRms = 2;
+    monday10Device.panId = l1PanId;
+    monday10Device.created = monday10;
+
+
+    var monday11Device = new Device();
+    monday11Device.iRms = 0;
+    monday11Device.panId = l1PanId;
+    monday11Device.created = monday11;
+
+
+    var monday20Device = new Device();
+    monday20Device.iRms = 2;
+    monday20Device.panId = l1PanId;
+    monday20Device.created = monday20;
+
+
+    var monday21Device = new Device();
+    monday21Device.iRms = 0;
+    monday21Device.panId = l1PanId;
+    monday21Device.created = monday21;
+
+
+
+
+
+    // device.name = req.body.name;
+
+    monday10Device.save(function(err) {
         if (err) {
             res.send(err);
         }
+        monday11Device.save(function(err) {
+            if (err) {
+                res.send(err);
+            }
+            monday20Device.save(function(err) {
+                if (err) {
+                    res.send(err);
+                }
+                monday21Device.save(function(err) {
+                    if (err) {
+                        res.send(err);
+                    }
+                    res.send('saved all');
 
-        res.json({ message: 'Device created' });
+
+
+                })
+
+
+
+            })
+
+
+
+
+        })
+
+
+
     })
 };
 
 exports.readAll = function(req, res) {
     // ,{ sort: { 'created_at': 1 } }
+    var easternDate = moment.tz('America/Toronto').date() - 1; // do not let today's data dilute the average, consider yesterday, which has been completed.
+    var openTime = moment.tz({ d: easternDate, h: 8, m: 30 }, "America/Toronto");
+    var closeTime = moment.tz({ d: easternDate, h: 21, m: 0 }, "America/Toronto");
+
     Device.find({
         created: {
-            "$gte": moment({ hour: 8, minute: 30 }),
-            "$lt": moment({ hour: 21, minute: 0 })
+            "$gte": openTime.add(-4, 'weeks'),
+            "$lt": closeTime
         }
     }, 'panId created iRms -_id', function(err, devices) {
         if (err) {
