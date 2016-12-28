@@ -15,7 +15,7 @@ var device = require(appRoot + '/app/controllers/device.controller');
 	// Set up the 'articles' base routes 
 	app.route('/api/devices')
 	   .get(device.read)
-	   .post(device.create);
+	   // .post(device.create);
 	
 	// Set up the 'articles' parameterized routes
 	app.route('/api/devices/:panid')
