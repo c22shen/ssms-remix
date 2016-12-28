@@ -164,7 +164,7 @@ exports.readAll = function(req, res) {
 
     Device.find({
         created: {
-            "$gte": openTime.add(-2, 'weeks'),
+            "$gte": openTime.add(-1, 'weeks'),
             "$lt": closeTime
         }
     }, 'panId created iRms -_id', function(err, devices) {
