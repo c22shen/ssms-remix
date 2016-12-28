@@ -91,7 +91,7 @@ module.exports = function(io) {
         // mqttClient.subscribe("0013A20041629B77");
         // mqttClient.subscribe("0013A20041629B6A");
         // mqttClient.subscribe("0013A20040D7B872");
-        // mqttClient.subscribe("0013A20040B09A44");
+        mqttClient.subscribe("0013A20040B09A44");
     })
 
     // mqttClient.randomPublish = function() {

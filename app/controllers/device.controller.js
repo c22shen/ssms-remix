@@ -164,7 +164,7 @@ exports.readAll = function(req, res) {
 
     Device.find({
         created: {
-            "$gte": openTime.add(-1, 'weeks'),
+            "$gte": openTime.add(-4, 'weeks'),
             "$lt": closeTime
         }
     }, 'panId created iRms -_id', function(err, devices) {
@@ -176,6 +176,13 @@ exports.readAll = function(req, res) {
 };
 
 exports.read = function(req, res) {
+
+    var easternDate = moment.tz("America/Toronto").date();
+console.log("easternDate", easternDate);
+
+var openTime = moment.tz({ d: easternDate, h: openCloseInfo.open.hour, m: openCloseInfo.open.minute }, "America/Toronto");
+var closeTime = moment.tz({ d: easternDate, h: openCloseInfo.close.hour, m: openCloseInfo.close.minute }, "America/Toronto").endOf('minute');
+
     //panId, created minutes restriction
     // var panId = req.params.panid;
 
@@ -198,11 +205,12 @@ exports.read = function(req, res) {
         // 'iRms': {
         //   "$gte": 1
         // }
-    }, {}, {}, function(err, devices) {
+    },  function(err, devices) {
 
         if (err) {
             res.send(err);
         }
+        
 
         // devices.map(function(dataSet){
         //  var dateTime = new Date(dataSet.created).getT 
