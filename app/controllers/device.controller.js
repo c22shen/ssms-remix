@@ -162,26 +162,41 @@ exports.readAll = function(req, res) {
     var openTime = moment.tz({ d: easternDate, h: 8, m: 30 }, "America/Toronto");
     var closeTime = moment.tz({ d: easternDate, h: 21, m: 0 }, "America/Toronto");
 
-    Device.find({
+
+    var q = Device.find({
         created: {
-            "$gte": openTime.add(-4, 'weeks'),
+            "$gte": openTime.add(-1, 'weeks'),
             "$lt": closeTime
         }
-    }, 'panId created iRms -_id', function(err, devices) {
+    }).sort({ 'created': -1 }).limit(2000);
+    q.exec(function(err, devices) {
         if (err) {
             res.send(err);
         }
         res.json(devices);
-    })
+        // `posts` will be of length 20
+    });
+
+    // Device.find({
+    //     created: {
+    //         "$gte": openTime.add(-1, 'weeks'),
+    //         "$lt": closeTime
+    //     }
+    // }, 'panId created iRms -_id', function(err, devices) {
+    //     if (err) {
+    //         res.send(err);
+    //     }
+    //     res.json(devices);
+    // })
 };
 
 exports.read = function(req, res) {
 
     var easternDate = moment.tz("America/Toronto").date();
-console.log("easternDate", easternDate);
+    console.log("easternDate", easternDate);
 
-var openTime = moment.tz({ d: easternDate, h: openCloseInfo.open.hour, m: openCloseInfo.open.minute }, "America/Toronto");
-var closeTime = moment.tz({ d: easternDate, h: openCloseInfo.close.hour, m: openCloseInfo.close.minute }, "America/Toronto").endOf('minute');
+    var openTime = moment.tz({ d: easternDate, h: openCloseInfo.open.hour, m: openCloseInfo.open.minute }, "America/Toronto");
+    var closeTime = moment.tz({ d: easternDate, h: openCloseInfo.close.hour, m: openCloseInfo.close.minute }, "America/Toronto").endOf('minute');
 
     //panId, created minutes restriction
     // var panId = req.params.panid;
@@ -205,12 +220,12 @@ var closeTime = moment.tz({ d: easternDate, h: openCloseInfo.close.hour, m: open
         // 'iRms': {
         //   "$gte": 1
         // }
-    },  function(err, devices) {
+    }, function(err, devices) {
 
         if (err) {
             res.send(err);
         }
-        
+
 
         // devices.map(function(dataSet){
         //  var dateTime = new Date(dataSet.created).getT 
@@ -226,7 +241,46 @@ var closeTime = moment.tz({ d: easternDate, h: openCloseInfo.close.hour, m: open
 
     // })
 }
+exports.readTest = function(req, res) {
+    var easternDate = moment.tz('America/Toronto').date() - 1; // do not let today's data dilute the average, consider yesterday, which has been completed.
+    var openTime = moment.tz({ d: easternDate, h: 8, m: 30 }, "America/Toronto").add(-1, 'weeks');
+    var closeTime = moment.tz({ d: easternDate, h: 21, m: 0 }, "America/Toronto");
 
+
+    // Device.find({
+    //     created: {
+    //         "$gte": openTime,
+    //         "$lt": closeTime
+    //     }
+    // }, 'panId created iRms -_id', function(err, devices) {
+    //     if (err) {
+    //         res.send(err);
+    //     }
+    //     res.json(devices);
+    // })
+
+
+    var q = Device.find({
+        $where : function() { return this.created.getDay() == 2 },
+        iRms: {
+           "$gte": 1, 
+        },
+        created: {
+            "$gte": openTime,
+            "$lt": closeTime
+        },
+        panId: "0013A20040B09A44"
+
+    }).sort({ 'created': -1 });
+    q.exec(function(err, devices) {
+        if (err) {
+            res.send(err);
+        }
+        res.json(devices);
+        // `posts` will be of length 20
+    });
+
+}
 exports.update = function(req, res) {
     Device.findById(req.params.device_id, function(err, device) {
         if (err) {

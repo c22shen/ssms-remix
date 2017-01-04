@@ -10,7 +10,7 @@ var device = require(appRoot + '/app/controllers/device.controller');
 
 	// Set up the 'articles' base routes 
 	app.route('/api/devices4weeks')
-	   .get(device.readAll)
+	   .get(device.readTest)
 
 	// Set up the 'articles' base routes 
 	app.route('/api/devices')

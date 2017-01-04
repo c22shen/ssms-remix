@@ -176,11 +176,10 @@ angular.module('app').directive('trendChart', ['d3', '$rootScope', 'myConfig', '
                             var currentOperationStatus = 0;
 
                             while (iterateTime < checkTimeEnd) {
-                                var timePlusHour = iterateTime.clone().add(1, 'hours');
+                                var timePlusHour = iterateTime.clone().add(10, 'minutes');
                                 var onDataWithinBucket = monthData.filter(function(a) {
                                     return moment(a.created) >= iterateTime && moment(a.created) < timePlusHour;
                                 });
-
                                 if (onDataWithinBucket.length > 0) {
                                     var onActivity = onDataWithinBucket.some(function(a) {
                                         return a.iRms >= 1;
@@ -191,15 +190,15 @@ angular.module('app').directive('trendChart', ['d3', '$rootScope', 'myConfig', '
 
                                 regulatedDataArray.push({ status: currentOperationStatus, created: iterateTime.utc().toDate() });
 
-                                iterateTime.add(1, 'hours');
+                                iterateTime.add(10, 'minutes');
                             }
 
                             iterateDate.add(1, 'days');
                         }
 
-                        regulatedDataArray = regulatedDataArray.filter(function(d) {
-                            return moment(d.created).tz('America/Toronto').day() === easternWeekday;
-                        })
+                        // regulatedDataArray = regulatedDataArray.filter(function(d) {
+                        //     return moment(d.created).tz('America/Toronto').day() === easternWeekday;
+                        // })
 
                         regulatedDataArray.map(function(d) {
                             var today = new moment();
