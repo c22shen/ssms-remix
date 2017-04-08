@@ -57,7 +57,7 @@ angular.module('app').directive('trendChart', ['d3', '$rootScope', 'myConfig', '
             },
             6: {
                 open: { hour: 10, minute: 0 },
-                close: { hour: 17, minute: 0 },
+                close: { hour: 19, minute: 0 },
                 break: saturdayBreakTime
             }
         }
