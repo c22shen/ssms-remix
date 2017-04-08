@@ -108,7 +108,7 @@ angular.module('app').controller('DataController', ['$rootScope', 'd3', '$scope'
             statusColor: "white"
         }, {
             type: 'L',
-            panId: "",
+            panId: "0013A20040B09A44",
             xCoordinate: 120,
             yCoordinate: 80,
             text: "Lathe 3",
