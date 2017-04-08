@@ -158,7 +158,13 @@ angular.module('app').directive('mapChart', ['d3', '$rootScope', 'myConfig', '$t
                             return !!data.datetime ? moment(data.datetime, "h:mm:ssa").format("h:mm:ss") : null;
                         });
 
-
+                    update.select('.currentText')
+                        // .append('text')
+                        // .transition(transitionStyle)
+                        .text(function(data) {
+                            // What is this ????!!!!
+                            return data.iRms;
+                        });
 
                     var machineUnit = update
                         .enter()
@@ -264,6 +270,20 @@ angular.module('app').directive('mapChart', ['d3', '$rootScope', 'myConfig', '$t
                         .attr('font-size', fontSize - 2)
                         .text(function(data) {
                             return data.datetime;
+                        });
+                    machineUnit
+                        .append("text")
+                        .classed("currentText", true)
+                        .attr('transform', function(data) {
+                            var yCoord = data.yCoordinate + 60;
+                            return 'translate(' + data.xCoordinate + ',' + yCoord + ')';
+                        })
+                        .attr('fill', 'white')
+                        .attr('stroke', 'none')
+                        .attr('font-size', fontSize - 2)
+                        .text(function(data) {
+                            console.log("data", data);
+                            return data.iRms;
                         });
                 }
 

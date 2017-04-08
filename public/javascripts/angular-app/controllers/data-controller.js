@@ -39,7 +39,8 @@ angular.module('app').controller('DataController', ['$rootScope', 'd3', '$scope'
                 var minutes = duration.asMinutes();
                 if (minutes < 15) {
                     result.status = "unsure";
-                    result.color = colorScale(minutes);
+                    // result.color = colorScale(minutes);
+                    result.color = "#1abc9c";
                 } else {
                     result.status = "idle";
                     result.color = "#1abc9c";
@@ -109,7 +110,7 @@ angular.module('app').controller('DataController', ['$rootScope', 'd3', '$scope'
             type: 'L',
             panId: "",
             xCoordinate: 120,
-            yCoordinate: 70,
+            yCoordinate: 80,
             text: "Lathe 3",
             statusColor: "white"
         }];
