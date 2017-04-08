@@ -58,14 +58,15 @@ angular.module('app').controller('DataController', ['$rootScope', 'd3', '$scope'
         $rootScope.recentHourData = {};
         $rootScope.machineData = [{
             type: 'M',
-            panId: "0013A20041629B72",
+            
+            panId: "0013A20041629B77",
             xCoordinate: 220,
             yCoordinate: 10,
             text: "Mill 1",
             statusColor: "white"
         }, {
             type: 'M',
-            panId: "0013A20040D7B896",
+            panId: "0013A20041629B6A",
             xCoordinate: 260,
             yCoordinate: 10,
             text: "Mill 2",
@@ -80,14 +81,14 @@ angular.module('app').controller('DataController', ['$rootScope', 'd3', '$scope'
 
         }, {
             type: 'M',
-            panId: "0013A20041629B6A",
+            panId: "0013A20040D7B896",
             xCoordinate: 340,
             yCoordinate: 10,
             text: "Mill 4",
             statusColor: "white"
         }, {
             type: 'M',
-            panId: "0013A20041629B77",
+            panId: "0013A20041629B72",
             xCoordinate: 380,
             yCoordinate: 10,
             text: "Mill 5",
