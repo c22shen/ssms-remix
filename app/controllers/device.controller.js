@@ -58,7 +58,7 @@ var timeAvailable = {
     },
     6: {
         open: { hour: 10, minute: 0 },
-        close: { hour: 17, minute: 0 },
+        close: { hour: 19, minute: 0 },
         break: saturdayBreakTime
     }
 }
