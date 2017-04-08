@@ -57,7 +57,7 @@ angular.module('app').controller('DataController', ['$rootScope', 'd3', '$scope'
         $rootScope.recentHourData = {};
         $rootScope.machineData = [{
             type: 'M',
-            panId: "0013A20040B09A44",
+            panId: "0013A20041629B72",
             xCoordinate: 220,
             yCoordinate: 10,
             text: "Mill 1",
@@ -71,7 +71,7 @@ angular.module('app').controller('DataController', ['$rootScope', 'd3', '$scope'
             statusColor: "white"
         }, {
             type: 'M',
-            panId: "0013A20041629B6A",
+            panId: "0013A20040D7B872",
             xCoordinate: 300,
             yCoordinate: 10,
             text: "Mill 3",
@@ -79,35 +79,35 @@ angular.module('app').controller('DataController', ['$rootScope', 'd3', '$scope'
 
         }, {
             type: 'M',
-            panId: "0013A20041629B72",
+            panId: "0013A20041629B6A",
             xCoordinate: 340,
             yCoordinate: 10,
             text: "Mill 4",
             statusColor: "white"
         }, {
             type: 'M',
-            panId: "0013A20041629B76",
+            panId: "0013A20041629B77",
             xCoordinate: 380,
             yCoordinate: 10,
             text: "Mill 5",
             statusColor: "white"
         }, {
             type: 'L',
-            panId: "0013A20041629B77",
+            panId: "0013A20041629B6C",
             xCoordinate: 120,
             yCoordinate: 10,
             text: "Lathe 1",
             statusColor: "white"
         }, {
             type: 'L',
-            panId: "0013A20040D7B872",
+            panId: "",
             xCoordinate: 170,
             yCoordinate: 10,
             text: "Lathe 2",
             statusColor: "white"
         }, {
             type: 'L',
-            panId: "0013A20041629B6C",
+            panId: "",
             xCoordinate: 120,
             yCoordinate: 70,
             text: "Lathe 3",
