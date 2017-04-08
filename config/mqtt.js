@@ -85,7 +85,7 @@ module.exports = function(io) {
 
     mqttClient.on('connect', function() { // When connected
         mqttClient.subscribe("0013A20041629B6C");
-        // mqttClient.subscribe("0013A20041629B76");
+        mqttClient.subscribe("0013A20041629B76");
         mqttClient.subscribe("0013A20040D7B896");
         mqttClient.subscribe("0013A20041629B72");
         mqttClient.subscribe("0013A20041629B77");
