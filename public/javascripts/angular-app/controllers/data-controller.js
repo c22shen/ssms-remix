@@ -40,7 +40,7 @@ angular.module('app').controller('DataController', ['$rootScope', 'd3', '$scope'
                 if (minutes < 15) {
                     result.status = "unsure";
                     // result.color = colorScale(minutes);
-                    result.color = "##F39C12";
+                    result.color = "#F39C12";
                 } else {
                     result.status = "idle";
                     result.color = "#1abc9c";
