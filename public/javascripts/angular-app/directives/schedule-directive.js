@@ -34,7 +34,7 @@ angular.module('app').directive('schedule', ['myConfig', '$rootScope', '$mdSiden
                     },
                     1: {
                         open: { hour: 8, minute: 30 },
-                        close: { hour: 17, minute: 0 },
+                        close: { hour: 16, minute: 30 },
                         break: weekDayBreakTime
                     },
                     2: {
